@@ -31,16 +31,22 @@ export function peerMultiple(symbol, marketBanks, basis = "basic") {
 }
 
 export function historicalMultiple(annual) {
-  if (!Array.isArray(annual) || annual.length !== 6) return null;
-  const ratios = annual.map((row) => row.historicalPe);
-  return ratios.every(validPositive) ? average(ratios) : null;
+  if (!Array.isArray(annual)) return null;
+  const ratios = annual.map((row) => row.historicalPe).filter(validPositive);
+  return average(ratios);
 }
 
 export function currentMultiple(price, eps) {
   return validPositive(price) && validPositive(eps) ? price / eps : null;
 }
 
-export function calculateValuation(bank, inputs, basis = "basic") {
+export const METHOD_KEYS = ["growth", "sector", "graham", "historical"];
+
+export function priceGapPercent(value, price) {
+  return validPositive(value) && validPositive(price) ? (value / price - 1) * 100 : null;
+}
+
+export function calculateValuation(bank, inputs, basis = "basic", selectedMethods = {}) {
   const eps = basis === "diluted" ? inputs?.dilutedEps : inputs?.basicEps;
   const growthPercent = annualGrowth(bank.annual, basis);
   const bookValue = inputs?.bookValue;
@@ -54,15 +60,17 @@ export function calculateValuation(bank, inputs, basis = "basic") {
       ? Math.sqrt(22.5 * eps * bookValue) : null,
     historical: validPositive(eps) && validPositive(historicalPe) ? eps * historicalPe : null,
   };
-  const values = Object.values(methods);
-  const fairPrice = values.every(validPositive) ? average(values) : null;
-  const gapPercent = validPositive(fairPrice) && validPositive(price)
-    ? (fairPrice / price - 1) * 100 : null;
+  const includedMethods = METHOD_KEYS.filter((key) => selectedMethods?.[key] !== false);
+  const values = includedMethods.map((key) => methods[key]);
+  const fairPrice = values.length > 0 && values.every(validPositive) ? average(values) : null;
+  const gapPercent = priceGapPercent(fairPrice, price);
+  const methodGaps = Object.fromEntries(METHOD_KEYS.map((key) => [key, priceGapPercent(methods[key], price)]));
   const warnings = [...(bank.qualityFlags || [])];
-  if (growthPercent === null) warnings.push("تعذر حساب نمو ربح السهم بسبب سنة خاسرة أو قيمة ناقصة.");
-  if (validPositive(growthPercent) && growthPercent > 50) {
+  if (includedMethods.includes("growth") && growthPercent === null) warnings.push("تعذر حساب نمو ربح السهم بسبب سنة خاسرة أو قيمة ناقصة؛ يمكنك استبعاد هذه الطريقة.");
+  if (includedMethods.includes("growth") && validPositive(growthPercent) && growthPercent > 50) {
     warnings.push("متوسط النمو مرتفع جدًا؛ قد يهيمن على المتوسط النهائي.");
   }
-  if (fairPrice === null) warnings.push("السعر العادل يحتاج مدخلات صالحة للطرق الأربع كلها.");
-  return { eps, growthPercent, methods, fairPrice, gapPercent, warnings };
+  if (!includedMethods.length) warnings.push("اختر طريقة واحدة على الأقل لحساب السعر العادل.");
+  else if (fairPrice === null) warnings.push("السعر العادل يحتاج بيانات صالحة لكل طريقة اخترتها.");
+  return { eps, growthPercent, methods, methodGaps, includedMethods, fairPrice, gapPercent, warnings };
 }

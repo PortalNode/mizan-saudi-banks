@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import test from "node:test";
-import { annualGrowth, calculateValuation, currentMultiple, historicalMultiple, peerMultiple } from "../site/valuation.mjs";
+import { annualGrowth, calculateValuation, currentMultiple, historicalMultiple, peerMultiple, priceGapPercent } from "../site/valuation.mjs";
 
 const bank = {
   annual: [2.65, 3.69, 4.29, 4.16, 4.93, 6.20].map((basicEps, index) => ({
@@ -31,11 +32,20 @@ test("sector multiple uses peers, not the selected bank's own price multiple", (
   }), 13);
 });
 
-test("current multiple and workbook six-year multiple use their separate sources", () => {
+test("current multiple and workbook multiple use their separate sources", () => {
   assert.equal(currentMultiple(88.4, 6.2), 88.4 / 6.2);
   assert.equal(currentMultiple(88.4, null), null);
   assert.equal(historicalMultiple([11, 12, 13, 14, 15, 16].map((historicalPe) => ({ historicalPe }))), 13.5);
-  assert.equal(historicalMultiple([null, 12, 13, 14, 15, 16].map((historicalPe) => ({ historicalPe }))), null);
+  assert.equal(historicalMultiple([null, 12, 13, 14, 15, 16].map((historicalPe) => ({ historicalPe }))), 14);
+  assert.equal(historicalMultiple([{ historicalPe: null }]), null);
+});
+
+test("Saudi Awwal historical multiple averages five available workbook years", () => {
+  const banks = JSON.parse(fs.readFileSync(new URL("../site/data/banks.json", import.meta.url), "utf8")).banks;
+  const awwal = banks.find((item) => item.symbol === "1060");
+  assert.equal(awwal.annual[0].basicEps, -2.02);
+  assert.equal(awwal.annual[0].historicalPe, null);
+  assert.ok(Math.abs(historicalMultiple(awwal.annual) - 13.112) < 1e-9);
 });
 
 test("missing one method never produces a misleading four-method average", () => {
@@ -44,6 +54,27 @@ test("missing one method never produces a misleading four-method average", () =>
   });
   assert.equal(result.methods.historical, null);
   assert.equal(result.fairPrice, null);
+});
+
+test("two or three selected methods average only their unrounded values", () => {
+  const inputs = { price: 88.4, basicEps: 6.2, bookValue: 28.71, sectorPe: 13.8, historicalPe: 16.2 };
+  const two = calculateValuation(bank, inputs, "basic", { growth: false, sector: false });
+  assert.deepEqual(two.includedMethods, ["graham", "historical"]);
+  assert.equal(two.fairPrice, (two.methods.graham + two.methods.historical) / 2);
+  const three = calculateValuation(bank, inputs, "basic", { growth: false });
+  assert.equal(three.fairPrice, (three.methods.sector + three.methods.graham + three.methods.historical) / 3);
+  assert.equal(two.methodGaps.historical, priceGapPercent(two.methods.historical, inputs.price));
+});
+
+test("an unavailable excluded method does not block the selected average", () => {
+  const result = calculateValuation(bank, {
+    price: 88.4, basicEps: 6.2, bookValue: 28.71, historicalPe: 16.2,
+  }, "basic", { sector: false });
+  assert.equal(result.methods.sector, null);
+  assert.equal(result.includedMethods.length, 3);
+  assert.ok(result.fairPrice > 0);
+  assert.equal(calculateValuation(bank, { basicEps: 6.2 }, "basic",
+    { growth: false, sector: false, graham: false, historical: false }).fairPrice, null);
 });
 
 test("loss year invalidates growth rather than dividing through a negative EPS", () => {

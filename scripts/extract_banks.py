@@ -54,7 +54,8 @@ def extract(source: Path) -> dict:
                     f"ربح السهم المخفف أكبر من الأساسي في {sheet.title}، الصف {row}؛ يلزم التحقق من إفصاح البنك"
                 )
             if historical_pe is None or historical_pe <= 0:
-                quality_flags.append(f"مكرر الأرباح لعام {year} مفقود في {sheet.title}!{get_column_letter(pe_column)}{row}")
+                reason = "؛ ربح السهم في هذه السنة سالب" if basic < 0 else ""
+                quality_flags.append(f"مكرر الأرباح لعام {year} غير متاح في {sheet.title}!{get_column_letter(pe_column)}{row}{reason}")
                 historical_pe = None
             elif historical_pe > 100:
                 quality_flags.append(f"مكرر الأرباح لعام {year} مرتفع جدًا ({historical_pe:g}) في {sheet.title}!{get_column_letter(pe_column)}{row}؛ أُبقي كما ورد")

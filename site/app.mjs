@@ -1,8 +1,10 @@
-import { calculateValuation, currentMultiple, historicalMultiple, peerMultiple, validPositive } from "./valuation.mjs?v=3";
+import { calculateValuation, currentMultiple, historicalMultiple, METHOD_KEYS, peerMultiple, validPositive } from "./valuation.mjs?v=4";
 
 const $ = (id) => document.getElementById(id);
 const sar = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pct = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const methodNames = { growth: "متوسط النمو", sector: "مكرر القطاع", graham: "رقم جراهام", historical: "المكرر التاريخي" };
+const methodControls = { growth: "useGrowth", sector: "useSector", graham: "useGraham", historical: "useHistorical" };
 const state = {
   banks: [],
   market: { status: "unconfigured", banks: {} },
@@ -10,6 +12,7 @@ const state = {
   basis: "basic",
   manualOpen: true,
   manual: readSavedManual(),
+  selections: readSavedSelections(),
   search: "",
 };
 
@@ -21,6 +24,21 @@ function readSavedManual() {
 function saveManual() {
   try { localStorage.setItem("mizan-current-inputs-v2", JSON.stringify(state.manual)); }
   catch { /* Private browsing may block storage. The current page still works. */ }
+}
+
+function readSavedSelections() {
+  try { return JSON.parse(localStorage.getItem("mizan-method-selection-v1") || "{}"); }
+  catch { return {}; }
+}
+
+function saveSelections() {
+  try { localStorage.setItem("mizan-method-selection-v1", JSON.stringify(state.selections)); }
+  catch { /* The current page still works when local storage is unavailable. */ }
+}
+
+function selectedMethods(bank) {
+  const saved = state.selections[bank.symbol] || {};
+  return Object.fromEntries(METHOD_KEYS.map((key) => [key, saved[key] !== false]));
 }
 
 function num(value) {
@@ -118,10 +136,13 @@ function renderHistory(bank) {
   });
 }
 
-function renderMethod(priceId, formulaId, price, formula) {
+function renderMethod(priceId, formulaId, gapId, price, gap, formula, included) {
   $(priceId).textContent = Number.isFinite(price) ? `${formatted(price)} ر.س` : "—";
   $(priceId).classList.toggle("empty", !Number.isFinite(price));
   $(formulaId).textContent = formula;
+  $(gapId).textContent = gap === null ? "الفارق عن السعر الحالي: —" : `الفارق عن السعر الحالي: ${formattedPct(gap)}`;
+  $(gapId).classList.toggle("negative", gap < 0);
+  $(priceId).closest(".method").classList.toggle("excluded", !included);
 }
 
 function banner(bank, record) {
@@ -142,7 +163,8 @@ function render() {
   if (!bank) return;
   const record = state.market.banks?.[bank.symbol];
   const input = currentInputs(bank);
-  const result = calculateValuation(bank, input, state.basis);
+  const included = selectedMethods(bank);
+  const result = calculateValuation(bank, input, state.basis, included);
   renderBankList();
   $("ticker").textContent = bank.symbol;
   $("bankName").textContent = bank.name;
@@ -177,27 +199,35 @@ function render() {
   $("dilutedButton").classList.toggle("active", state.basis === "diluted");
   $("basicButton").setAttribute("aria-pressed", String(state.basis === "basic"));
   $("dilutedButton").setAttribute("aria-pressed", String(state.basis === "diluted"));
+  for (const key of METHOD_KEYS) $(methodControls[key]).checked = included[key];
+  $("selectedCount").textContent = `${result.includedMethods.length} من 4 ضمن المتوسط`;
+  $("summaryCaption").textContent = result.includedMethods.length === 1
+    ? "تقدير الطريقة المختارة، محسوب قبل تقريب العرض."
+    : "متوسط حسابي للطرق المختارة، محسوب من النتائج قبل تقريبها للعرض.";
   if (result.fairPrice !== null) {
-    const values = Object.values(result.methods).map(formatted).join(" + ");
-    $("averageEquation").textContent = `(${values}) ÷ 4 ≈ ${formatted(result.fairPrice)}`;
+    const values = result.includedMethods.map((key) => formatted(result.methods[key])).join(" + ");
+    $("averageEquation").textContent = `(${values}) ÷ ${result.includedMethods.length} ≈ ${formatted(result.fairPrice)}`;
   } else {
-    $("averageEquation").textContent = "بانتظار اكتمال قيم الطرق الأربع";
+    const missing = result.includedMethods.filter((key) => !validPositive(result.methods[key])).map((key) => methodNames[key]);
+    $("averageEquation").textContent = result.includedMethods.length
+      ? `بانتظار بيانات: ${missing.join("، ")}` : "اختر طريقة واحدة على الأقل";
   }
-  renderMethod("growthPrice", "growthFormula", result.methods.growth,
-    result.growthPercent === null || !validPositive(result.eps) ? "بيانات نمو غير صالحة" : `${formatted(result.eps)} × ${formatted(result.growthPercent)}`);
-  renderMethod("sectorPrice", "sectorFormula", result.methods.sector,
-    validPositive(input.sectorPe) && validPositive(result.eps) ? `${formatted(result.eps)} × ${formatted(input.sectorPe)}` : "مكرر القطاع غير متاح");
-  renderMethod("grahamPrice", "grahamFormula", result.methods.graham,
-    validPositive(input.bookValue) && validPositive(result.eps) ? `√(22.5 × ${formatted(result.eps)} × ${formatted(input.bookValue)})` : "القيمة الدفترية أو الربح غير متاح");
-  renderMethod("historicalPrice", "historicalFormula", result.methods.historical,
-    validPositive(input.historicalPe) && validPositive(result.eps) ? `${formatted(result.eps)} × ${formatted(input.historicalPe)}` : "متوسط المكرر التاريخي غير متاح");
+  renderMethod("growthPrice", "growthFormula", "growthGap", result.methods.growth, result.methodGaps.growth,
+    result.growthPercent === null || !validPositive(result.eps) ? "بيانات نمو غير صالحة" : `${formatted(result.eps)} × ${formatted(result.growthPercent)}`, included.growth);
+  renderMethod("sectorPrice", "sectorFormula", "sectorGap", result.methods.sector, result.methodGaps.sector,
+    validPositive(input.sectorPe) && validPositive(result.eps) ? `${formatted(result.eps)} × ${formatted(input.sectorPe)}` : "مكرر القطاع غير متاح", included.sector);
+  renderMethod("grahamPrice", "grahamFormula", "grahamGap", result.methods.graham, result.methodGaps.graham,
+    validPositive(input.bookValue) && validPositive(result.eps) ? `√(22.5 × ${formatted(result.eps)} × ${formatted(input.bookValue)})` : "القيمة الدفترية أو الربح غير متاح", included.graham);
+  renderMethod("historicalPrice", "historicalFormula", "historicalGap", result.methods.historical, result.methodGaps.historical,
+    validPositive(input.historicalPe) && validPositive(result.eps) ? `${formatted(result.eps)} × ${formatted(input.historicalPe)}` : "متوسط المكرر التاريخي غير متاح", included.historical);
   $("sectorDetail").textContent = `وسيط المكرر الحالي للبنوك النظيرة التي أُدخل ربح سهمها على الأساس المختار؛ ${input.peerCount} من ${Math.max(0, state.banks.length - 1)}.`;
   const availableYears = bank.annual.filter((row) => validPositive(row.historicalPe)).length;
-  $("historicalDetail").textContent = `متوسط مكررات ${availableYears} من 6 سنوات في ملف البنوك؛ لا يُحسب إن نقصت سنة. نوع ربح السهم المستخدم في مكرر الملف غير محدد.`;
+  $("historicalDetail").textContent = `متوسط مكررات ${availableYears} من 6 سنوات متاحة في ملف البنوك. نوع ربح السهم المستخدم في مكرر الملف غير محدد.`;
+  $("historicalPeYears").textContent = `${availableYears} من 6 سنوات متاحة`;
   const warnings = [...result.warnings];
   if (!validPositive(input.price)) warnings.push("سعر سهمك غير متاح حاليًا لهذا البنك.");
-  if (!validPositive(input.sectorPe)) warnings.push("لحساب مكرر القطاع، أدخل ربح السهم لبنك نظير واحد على الأقل.");
-  if (availableYears < 6) warnings.push(`المكرر التاريخي في ملف البنوك يغطي ${availableYears} سنوات فقط؛ لن نعرض متوسط ست سنوات ناقصًا.`);
+  if (included.sector && !validPositive(input.sectorPe)) warnings.push("لحساب مكرر القطاع، أدخل ربح السهم لبنك نظير واحد على الأقل، أو استبعد الطريقة.");
+  if (included.historical && availableYears < 6 && availableYears > 0) warnings.push(`المكرر التاريخي محسوب من ${availableYears} سنوات متاحة من أصل 6.`);
   const warningPanel = $("warningPanel");
   warningPanel.hidden = warnings.length === 0;
   warningPanel.textContent = warnings.join(" • ");
@@ -215,6 +245,14 @@ function attachEvents() {
     state.manualOpen = !state.manualOpen;
     render();
   });
+  for (const [key, id] of Object.entries(methodControls)) {
+    $(id).addEventListener("change", (event) => {
+      state.selections[state.selected] ||= {};
+      state.selections[state.selected][key] = event.target.checked;
+      saveSelections();
+      render();
+    });
+  }
   const fields = {
     manualBasic: "basicEps", manualDiluted: "dilutedEps", manualBook: "bookValue",
   };

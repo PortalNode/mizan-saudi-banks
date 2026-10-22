@@ -105,12 +105,18 @@
     .method-top { display:flex; align-items:center; gap:9px; }
     .method-icon { width:29px; height:29px; display:grid; place-items:center; border-radius:9px; background:#edf5ec; color:var(--green); font-size:16px; font-weight:800; }
     .method-name { font-size:13px; font-weight:800; }
-    .method-number { margin-right:auto; color:#9eb5ab; font:700 11px Arial,sans-serif; }
+    .method-number { color:#9eb5ab; font:700 11px Arial,sans-serif; }
+    .method-toggle { margin-right:auto; display:inline-flex; align-items:center; gap:5px; white-space:nowrap; color:#52776b; font-size:10px; font-weight:700; cursor:pointer; }
+    .method-toggle input { width:15px; height:15px; margin:0; accent-color:var(--green); cursor:pointer; }
     .method-line { display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-top:15px; }
     .method-price { font:800 28px Arial,sans-serif; direction:ltr; unicode-bidi:isolate; letter-spacing:-.7px; }
     .method-price small { font-size:12px; font-family:inherit; font-weight:600; letter-spacing:0; }
     .method-formula { direction:ltr; unicode-bidi:isolate; text-align:left; color:#778c84; font:12px Arial,sans-serif; }
     .method-detail { border-top:1px solid #edf1eb; margin-top:14px; padding-top:10px; color:#8aa098; font-size:10px; }
+    .method-gap { display:inline-block; margin-top:9px; padding:5px 9px; border-radius:7px; background:#eaf5ed; color:#166b55; font-size:10px; font-weight:800; }
+    .method-gap.negative { background:#fff0eb; color:#a44837; }
+    .method.excluded { background:#f7f9f6; border-style:dashed; }
+    .method.excluded .method-gap { opacity:.7; }
     .method.growth .method-icon { background:#fff4df; color:#a4721c; }
     .method.growth .method-detail { color:#a08045; }
     .history { padding:20px 22px; display:flex; justify-content:space-between; gap:26px; align-items:center; }
@@ -217,6 +223,7 @@
       .method-line { margin-top:10px; }
       .method-price { font-size:25px; }
       .method-detail { margin-top:11px; }
+      .method-toggle { font-size:9px; }
       .history { display:block; padding:17px; }
       .bars { max-width:none; margin-top:20px; }
       .footer { display:block; padding:20px 0 33px; line-height:1.7; }
@@ -240,7 +247,7 @@
   </header>
 
   <main class="shell">
-    <div class="notice"><span class="notice-dot"></span><span>السعر العادل متوسط حسابي للطرق الأربع، ويظهر فقط عند توافر مدخلاتها كاملة. راجع المصدر وتاريخ التحديث قبل استخدام النتائج.</span></div>
+    <div class="notice"><span class="notice-dot"></span><span>اختر طرق التقييم التي تريد احتسابها؛ السعر العادل هو متوسط نتائجها المتاحة بعد اكتمال مدخلات الطرق المختارة. راجع المصدر وتاريخ التحديث.</span></div>
     <section class="intro">
       <div><div class="eyebrow">قراءة أوضح للقيمة</div><h1>كم يساوي السهم؟</h1><p>أربع زوايا للتقييم، ومتوسطها يمنحك سعرًا عادلًا واحدًا يسهل فهمه ومراجعته.</p></div>
       <div class="intro-art" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -281,16 +288,16 @@
           <div class="computed-grid">
             <div class="computed-item"><span>المكرر الحالي لهذا البنك</span><strong id="currentPe">—</strong><small>السعر ÷ ربح السهم المختار</small></div>
             <div class="computed-item"><span>مكرر القطاع المحسوب</span><strong id="sectorPeReadout">—</strong><small id="peerCount">0 بنوك نظيرة</small></div>
-            <div class="computed-item"><span>متوسط المكرر التاريخي من الملف</span><strong id="historicalPeReadout">—</strong><small>يشترط اكتمال السنوات الست</small></div>
+            <div class="computed-item"><span>متوسط المكرر التاريخي من الملف</span><strong id="historicalPeReadout">—</strong><small id="historicalPeYears">السنوات المتاحة</small></div>
           </div>
           <div class="manual-help">لحساب مكرر القطاع، أدخل ربح السهم على الأساس المختار للبنوك الأخرى أيضًا. مكررات الأعوام 2020–2025 مستخرجة من ملفك ولا تحتاج إلى إدخال.</div>
         </section>
         <section class="summary" aria-label="ملخص التقييم">
           <div class="summary-main">
             <div class="summary-top"><span class="ticker" id="ticker">1120</span><span class="summary-name" id="bankName">مصرف الراجحي</span><span class="summary-sub">القطاع البنكي</span></div>
-            <div class="metric-label">السعر العادل وفق متوسط الطرق الأربع</div>
+            <div class="metric-label">السعر العادل وفق الطرق المختارة</div>
             <div class="fair-row"><strong class="fair-value" id="fairValue">—</strong><span class="currency">ر.س للسهم</span></div>
-            <div class="summary-caption">متوسط حسابي متساوٍ، محسوب من النتائج قبل تقريبها للعرض.</div>
+            <div class="summary-caption" id="summaryCaption">متوسط حسابي للطرق المختارة، محسوب من النتائج قبل تقريبها للعرض.</div>
             <div class="avg-equation"><span>حساب المتوسط</span><b id="averageEquation">بانتظار المدخلات الأربع</b></div>
           </div>
           <div class="summary-aside">
@@ -306,13 +313,13 @@
           <div class="input-card"><span class="input-label">متوسط نمو ربح السهم</span><span class="input-number"><b id="growthValue">—</b></span><div class="input-detail">من الأعوام 2020–2025</div></div>
         </section>
 
-        <div class="section-heading section-anchor" id="methods"><div><h2>تفاصيل الطرق الأربع</h2><p>كل نتيجة واضحة، مع المعادلة والمدخلات التي أنتجتها.</p></div><span class="plain-tag">وزن كل طريقة 25%</span></div>
+        <div class="section-heading section-anchor" id="methods"><div><h2>تفاصيل الطرق الأربع</h2><p>ضع علامة أمام الطرق التي تريد احتسابها. لكل طريقة مختارة وزن متساوٍ في المتوسط.</p></div><span class="plain-tag" id="selectedCount">4 من 4 ضمن المتوسط</span></div>
 
         <section class="methods" aria-label="طرق التقييم">
-          <article class="method growth"><div class="method-top"><span class="method-icon">↗</span><span class="method-name">متوسط النمو السنوي</span><span class="method-number">01</span></div><div class="method-line"><strong class="method-price" id="growthPrice">—</strong><span class="method-formula" id="growthFormula">—</span></div><div class="method-detail">تُستخدم نسبة النمو كعدد في المعادلة المرفقة؛ القفزات الكبيرة ترفع الناتج.</div></article>
-          <article class="method"><div class="method-top"><span class="method-icon">≋</span><span class="method-name">مكرر القطاع</span><span class="method-number">02</span></div><div class="method-line"><strong class="method-price" id="sectorPrice">—</strong><span class="method-formula" id="sectorFormula">—</span></div><div class="method-detail" id="sectorDetail">وسيط مكررات البنوك النظيرة مع استبعاد البنك المحدد.</div></article>
-          <article class="method"><div class="method-top"><span class="method-icon">√</span><span class="method-name">رقم جراهام</span><span class="method-number">03</span></div><div class="method-line"><strong class="method-price" id="grahamPrice">—</strong><span class="method-formula" id="grahamFormula">—</span></div><div class="method-detail">الجذر التربيعي لحاصل ضرب 22.5 وربح السهم والقيمة الدفترية.</div></article>
-          <article class="method"><div class="method-top"><span class="method-icon">◷</span><span class="method-name">متوسط المكرر التاريخي</span><span class="method-number">04</span></div><div class="method-line"><strong class="method-price" id="historicalPrice">—</strong><span class="method-formula" id="historicalFormula">—</span></div><div class="method-detail" id="historicalDetail">متوسط مكررات السنوات المالية الست كما وردت في ملف البنوك.</div></article>
+          <article class="method growth"><div class="method-top"><span class="method-icon">↗</span><span class="method-name">متوسط النمو السنوي</span><span class="method-number">01</span><label class="method-toggle"><input id="useGrowth" type="checkbox" checked>ضمن المتوسط</label></div><div class="method-line"><strong class="method-price" id="growthPrice">—</strong><span class="method-formula" id="growthFormula">—</span></div><div class="method-gap" id="growthGap">الفارق عن السعر الحالي: —</div><div class="method-detail">تُستخدم نسبة النمو كعدد في المعادلة المرفقة؛ القفزات الكبيرة ترفع الناتج.</div></article>
+          <article class="method"><div class="method-top"><span class="method-icon">≋</span><span class="method-name">مكرر القطاع</span><span class="method-number">02</span><label class="method-toggle"><input id="useSector" type="checkbox" checked>ضمن المتوسط</label></div><div class="method-line"><strong class="method-price" id="sectorPrice">—</strong><span class="method-formula" id="sectorFormula">—</span></div><div class="method-gap" id="sectorGap">الفارق عن السعر الحالي: —</div><div class="method-detail" id="sectorDetail">وسيط مكررات البنوك النظيرة مع استبعاد البنك المحدد.</div></article>
+          <article class="method"><div class="method-top"><span class="method-icon">√</span><span class="method-name">رقم جراهام</span><span class="method-number">03</span><label class="method-toggle"><input id="useGraham" type="checkbox" checked>ضمن المتوسط</label></div><div class="method-line"><strong class="method-price" id="grahamPrice">—</strong><span class="method-formula" id="grahamFormula">—</span></div><div class="method-gap" id="grahamGap">الفارق عن السعر الحالي: —</div><div class="method-detail">الجذر التربيعي لحاصل ضرب 22.5 وربح السهم والقيمة الدفترية.</div></article>
+          <article class="method"><div class="method-top"><span class="method-icon">◷</span><span class="method-name">متوسط المكرر التاريخي</span><span class="method-number">04</span><label class="method-toggle"><input id="useHistorical" type="checkbox" checked>ضمن المتوسط</label></div><div class="method-line"><strong class="method-price" id="historicalPrice">—</strong><span class="method-formula" id="historicalFormula">—</span></div><div class="method-gap" id="historicalGap">الفارق عن السعر الحالي: —</div><div class="method-detail" id="historicalDetail">متوسط مكررات السنوات المالية المتاحة كما وردت في ملف البنوك.</div></article>
         </section>
         <div class="warning-panel" id="warningPanel" hidden></div>
 
@@ -325,6 +332,6 @@
     </div>
     <footer class="footer"><span>ميزان — تقييم البنوك السعودية</span><span>النموذج أداة مقارنة حسابية؛ تحقق من الإفصاحات وتواريخ البيانات قبل اتخاذ قرار استثماري.</span></footer>
   </main>
-  <script type="module" src="./app.mjs?v=3"></script>
+  <script type="module" src="./app.mjs?v=4"></script>
 </body>
 </html>
