@@ -64,20 +64,24 @@ class RefreshMarketTests(unittest.TestCase):
 
     def test_free_plan_uses_single_quotes_without_protected_requests(self):
         bank = {"symbol": "1120", "annual": [{"year": year, "basicEps": 2, "dilutedEps": 1.8} for year in range(2020, 2026)]}
+        other_bank = {**bank, "symbol": "1180"}
         paths = []
+        pauses = []
 
         def fake_fetch(path, key):
             paths.append(path)
             if path.startswith("/quotes/"):
                 raise ProviderError(403, "PLAN_LIMIT", path)
-            if path == "/quote/1120/":
-                return {"symbol": "1120", "price": 88.4, "updated_at": "2026-10-22T10:00:00+03:00", "is_delayed": True}
+            if path.startswith("/quote/"):
+                return {"symbol": path.split("/")[2], "price": 88.4, "updated_at": "2026-10-22T10:00:00+03:00", "is_delayed": True}
             raise AssertionError(path)
 
-        result = build_snapshot([bank], "test-key", fake_fetch)
-        self.assertEqual(len(paths), 2)
+        result = build_snapshot([bank, other_bank], "test-key", fake_fetch, pause=pauses.append)
+        self.assertEqual(len(paths), 3)
         self.assertTrue(paths[0].startswith("/quotes/"))
         self.assertEqual(paths[1], "/quote/1120/")
+        self.assertEqual(paths[2], "/quote/1180/")
+        self.assertEqual(pauses, [7])
         self.assertEqual(result["banks"]["1120"]["price"], 88.4)
         self.assertIsNone(result["banks"]["1120"]["basicEps"])
         self.assertIsNone(result["banks"]["1120"]["historicalPe"]["basicAverage"])

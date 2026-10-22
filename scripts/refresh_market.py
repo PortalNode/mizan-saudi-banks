@@ -111,7 +111,7 @@ def historical_multiples(rows: list[dict], annual: list[dict]) -> dict:
     }
 
 
-def build_snapshot(banks: list[dict], key: str, fetch=fetch_json) -> dict:
+def build_snapshot(banks: list[dict], key: str, fetch=fetch_json, pause=time.sleep) -> dict:
     generated_at = datetime.now(timezone.utc).isoformat()
     if not key:
         return {
@@ -138,10 +138,12 @@ def build_snapshot(banks: list[dict], key: str, fetch=fetch_json) -> dict:
         else:
             errors.append(str(error))
 
-    for bank in banks:
+    for index, bank in enumerate(banks):
         symbol = bank["symbol"]
         quote = quotes.get(symbol, {})
         if free_quotes:
+            if index:
+                pause(7)
             try:
                 quote = fetch(f"/quote/{symbol}/", key)
                 if str(quote.get("symbol")) != symbol:
