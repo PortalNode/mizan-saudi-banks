@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ميزان — تقييم البنوك السعودية</title>
+  <title>ميزان — تقييم الأسهم السعودية</title>
   <style>
     :root {
       --ink: #173636;
@@ -53,6 +53,10 @@
     .intro-art span:nth-child(4) { height:47px; background:#287e6d; }
     .intro-art span:nth-child(5) { height:64px; background:#146653; }
     .intro-art span:nth-child(6) { height:52px; background:#b9dcc6; }
+    .sector-switch { display:flex; gap:9px; margin:0 0 22px; padding:6px; width:max-content; max-width:100%; border:1px solid var(--line); border-radius:14px; background:#fff; box-shadow:var(--shadow); }
+    .sector-switch button { border:0; border-radius:10px; padding:11px 21px; background:transparent; color:var(--muted); font-size:13px; font-weight:800; cursor:pointer; white-space:nowrap; }
+    .sector-switch button:hover, .sector-switch button:focus-visible { background:#f0f6ef; outline:2px solid transparent; }
+    .sector-switch button.active { background:var(--green); color:white; }
     .workspace { display:grid; grid-template-columns: 254px minmax(0, 1fr); gap:24px; align-items:start; padding-bottom:48px; }
     .side-panel, .panel { background:var(--white); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); }
     .side-panel { overflow:hidden; }
@@ -189,6 +193,8 @@
       .notice { margin-top:14px; line-height:1.5; align-items:start; padding:10px 12px; }
       .notice-dot { margin-top:5px; }
       .intro { padding:28px 0 23px; }
+      .sector-switch { width:100%; margin-bottom:16px; }
+      .sector-switch button { flex:1; padding:10px 8px; font-size:11px; }
       h1 { font-size:29px; }
       .intro p { font-size:12px; }
       .workspace { display:block; }
@@ -250,7 +256,7 @@
   <header class="site-header">
     <div class="shell header-inner">
       <div class="brand"><div class="brand-mark">م</div><div><div class="brand-name">ميزان</div><span class="brand-note">تقدير القيمة العادلة للأسهم السعودية</span></div></div>
-      <nav class="nav" aria-label="التنقل"><a href="#banks" style="color:inherit;text-decoration:none">البنوك</a><a href="#methods" style="color:inherit;text-decoration:none">كيف نحسبها؟</a><a href="#sources" style="color:inherit;text-decoration:none">مصادر البيانات</a></nav>
+      <nav class="nav" aria-label="التنقل"><a href="#sectors" style="color:inherit;text-decoration:none">القطاعات</a><a href="#methods" style="color:inherit;text-decoration:none">كيف نحسبها؟</a><a href="#sources" style="color:inherit;text-decoration:none">مصادر البيانات</a></nav>
       <div class="header-pill" id="providerStatus">تحميل البيانات...</div>
     </div>
   </header>
@@ -262,9 +268,14 @@
       <div class="intro-art" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
+    <nav class="sector-switch section-anchor" id="sectors" aria-label="اختر قطاع التقييم">
+      <button id="sectorBanking" type="button" class="active" aria-pressed="true">البنوك السعودية</button>
+      <button id="sectorTechnology" type="button" aria-pressed="false">قطاع التقنية</button>
+    </nav>
+
     <div class="workspace">
       <aside class="side-panel section-anchor" id="banks">
-        <div class="side-heading"><strong>البنوك السعودية</strong><small>السعر العادل والفارق يتحدثان حسب مدخلاتك</small></div>
+        <div class="side-heading"><strong id="sideTitle">البنوك السعودية</strong><small>السعر العادل والفارق يتحدثان حسب مدخلاتك</small></div>
         <label class="search"><span class="search-icon">⌕</span><input id="bankSearch" type="search" placeholder="ابحث باسم البنك أو الرمز..." aria-label="ابحث باسم البنك أو الرمز"></label>
         <div class="banks" id="bankList">
           <div class="bank active"><span>مصرف الراجحي</span><span class="bank-code">1120</span></div>
@@ -278,7 +289,7 @@
           <div class="bank"><span>بنك الجزيرة</span><span class="bank-code">1020</span></div>
           <div class="bank"><span>البنك السعودي للاستثمار</span><span class="bank-code">1030</span></div>
         </div>
-        <div class="side-foot">اضغط على بنك لعرض التفاصيل. تظهر شرطة عندما لا تكتمل بيانات الطرق المختارة.</div>
+        <div class="side-foot">اختر شركة لعرض التفاصيل. تظهر شرطة عندما لا تكتمل بيانات الطرق المختارة.</div>
       </aside>
 
       <div class="main">
@@ -288,22 +299,22 @@
         </div>
         <div class="data-banner" id="dataBanner" role="status">جارٍ قراءة البيانات...</div>
         <section class="panel manual-panel" id="manualPanel" aria-label="إدخال بيانات التقييم">
-          <h3>أدخل البيانات المالية الحالية</h3><p>أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية لهذا البنك من أحدث إفصاح. تُحفظ هذه القيم على جهازك فقط، ويجلب الموقع السعر من ياهو فايننس ويحسب المكررات تلقائيًا.</p>
+          <h3>أدخل البيانات المالية الحالية</h3><p id="manualDescription">أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية لهذا البنك من أحدث إفصاح. تُحفظ هذه القيم على جهازك فقط، ويجلب الموقع السعر من ياهو فايننس ويحسب المكررات تلقائيًا.</p>
           <div class="manual-grid">
             <label>ربح السهم الأساسي<input id="manualBasic" type="number" min="0" step="any" inputmode="decimal" placeholder="ر.س"></label>
             <label>ربح السهم المخفف<input id="manualDiluted" type="number" min="0" step="any" inputmode="decimal" placeholder="ر.س"></label>
             <label>القيمة الدفترية للسهم<input id="manualBook" type="number" min="0" step="any" inputmode="decimal" placeholder="ر.س"></label>
           </div>
           <div class="computed-grid">
-            <div class="computed-item"><span>المكرر الحالي لهذا البنك</span><strong id="currentPe">—</strong><small>السعر ÷ ربح السهم المختار</small></div>
+            <div class="computed-item"><span>المكرر الحالي لهذه الشركة</span><strong id="currentPe">—</strong><small>السعر ÷ ربح السهم المختار</small></div>
             <div class="computed-item"><span>متوسط مكرر القطاع</span><strong id="sectorPeReadout">—</strong><small id="sectorCount">0 من 10 بنوك في المتوسط</small></div>
             <div class="computed-item"><span>متوسط المكرر التاريخي من الملف</span><strong id="historicalPeReadout">—</strong><small id="historicalPeYears">السنوات المتاحة</small></div>
           </div>
-          <div class="manual-help">لحساب متوسط مكرر القطاع، أدخل ربح السهم على الأساس المختار لجميع البنوك. مكررات الأعوام 2020–2025 مستخرجة من ملفك ولا تحتاج إلى إدخال.</div>
+          <div class="manual-help" id="manualHelp">لحساب متوسط مكرر القطاع، أدخل ربح السهم على الأساس المختار لجميع البنوك. مكررات الأعوام 2020–2025 مستخرجة من ملفك ولا تحتاج إلى إدخال.</div>
         </section>
         <section class="summary" aria-label="ملخص التقييم">
           <div class="summary-main">
-            <div class="summary-top"><span class="ticker" id="ticker">1120</span><span class="summary-name" id="bankName">مصرف الراجحي</span><span class="summary-sub">القطاع البنكي</span></div>
+            <div class="summary-top"><span class="ticker" id="ticker">1120</span><span class="summary-name" id="bankName">مصرف الراجحي</span><span class="summary-sub" id="sectorSubtitle">القطاع البنكي</span></div>
             <div class="metric-label">السعر العادل وفق الطرق المختارة</div>
             <div class="fair-row"><strong class="fair-value" id="fairValue">—</strong><span class="currency">ر.س للسهم</span></div>
             <div class="summary-caption" id="summaryCaption">متوسط حسابي للطرق المختارة، محسوب من النتائج قبل تقريبها للعرض.</div>
@@ -336,11 +347,11 @@
           <div class="history-copy"><h3>لمحة عن ربح السهم</h3><p id="historyCaption">بيانات السنوات المالية من ملف البنوك المرفق.</p></div>
           <div class="bars" id="historyBars"></div>
         </section>
-        <div class="panel source-line section-anchor" id="sources"><span id="dataSource">مصدر البيانات التاريخية: ملف البنوك المرفق</span><a href="https://finance.yahoo.com/quote/1120.SR/" target="_blank" rel="noopener noreferrer">صفحة السعر في ياهو فايننس</a><span id="sourceTimestamp"></span></div>
+        <div class="panel source-line section-anchor" id="sources"><span id="dataSource">مصدر البيانات التاريخية: ملف البنوك المرفق</span><a id="marketSourceLink" href="https://finance.yahoo.com/quote/1120.SR/" target="_blank" rel="noopener noreferrer">صفحة السعر في ياهو فايننس</a><span id="sourceTimestamp"></span></div>
       </div>
     </div>
-    <footer class="footer"><span>ميزان — تقييم البنوك السعودية</span><span>النموذج أداة مقارنة حسابية؛ تحقق من الإفصاحات وتواريخ البيانات قبل اتخاذ قرار استثماري.</span></footer>
+    <footer class="footer"><span>ميزان — تقييم الأسهم السعودية</span><span>النموذج أداة مقارنة حسابية؛ تحقق من الإفصاحات وتواريخ البيانات قبل اتخاذ قرار استثماري.</span></footer>
   </main>
-  <script type="module" src="./app.mjs?v=8"></script>
+  <script type="module" src="./app.mjs?v=9"></script>
 </body>
 </html>

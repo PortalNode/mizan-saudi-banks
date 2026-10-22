@@ -99,6 +99,25 @@ test("growth uses positive adjacent years while skipping a loss transition", () 
   assert.equal(annualGrowth(data), details.average);
 });
 
+test("technology growth uses reported historical EPS for either current EPS basis", () => {
+  const stocks = JSON.parse(fs.readFileSync(new URL("../site/data/technology.json", import.meta.url), "utf8")).stocks;
+  const solutions = stocks.find((stock) => stock.symbol === "7202");
+  const basic = annualGrowthDetails(solutions.annual, "basic");
+  const diluted = annualGrowthDetails(solutions.annual, "diluted");
+  assert.equal(basic.usedPeriods, 6);
+  assert.equal(basic.average, diluted.average);
+  assert.equal(solutions.annual.at(-1).reportedEps, 13.4);
+  assert.equal(historicalMultiple(solutions.annual), (27.8 + 27.5 + 35.1 + 20.2) / 4);
+  const valuation = calculateValuation(solutions, {
+    price: 89.55, basicEps: 4.2, dilutedEps: 4.1, bookValue: 25,
+    sectorPe: 30, historicalPe: historicalMultiple(solutions.annual),
+  });
+  assert.equal(valuation.includedMethods.length, 4);
+  assert.ok(valuation.includedMethods.every((method) => valuation.methods[method] > 0));
+  assert.equal(valuation.fairPrice, valuation.includedMethods
+    .reduce((sum, method) => sum + valuation.methods[method], 0) / 4);
+});
+
 test("growth does not turn a gap into a one-year increase", () => {
   const data = [
     { year: 2020, basicEps: 2 },

@@ -14,6 +14,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 BANKS_PATH = ROOT / "site/data/banks.json"
+TECHNOLOGY_PATH = ROOT / "site/data/technology.json"
 OUTPUT_PATH = ROOT / "site/data/market.json"
 API_ROOT = "https://query1.finance.yahoo.com/v8/finance/chart"
 
@@ -105,9 +106,17 @@ def build_snapshot(banks: list[dict], fetch=fetch_json, pause=time.sleep) -> dic
     }
 
 
+def load_stocks() -> list[dict]:
+    banks = json.loads(BANKS_PATH.read_text(encoding="utf-8"))["banks"]
+    technology = json.loads(TECHNOLOGY_PATH.read_text(encoding="utf-8"))["stocks"]
+    stocks = banks + technology
+    if len({stock["symbol"] for stock in stocks}) != len(stocks):
+        raise ValueError("duplicate stock symbol across sectors")
+    return stocks
+
+
 def main() -> int:
-    payload = json.loads(BANKS_PATH.read_text(encoding="utf-8"))
-    snapshot = build_snapshot(payload["banks"])
+    snapshot = build_snapshot(load_stocks())
     available = sum(positive(record["price"]) for record in snapshot["banks"].values())
     print(f"Market snapshot: {snapshot['status']}; {available}/{len(snapshot['banks'])} prices")
     for notice in snapshot["errors"]:

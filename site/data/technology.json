@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "fileName": "قطاع التطبيقات.html",
+    "sha256": "dda5ea8941fcf58e7f3e5c1ebe88391b4e27e938a37cf0ae97cf80a4cd462ec8",
+    "section": "المؤشرات المالية / مؤشرات التقييم السوقي",
+    "epsLabel": "ربحية السهم (EPS)",
+    "peLabel": "مكرر الربحية (P/E)",
+    "notes": [
+      "Source EPS does not specify basic or diluted basis.",
+      "Zero source P/E values are treated as unavailable, not as zero multiples.",
+      "Historical prices in the source file are not used as current prices."
+    ]
+  },
+  "stocks": [
+    {
+      "symbol": "7202",
+      "name": "سلوشنز",
+      "sector": "technology",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2018,
+          "reportedEps": 4.6,
+          "historicalPe": null
+        },
+        {
+          "year": 2019,
+          "reportedEps": 3.3,
+          "historicalPe": null
+        },
+        {
+          "year": 2020,
+          "reportedEps": 5.8,
+          "historicalPe": null
+        },
+        {
+          "year": 2021,
+          "reportedEps": 6.9,
+          "historicalPe": 27.8
+        },
+        {
+          "year": 2022,
+          "reportedEps": 8.8,
+          "historicalPe": 27.5
+        },
+        {
+          "year": 2023,
+          "reportedEps": 10.0,
+          "historicalPe": 35.1
+        },
+        {
+          "year": 2024,
+          "reportedEps": 13.4,
+          "historicalPe": 20.2
+        }
+      ],
+      "qualityFlags": []
+    },
+    {
+      "symbol": "7203",
+      "name": "علم",
+      "sector": "technology",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2018,
+          "reportedEps": 4.6,
+          "historicalPe": null
+        },
+        {
+          "year": 2019,
+          "reportedEps": 3.8,
+          "historicalPe": null
+        },
+        {
+          "year": 2020,
+          "reportedEps": 3.8,
+          "historicalPe": null
+        },
+        {
+          "year": 2021,
+          "reportedEps": 7.1,
+          "historicalPe": null
+        },
+        {
+          "year": 2022,
+          "reportedEps": 11.6,
+          "historicalPe": 28.7
+        },
+        {
+          "year": 2023,
+          "reportedEps": 17.0,
+          "historicalPe": 48.1
+        },
+        {
+          "year": 2024,
+          "reportedEps": 22.8,
+          "historicalPe": 48.8
+        }
+      ],
+      "qualityFlags": []
+    },
+    {
+      "symbol": "7200",
+      "name": "المعمر",
+      "sector": "technology",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2018,
+          "reportedEps": 2.2,
+          "historicalPe": null
+        },
+        {
+          "year": 2019,
+          "reportedEps": 2.5,
+          "historicalPe": 9.3
+        },
+        {
+          "year": 2020,
+          "reportedEps": 2.7,
+          "historicalPe": 23.7
+        },
+        {
+          "year": 2021,
+          "reportedEps": 1.9,
+          "historicalPe": 72.2
+        },
+        {
+          "year": 2022,
+          "reportedEps": 3.2,
+          "historicalPe": 29.2
+        },
+        {
+          "year": 2023,
+          "reportedEps": 0.5,
+          "historicalPe": 292.0
+        },
+        {
+          "year": 2024,
+          "reportedEps": 4.1,
+          "historicalPe": 39.3
+        }
+      ],
+      "qualityFlags": [
+        "مكرر المعمر لعام 2023 هو 292 كما ورد في الملف، ويرفع المتوسط التاريخي."
+      ]
+    },
+    {
+      "symbol": "7204",
+      "name": "توبي",
+      "sector": "technology",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2019,
+          "reportedEps": 0.1,
+          "historicalPe": null
+        },
+        {
+          "year": 2020,
+          "reportedEps": 0.2,
+          "historicalPe": null
+        },
+        {
+          "year": 2021,
+          "reportedEps": 0.2,
+          "historicalPe": null
+        },
+        {
+          "year": 2022,
+          "reportedEps": 0.4,
+          "historicalPe": 22.6
+        },
+        {
+          "year": 2023,
+          "reportedEps": 0.4,
+          "historicalPe": 31.3
+        },
+        {
+          "year": 2024,
+          "reportedEps": 0.5,
+          "historicalPe": 28.4
+        }
+      ],
+      "qualityFlags": []
+    }
+  ]
+}

@@ -8,10 +8,11 @@ export function average(values) {
 }
 
 export function annualGrowthDetails(annual, basis = "basic") {
-  const field = basis === "diluted" ? "dilutedEps" : "basicEps";
   if (!Array.isArray(annual) || annual.length < 2) {
     return { average: null, usedPeriods: 0, possiblePeriods: 0 };
   }
+  const field = annual.some((row) => row?.reportedEps !== undefined)
+    ? "reportedEps" : basis === "diluted" ? "dilutedEps" : "basicEps";
   const rates = [];
   for (let index = 1; index < annual.length; index++) {
     const previous = annual[index - 1];

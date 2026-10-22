@@ -1,20 +1,47 @@
-import { calculateValuation, currentMultiple, historicalMultiple, METHOD_KEYS, sectorMultiple, validPositive } from "./valuation.mjs?v=6";
+import { calculateValuation, currentMultiple, historicalMultiple, METHOD_KEYS, sectorMultiple, validPositive } from "./valuation.mjs?v=7";
 
 const $ = (id) => document.getElementById(id);
 const sar = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pct = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const methodNames = { growth: "متوسط النمو", sector: "متوسط مكرر القطاع", graham: "رقم جراهام", historical: "المكرر التاريخي" };
 const methodControls = { growth: "useGrowth", sector: "useSector", graham: "useGraham", historical: "useHistorical" };
+const sectorLabels = {
+  banking: { title: "البنوك السعودية", subtitle: "القطاع البنكي", item: "بنوك", file: "ملف البنوك المرفق" },
+  technology: { title: "قطاع التقنية", subtitle: "قطاع التقنية", item: "شركات", file: "ملف قطاع التطبيقات المرفق" },
+};
 const state = {
   banks: [],
+  sectors: { banking: [], technology: [] },
+  sector: readSavedSector(),
   market: { status: "unconfigured", banks: {} },
   selected: "1120",
+  selectedBySector: { banking: "1120", technology: "7202" },
   basis: "basic",
   manualOpen: true,
   manual: readSavedManual(),
   selections: readSavedSelections(),
   search: "",
 };
+
+function readSavedSector() {
+  try { return localStorage.getItem("mizan-active-sector-v1") === "technology" ? "technology" : "banking"; }
+  catch { return "banking"; }
+}
+
+function activateSector(sector, persist = true) {
+  state.selectedBySector[state.sector] = state.selected;
+  state.sector = sector;
+  state.banks = state.sectors[sector];
+  state.selected = state.selectedBySector[sector];
+  if (!state.banks.some((stock) => stock.symbol === state.selected)) state.selected = state.banks[0]?.symbol;
+  state.search = "";
+  $("bankSearch").value = "";
+  if (persist) {
+    try { localStorage.setItem("mizan-active-sector-v1", sector); } catch { /* Current view still works. */ }
+  }
+  syncForm();
+  render();
+}
 
 function readSavedManual() {
   try { return JSON.parse(localStorage.getItem("mizan-current-inputs-v2") || "{}"); }
@@ -138,18 +165,24 @@ function syncForm() {
 
 function renderHistory(bank) {
   const field = state.basis === "diluted" ? "dilutedEps" : "basicEps";
-  $("historyCaption").textContent = `ربح السهم ${state.basis === "diluted" ? "المخفف" : "الأساسي"} للأعوام 2020–2025 من الملف المرفق.`;
-  const max = Math.max(...bank.annual.map((row) => Math.max(row[field], 0)), 1);
+  const reported = bank.historicalEpsBasis === "unspecified";
+  const start = bank.annual[0].year;
+  const end = bank.annual.at(-1).year;
+  $("historyCaption").textContent = reported
+    ? `ربحية السهم للأعوام ${start}–${end} كما وردت في الملف؛ لم يحدد الملف هل هي أساسية أم مخففة.`
+    : `ربح السهم ${state.basis === "diluted" ? "المخفف" : "الأساسي"} للأعوام ${start}–${end} من الملف المرفق.`;
+  const valueFor = (row) => reported ? row.reportedEps : row[field];
+  const max = Math.max(...bank.annual.map((row) => Math.max(valueFor(row) || 0, 0)), 1);
   const bars = $("historyBars");
   bars.replaceChildren();
   bank.annual.forEach((row, index) => {
     const item = document.createElement("div");
     item.className = "bar-item";
     const value = document.createElement("span");
-    value.textContent = formatted(row[field]);
+    value.textContent = formatted(valueFor(row));
     const bar = document.createElement("i");
     bar.className = "bar";
-    bar.style.height = `${Math.max(4, Math.round(Math.max(row[field], 0) / max * 62))}px`;
+    bar.style.height = `${Math.max(4, Math.round(Math.max(valueFor(row) || 0, 0) / max * 62))}px`;
     const year = document.createElement("span");
     year.textContent = row.year;
     item.append(value, bar, year);
@@ -172,17 +205,31 @@ function banner(bank, record) {
   box.className = "data-banner";
   if (!validPositive(record?.price)) {
     box.classList.add("error");
-    box.textContent = "سعر هذا البنك غير متاح حاليًا من ياهو فايننس؛ لا يمكن حساب المكرر الحالي أو الفارق عن السعر حتى تصل لقطة السوق.";
+    box.textContent = "سعر هذه الشركة غير متاح حاليًا من ياهو فايننس؛ لا يمكن حساب المكرر الحالي أو الفارق عن السعر حتى تصل لقطة السوق.";
     return;
   }
   box.classList.add("good");
   const delayed = record.isDelayed === true ? "متأخر بحسب المزود" : "بحسب توقيت اللقطة";
-  box.textContent = `سعر السهم من ياهو فايننس (${delayed}). أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية من أحدث إفصاح لكل بنك؛ المكررات تُحسب تلقائيًا.`;
+  const historyNote = bank.historicalEpsBasis === "unspecified"
+    ? ` بيانات هذا الملف التاريخية حتى ${bank.annual.at(-1).year} وربحية السهم فيه غير محددة النوع.` : "";
+  box.textContent = `سعر السهم من ياهو فايننس (${delayed}). أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية من أحدث إفصاح؛ المكررات تُحسب تلقائيًا.${historyNote}`;
 }
 
 function render() {
   const bank = selectedBank();
   if (!bank) return;
+  const sector = sectorLabels[state.sector];
+  for (const [key, id] of [["banking", "sectorBanking"], ["technology", "sectorTechnology"]]) {
+    const active = state.sector === key;
+    $(id).classList.toggle("active", active);
+    $(id).setAttribute("aria-pressed", String(active));
+  }
+  $("sideTitle").textContent = sector.title;
+  $("bankSearch").placeholder = state.sector === "banking" ? "ابحث باسم البنك أو الرمز..." : "ابحث باسم الشركة أو الرمز...";
+  $("bankSearch").setAttribute("aria-label", $("bankSearch").placeholder);
+  $("sectorSubtitle").textContent = sector.subtitle;
+  $("manualDescription").textContent = `أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية لهذه الشركة من أحدث إفصاح. تُحفظ هذه القيم على جهازك فقط، ويجلب الموقع السعر من ياهو فايننس ويحسب المكررات تلقائيًا.`;
+  $("manualHelp").textContent = `لحساب متوسط مكرر القطاع، أدخل ربح السهم على الأساس المختار لجميع ${sector.item === "بنوك" ? "البنوك" : "الشركات"} في هذا القطاع. المكررات التاريخية مستخرجة من ${sector.file} ولا تحتاج إلى إدخال.`;
   const record = state.market.banks?.[bank.symbol];
   const input = currentInputs(bank);
   const included = selectedMethods(bank);
@@ -208,17 +255,17 @@ function render() {
     : "لم يحدد المزود وقت آخر سعر.";
   $("epsLabel").textContent = `ربح السهم ${state.basis === "diluted" ? "المخفف" : "الأساسي"}`;
   $("epsValue").textContent = formatted(result.eps);
-  $("epsDetail").textContent = validPositive(result.eps) ? "من إدخالك لهذا البنك" : "أدخل ربح السهم الحالي";
+  $("epsDetail").textContent = validPositive(result.eps) ? "من إدخالك لهذه الشركة" : "أدخل ربح السهم الحالي";
   $("bookValue").textContent = formatted(input.bookValue);
-  $("bookDetail").textContent = validPositive(input.bookValue) ? "من إدخالك لهذا البنك" : "أدخل القيمة الدفترية الحالية";
+  $("bookDetail").textContent = validPositive(input.bookValue) ? "من إدخالك لهذه الشركة" : "أدخل القيمة الدفترية الحالية";
   const pe = currentMultiple(input.price, result.eps);
   $("currentPe").textContent = formatted(pe);
   $("sectorPeReadout").textContent = formatted(input.sectorPe);
   $("historicalPeReadout").textContent = formatted(input.historicalPe);
-  $("sectorCount").textContent = `${input.sectorCount} من ${state.banks.length} بنوك في المتوسط`;
+  $("sectorCount").textContent = `${input.sectorCount} من ${state.banks.length} ${sector.item} في المتوسط`;
   $("growthValue").textContent = result.growthPercent === null ? "—" : `${formatted(result.growthPercent)}%`;
   $("growthDetail").textContent = `${result.growthPeriods.usedPeriods} من ${result.growthPeriods.possiblePeriods} فترات نمو صالحة`;
-  $("growthMethodDetail").textContent = `متوسط ${result.growthPeriods.usedPeriods} من ${result.growthPeriods.possiblePeriods} فترات نمو سنوية متتالية بربح سهم موجب في السنتين؛ تُستخدم النسبة كعدد في المعادلة المرفقة.`;
+  $("growthMethodDetail").textContent = `متوسط ${result.growthPeriods.usedPeriods} من ${result.growthPeriods.possiblePeriods} فترات نمو سنوية متتالية بربح سهم موجب في السنتين؛ تُستخدم النسبة كعدد في المعادلة المرفقة.${bank.historicalEpsBasis === "unspecified" ? " نوع ربحية السهم التاريخية غير محدد في الملف." : ""}`;
   $("basicButton").classList.toggle("active", state.basis === "basic");
   $("dilutedButton").classList.toggle("active", state.basis === "diluted");
   $("basicButton").setAttribute("aria-pressed", String(state.basis === "basic"));
@@ -244,24 +291,27 @@ function render() {
     validPositive(input.bookValue) && validPositive(result.eps) ? `√(22.5 × ${formatted(result.eps)} × ${formatted(input.bookValue)})` : "القيمة الدفترية أو الربح غير متاح", included.graham);
   renderMethod("historicalPrice", "historicalFormula", "historicalGap", result.methods.historical, result.methodGaps.historical,
     validPositive(input.historicalPe) && validPositive(result.eps) ? `${formatted(result.eps)} × ${formatted(input.historicalPe)}` : "متوسط المكرر التاريخي غير متاح", included.historical);
-  $("sectorDetail").textContent = `المتوسط الحسابي للمكرر الحالي للبنوك التي أُدخل ربح سهمها على الأساس المختار، بما فيها البنك الحالي؛ ${input.sectorCount} من ${state.banks.length}.`;
+  $("sectorDetail").textContent = `المتوسط الحسابي للمكرر الحالي لشركات هذا القطاع التي أُدخل ربح سهمها على الأساس المختار، بما فيها الشركة الحالية؛ ${input.sectorCount} من ${state.banks.length}.`;
   const availableYears = bank.annual.filter((row) => validPositive(row.historicalPe)).length;
-  $("historicalDetail").textContent = `متوسط مكررات ${availableYears} من 6 سنوات متاحة في ملف البنوك. نوع ربح السهم المستخدم في مكرر الملف غير محدد.`;
-  $("historicalPeYears").textContent = `${availableYears} من 6 سنوات متاحة`;
+  $("historicalDetail").textContent = `متوسط مكررات ${availableYears} من ${bank.annual.length} سنوات في ${sector.file}. نوع ربح السهم المستخدم في مكرر الملف غير محدد.`;
+  $("historicalPeYears").textContent = `${availableYears} من ${bank.annual.length} سنوات متاحة`;
   const warnings = [...result.warnings];
-  if (!validPositive(input.price)) warnings.push("سعر ياهو فايننس غير متاح حاليًا لهذا البنك.");
-  if (included.sector && !validPositive(input.sectorPe)) warnings.push("لحساب مكرر القطاع، أدخل ربح السهم لبنك واحد على الأقل، أو استبعد الطريقة.");
-  if (included.historical && availableYears < 6 && availableYears > 0) warnings.push(`المكرر التاريخي محسوب من ${availableYears} سنوات متاحة من أصل 6.`);
+  if (!validPositive(input.price)) warnings.push("سعر ياهو فايننس غير متاح حاليًا لهذه الشركة.");
+  if (included.sector && !validPositive(input.sectorPe)) warnings.push("لحساب مكرر القطاع، أدخل ربح السهم لشركة واحدة على الأقل، أو استبعد الطريقة.");
+  if (included.historical && availableYears < bank.annual.length && availableYears > 0) warnings.push(`المكرر التاريخي محسوب من ${availableYears} سنوات متاحة من أصل ${bank.annual.length}.`);
   const warningPanel = $("warningPanel");
   warningPanel.hidden = warnings.length === 0;
   warningPanel.textContent = warnings.join(" • ");
-  $("dataSource").textContent = "السعر: ياهو فايننس؛ تاريخ الأرباح والمكررات: ملف البنوك المرفق؛ الأرباح الحالية والقيمة الدفترية: مدخلاتك المحلية";
+  $("dataSource").textContent = `السعر: ياهو فايننس؛ تاريخ الأرباح والمكررات: ${sector.file}؛ الأرباح الحالية والقيمة الدفترية: مدخلاتك المحلية`;
+  $("marketSourceLink").href = `https://finance.yahoo.com/quote/${bank.symbol}.SR/`;
   $("sourceTimestamp").textContent = state.market.generatedAt ? `إنشاء لقطة البيانات: ${new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Riyadh" }).format(new Date(state.market.generatedAt))}` : "";
   banner(bank, record);
   renderHistory(bank);
 }
 
 function attachEvents() {
+  $("sectorBanking").addEventListener("click", () => activateSector("banking"));
+  $("sectorTechnology").addEventListener("click", () => activateSector("technology"));
   $("bankSearch").addEventListener("input", (event) => { state.search = event.target.value; renderBankList(); });
   $("basicButton").addEventListener("click", () => { state.basis = "basic"; render(); });
   $("dilutedButton").addEventListener("click", () => { state.basis = "diluted"; render(); });
@@ -293,15 +343,16 @@ function attachEvents() {
 async function load() {
   attachEvents();
   try {
-    const [banksResponse, marketResponse] = await Promise.all([
+    const [banksResponse, technologyResponse, marketResponse] = await Promise.all([
       fetch("./data/banks.json", { cache: "no-store" }),
+      fetch("./data/technology.json", { cache: "no-store" }),
       fetch("./data/market.json", { cache: "no-store" }),
     ]);
-    if (!banksResponse.ok) throw new Error("تعذر قراءة تاريخ البنوك.");
-    state.banks = (await banksResponse.json()).banks;
+    if (!banksResponse.ok || !technologyResponse.ok) throw new Error("تعذر قراءة البيانات التاريخية للقطاعات.");
+    state.sectors.banking = (await banksResponse.json()).banks;
+    state.sectors.technology = (await technologyResponse.json()).stocks;
     state.market = marketResponse.ok ? await marketResponse.json() : state.market;
-    syncForm();
-    render();
+    activateSector(state.sector, false);
   } catch (error) {
     $("dataBanner").className = "data-banner error";
     $("dataBanner").textContent = `تعذر تحميل بيانات الصفحة: ${error.message}`;
