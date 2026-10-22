@@ -12,7 +12,7 @@ const sectorLabels = {
 const state = {
   banks: [],
   sectors: { banking: [], technology: [] },
-  sector: readSavedSector(),
+  sector: initialSector(),
   market: { status: "unconfigured", banks: {} },
   selected: "1120",
   selectedBySector: { banking: "1120", technology: "7202" },
@@ -23,12 +23,11 @@ const state = {
   search: "",
 };
 
-function readSavedSector() {
-  try { return localStorage.getItem("mizan-active-sector-v1") === "technology" ? "technology" : "banking"; }
-  catch { return "banking"; }
+function initialSector() {
+  return document.body.dataset.sector === "technology" ? "technology" : "banking";
 }
 
-function activateSector(sector, persist = true) {
+function activateSector(sector) {
   state.selectedBySector[state.sector] = state.selected;
   state.sector = sector;
   state.banks = state.sectors[sector];
@@ -36,9 +35,6 @@ function activateSector(sector, persist = true) {
   if (!state.banks.some((stock) => stock.symbol === state.selected)) state.selected = state.banks[0]?.symbol;
   state.search = "";
   $("bankSearch").value = "";
-  if (persist) {
-    try { localStorage.setItem("mizan-active-sector-v1", sector); } catch { /* Current view still works. */ }
-  }
   syncForm();
   render();
 }
@@ -310,8 +306,8 @@ function render() {
 }
 
 function attachEvents() {
-  $("sectorBanking").addEventListener("click", () => activateSector("banking"));
-  $("sectorTechnology").addEventListener("click", () => activateSector("technology"));
+  $("sectorBanking").addEventListener("click", () => { window.location.href = "./index.html"; });
+  $("sectorTechnology").addEventListener("click", () => { window.location.href = "./technology.html"; });
   $("bankSearch").addEventListener("input", (event) => { state.search = event.target.value; renderBankList(); });
   $("basicButton").addEventListener("click", () => { state.basis = "basic"; render(); });
   $("dilutedButton").addEventListener("click", () => { state.basis = "diluted"; render(); });
@@ -352,7 +348,7 @@ async function load() {
     state.sectors.banking = (await banksResponse.json()).banks;
     state.sectors.technology = (await technologyResponse.json()).stocks;
     state.market = marketResponse.ok ? await marketResponse.json() : state.market;
-    activateSector(state.sector, false);
+    activateSector(state.sector);
   } catch (error) {
     $("dataBanner").className = "data-banner error";
     $("dataBanner").textContent = `تعذر تحميل بيانات الصفحة: ${error.message}`;
