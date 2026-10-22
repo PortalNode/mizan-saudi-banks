@@ -7,7 +7,7 @@ on:
   schedule:
     # Saudi market hours: Sunday–Thursday, 10:00–15:00 Asia/Riyadh.
     # GitHub scheduled runs can be delayed; this is a snapshot, not a live feed.
-    - cron: "*/15 7-12 * * 0-4"
+    - cron: "0 7-12 * * 0-4"
 
 permissions:
   contents: read

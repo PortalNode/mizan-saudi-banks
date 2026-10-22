@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 import sys
 import time
 import argparse
@@ -24,6 +25,14 @@ BANKS_PATH = ROOT / "site/data/banks.json"
 OUTPUT_PATH = ROOT / "site/data/market.json"
 API_ROOT = "https://api.sahmk.sa/api/v1"
 YEARS = tuple(range(2020, 2026))
+
+
+class ProviderError(RuntimeError):
+    def __init__(self, status: int, api_code: str | None, path: str):
+        self.status = status
+        self.api_code = api_code
+        suffix = f" ({api_code})" if api_code else ""
+        super().__init__(f"HTTP {status}{suffix} from SAHMK for {path}")
 
 
 def positive(value: object) -> bool:
@@ -44,7 +53,14 @@ def fetch_json(path: str, key: str) -> dict:
             if error.code in (429, 500, 502, 503, 504) and attempt < 2:
                 time.sleep(1 + attempt * 2)
                 continue
-            raise RuntimeError(f"HTTP {error.code} from SAHMK for {path}") from error
+            try:
+                payload = json.load(error)
+                api_code = payload.get("error", {}).get("code")
+                if not isinstance(api_code, str) or not re.fullmatch(r"[A-Z_]{1,40}", api_code):
+                    api_code = None
+            except (ValueError, AttributeError, TypeError):
+                api_code = None
+            raise ProviderError(error.code, api_code, path) from error
         except URLError as error:
             if attempt < 2:
                 time.sleep(1 + attempt * 2)
@@ -109,38 +125,53 @@ def build_snapshot(banks: list[dict], key: str, fetch=fetch_json) -> dict:
     symbols = [bank["symbol"] for bank in banks]
     records: dict[str, dict] = {}
     errors: list[str] = []
+    free_quotes = False
     try:
         query = urlencode({"symbols": ",".join(symbols)})
         batch = fetch(f"/quotes/?{query}", key)
         quotes = {str(row.get("symbol")): row for row in batch.get("quotes", [])}
     except RuntimeError as error:
         quotes = {}
-        errors.append(str(error))
+        free_quotes = isinstance(error, ProviderError) and error.api_code == "PLAN_LIMIT"
+        if free_quotes:
+            errors.append("The SAHMK plan does not include batch quotes, fundamentals or historical prices; four-method fair values are unavailable.")
+        else:
+            errors.append(str(error))
 
     for bank in banks:
         symbol = bank["symbol"]
         quote = quotes.get(symbol, {})
+        if free_quotes:
+            try:
+                quote = fetch(f"/quote/{symbol}/", key)
+                if str(quote.get("symbol")) != symbol:
+                    raise RuntimeError("quote symbol mismatch")
+            except RuntimeError as error:
+                quote = {}
+                errors.append(f"{symbol} quote: {error}")
         if not positive(quote.get("price")):
             errors.append(f"{symbol} quote: price unavailable")
-        try:
-            company = fetch(f"/company/{symbol}/", key)
-            if str(company.get("symbol")) != symbol:
-                raise RuntimeError("company symbol mismatch")
-            fundamentals = company.get("fundamentals") or {}
-        except RuntimeError as error:
-            fundamentals = {}
-            errors.append(f"{symbol} company: {error}")
-        try:
-            query = urlencode({"interval": "1m", "from": "2020-01-01", "to": "2025-12-31", "limit": 2000})
-            history = fetch(f"/historical/{symbol}/?{query}", key)
-            if str(history.get("symbol")) != symbol:
-                raise RuntimeError("history symbol mismatch")
-            multiples = historical_multiples(history.get("data") or [], bank["annual"])
-            if not multiples["complete"]:
-                errors.append(f"{symbol} history: fewer than six complete years")
-        except RuntimeError as error:
-            multiples = historical_multiples([], bank["annual"])
-            errors.append(f"{symbol} history: {error}")
+        fundamentals = {}
+        multiples = historical_multiples([], bank["annual"])
+        if not free_quotes:
+            try:
+                company = fetch(f"/company/{symbol}/", key)
+                if str(company.get("symbol")) != symbol:
+                    raise RuntimeError("company symbol mismatch")
+                fundamentals = company.get("fundamentals") or {}
+            except RuntimeError as error:
+                errors.append(f"{symbol} company: {error}")
+            try:
+                query = urlencode({"interval": "1m", "from": "2020-01-01", "to": "2025-12-31", "limit": 2000})
+                history = fetch(f"/historical/{symbol}/?{query}", key)
+                if str(history.get("symbol")) != symbol:
+                    raise RuntimeError("history symbol mismatch")
+                multiples = historical_multiples(history.get("data") or [], bank["annual"])
+                if not multiples["complete"]:
+                    errors.append(f"{symbol} history: fewer than six complete years")
+            except RuntimeError as error:
+                multiples = historical_multiples([], bank["annual"])
+                errors.append(f"{symbol} history: {error}")
         records[symbol] = {
             "price": quote.get("price") if positive(quote.get("price")) else None,
             "quoteUpdatedAt": quote.get("updated_at"),

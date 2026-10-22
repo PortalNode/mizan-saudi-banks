@@ -1,6 +1,9 @@
 import unittest
+from io import BytesIO
+from unittest.mock import patch
+from urllib.error import HTTPError
 
-from scripts.refresh_market import build_snapshot, historical_multiples
+from scripts.refresh_market import ProviderError, build_snapshot, fetch_json, historical_multiples
 
 
 class RefreshMarketTests(unittest.TestCase):
@@ -58,6 +61,33 @@ class RefreshMarketTests(unittest.TestCase):
         self.assertEqual(result["banks"]["1120"]["price"], 88.4)
         self.assertEqual(result["banks"]["1120"]["basicEps"], 6.2)
         self.assertEqual(result["banks"]["1120"]["historicalPe"]["basicAverage"], 10)
+
+    def test_free_plan_uses_single_quotes_without_protected_requests(self):
+        bank = {"symbol": "1120", "annual": [{"year": year, "basicEps": 2, "dilutedEps": 1.8} for year in range(2020, 2026)]}
+        paths = []
+
+        def fake_fetch(path, key):
+            paths.append(path)
+            if path.startswith("/quotes/"):
+                raise ProviderError(403, "PLAN_LIMIT", path)
+            if path == "/quote/1120/":
+                return {"symbol": "1120", "price": 88.4, "updated_at": "2026-10-22T10:00:00+03:00", "is_delayed": True}
+            raise AssertionError(path)
+
+        result = build_snapshot([bank], "test-key", fake_fetch)
+        self.assertEqual(len(paths), 2)
+        self.assertTrue(paths[0].startswith("/quotes/"))
+        self.assertEqual(paths[1], "/quote/1120/")
+        self.assertEqual(result["banks"]["1120"]["price"], 88.4)
+        self.assertIsNone(result["banks"]["1120"]["basicEps"])
+        self.assertIsNone(result["banks"]["1120"]["historicalPe"]["basicAverage"])
+
+    def test_http_error_exposes_only_safe_provider_code(self):
+        error = HTTPError("https://api.sahmk.sa/api/v1/quotes/", 403, "Forbidden", {}, BytesIO(b'{"error":{"code":"PLAN_LIMIT"}}'))
+        with patch("scripts.refresh_market.urlopen", side_effect=error):
+            with self.assertRaises(ProviderError) as caught:
+                fetch_json("/quotes/", "test-key")
+        self.assertEqual(caught.exception.api_code, "PLAN_LIMIT")
 
 
 if __name__ == "__main__":
