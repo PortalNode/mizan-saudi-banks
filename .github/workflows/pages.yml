@@ -30,8 +30,6 @@ jobs:
         with:
           python-version: "3.11"
       - name: Refresh market snapshot
-        env:
-          SAHMK_API_KEY: ${{ secrets.SAHMK_API_KEY }}
         run: python scripts/refresh_market.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

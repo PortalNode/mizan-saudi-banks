@@ -172,12 +172,12 @@ function banner(bank, record) {
   box.className = "data-banner";
   if (!validPositive(record?.price)) {
     box.classList.add("error");
-    box.textContent = "سعر هذا البنك غير متاح حاليًا من سهمك؛ لا يمكن حساب المكرر الحالي أو الفارق عن السعر حتى تصل لقطة السوق.";
+    box.textContent = "سعر هذا البنك غير متاح حاليًا من ياهو فايننس؛ لا يمكن حساب المكرر الحالي أو الفارق عن السعر حتى تصل لقطة السوق.";
     return;
   }
   box.classList.add("good");
   const delayed = record.isDelayed === true ? "متأخر بحسب المزود" : "بحسب توقيت اللقطة";
-  box.textContent = `سعر السهم من سهمك (${delayed}). أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية من أحدث إفصاح لكل بنك؛ المكررات تُحسب تلقائيًا.`;
+  box.textContent = `سعر السهم من ياهو فايننس (${delayed}). أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية من أحدث إفصاح لكل بنك؛ المكررات تُحسب تلقائيًا.`;
 }
 
 function render() {
@@ -195,13 +195,13 @@ function render() {
   $("marketPrice").textContent = formatted(input.price);
   $("gapValue").textContent = formattedPct(result.gapPercent);
   $("gapValue").style.color = result.gapPercent < 0 ? "#9a4236" : "";
-  $("providerStatus").textContent = validPositive(input.price) ? "سعر من سهمك" : "السعر غير متاح";
+  $("providerStatus").textContent = validPositive(input.price) ? "سعر من ياهو فايننس" : "السعر غير متاح";
   $("modeLabel").textContent = "مدخلاتك";
   $("manualPanel").hidden = !state.manualOpen;
   $("manualButton").setAttribute("aria-expanded", String(state.manualOpen));
   $("manualButton").textContent = state.manualOpen ? "إخفاء المدخلات" : "تعديل المدخلات";
   $("priceTitle").textContent = "آخر سعر للسهم";
-  $("priceNote").textContent = !validPositive(input.price) ? "السعر غير متاح" : record?.isDelayed ? "سعر متأخر بحسب المزود" : "من لقطة سهمك";
+  $("priceNote").textContent = !validPositive(input.price) ? "السعر غير متاح" : record?.isDelayed ? "سعر متأخر بحسب المزود" : "من لقطة ياهو فايننس";
   const date = record?.quoteUpdatedAt ? new Date(record.quoteUpdatedAt) : null;
   $("quoteTime").textContent = date && !Number.isNaN(date.getTime())
     ? `آخر سعر: ${new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Riyadh" }).format(date)}`
@@ -249,13 +249,13 @@ function render() {
   $("historicalDetail").textContent = `متوسط مكررات ${availableYears} من 6 سنوات متاحة في ملف البنوك. نوع ربح السهم المستخدم في مكرر الملف غير محدد.`;
   $("historicalPeYears").textContent = `${availableYears} من 6 سنوات متاحة`;
   const warnings = [...result.warnings];
-  if (!validPositive(input.price)) warnings.push("سعر سهمك غير متاح حاليًا لهذا البنك.");
+  if (!validPositive(input.price)) warnings.push("سعر ياهو فايننس غير متاح حاليًا لهذا البنك.");
   if (included.sector && !validPositive(input.sectorPe)) warnings.push("لحساب مكرر القطاع، أدخل ربح السهم لبنك نظير واحد على الأقل، أو استبعد الطريقة.");
   if (included.historical && availableYears < 6 && availableYears > 0) warnings.push(`المكرر التاريخي محسوب من ${availableYears} سنوات متاحة من أصل 6.`);
   const warningPanel = $("warningPanel");
   warningPanel.hidden = warnings.length === 0;
   warningPanel.textContent = warnings.join(" • ");
-  $("dataSource").textContent = "السعر: سهمك؛ تاريخ الأرباح والمكررات: ملف البنوك المرفق؛ الأرباح الحالية والقيمة الدفترية: مدخلاتك المحلية";
+  $("dataSource").textContent = "السعر: ياهو فايننس؛ تاريخ الأرباح والمكررات: ملف البنوك المرفق؛ الأرباح الحالية والقيمة الدفترية: مدخلاتك المحلية";
   $("sourceTimestamp").textContent = state.market.generatedAt ? `إنشاء لقطة البيانات: ${new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Riyadh" }).format(new Date(state.market.generatedAt))}` : "";
   banner(bank, record);
   renderHistory(bank);
