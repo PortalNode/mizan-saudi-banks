@@ -192,6 +192,7 @@ def build_snapshot(banks: list[dict], key: str, fetch=fetch_json, pause=time.sle
         "status": "partial" if errors else "ready",
         "provider": "SAHMK",
         "providerUrl": "https://www.sahmk.sa/en/developers/docs/getting-started",
+        "accessTier": "free_limited" if free_quotes else "full_or_unknown",
         "generatedAt": generated_at,
         "banks": records,
         "errors": errors,

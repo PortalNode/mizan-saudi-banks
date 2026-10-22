@@ -83,6 +83,7 @@ class RefreshMarketTests(unittest.TestCase):
         self.assertEqual(paths[2], "/quote/1180/")
         self.assertEqual(pauses, [7])
         self.assertEqual(result["banks"]["1120"]["price"], 88.4)
+        self.assertEqual(result["accessTier"], "free_limited")
         self.assertIsNone(result["banks"]["1120"]["basicEps"])
         self.assertIsNone(result["banks"]["1120"]["historicalPe"]["basicAverage"])
 

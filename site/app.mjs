@@ -174,6 +174,11 @@ function banner(bank, record) {
     box.textContent = "لم تصل بيانات سوق لهذا البنك. استخدم الإدخال اليدوي أو تحقق من إعداد مفتاح مزود البيانات.";
     return;
   }
+  if (validPositive(record.price) && state.market.accessTier === "free_limited") {
+    box.classList.add("error");
+    box.textContent = "وصل سعر السهم من سهمك، لكنه متأخر بحسب المزود. باقتك الحالية لا توفر ربح السهم الحالي والقيمة الدفترية والتاريخ السعري اللازم لحساب الطرق الأربع؛ يمكنك تجربة الإدخال اليدوي بقيم موثقة.";
+    return;
+  }
   box.classList.add("good");
   const delayed = record.isDelayed === true ? "متأخرة بحسب المزود" : "بحسب حالة المزود";
   box.textContent = `بيانات سهمك ${delayed}. تاريخ فترة الأساسيات غير محدد في الاستجابة؛ تحقق من آخر إفصاح قبل الاعتماد عليها.`;
@@ -206,9 +211,13 @@ function render() {
     : state.mode === "provider" ? "لم يحدد المزود وقت آخر سعر." : "هذه القيمة ليست سعر سوق مباشرًا.";
   $("epsLabel").textContent = `ربح السهم ${state.basis === "diluted" ? "المخفف" : "الأساسي"}`;
   $("epsValue").textContent = formatted(result.eps);
-  $("epsDetail").textContent = state.mode === "provider" ? "من مزود البيانات؛ راجع فترة التقرير" : state.mode === "manual" ? "من الملف أو إدخالك" : "من ملف 2025";
+  $("epsDetail").textContent = state.mode === "provider"
+    ? validPositive(result.eps) ? "من مزود البيانات؛ راجع فترة التقرير" : "غير متاح من المزود لهذا الأساس"
+    : state.mode === "manual" ? "من الملف أو إدخالك" : "من ملف 2025";
   $("bookValue").textContent = formatted(input.bookValue);
-  $("bookDetail").textContent = state.mode === "provider" ? "من مزود البيانات" : "تاريخ القيمة في الملف غير محدد";
+  $("bookDetail").textContent = state.mode === "provider"
+    ? validPositive(input.bookValue) ? "من مزود البيانات" : "غير متاحة من المزود"
+    : "تاريخ القيمة في الملف غير محدد";
   $("growthValue").textContent = result.growthPercent === null ? "—" : `${formatted(result.growthPercent)}%`;
   $("basicButton").classList.toggle("active", state.basis === "basic");
   $("dilutedButton").classList.toggle("active", state.basis === "diluted");
@@ -237,7 +246,9 @@ function render() {
   const warningPanel = $("warningPanel");
   warningPanel.hidden = warnings.length === 0;
   warningPanel.textContent = warnings.join(" • ");
-  $("dataSource").textContent = state.mode === "provider" ? "السعر والأساسيات: سهمك؛ تاريخ الأرباح: ملف البنوك المرفق" : "تاريخ الأرباح والقيمة الدفترية الأصلية: ملف البنوك المرفق";
+  $("dataSource").textContent = state.mode === "provider"
+    ? "سعر السهم: سهمك؛ تاريخ الأرباح: ملف البنوك المرفق؛ أساسيات السهم بحسب توافرها من المزود"
+    : "تاريخ الأرباح والقيمة الدفترية الأصلية: ملف البنوك المرفق";
   $("sourceTimestamp").textContent = state.mode === "provider" && state.market.generatedAt ? `إنشاء لقطة البيانات: ${new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Riyadh" }).format(new Date(state.market.generatedAt))}` : "";
   banner(bank, record);
   renderHistory(bank);
