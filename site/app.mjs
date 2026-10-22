@@ -1,34 +1,25 @@
-import { calculateValuation, peerMultiple, validPositive } from "./valuation.mjs";
+import { calculateValuation, currentMultiple, historicalMultiple, peerMultiple, validPositive } from "./valuation.mjs?v=3";
 
 const $ = (id) => document.getElementById(id);
 const sar = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pct = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-const sample = {
-  price: 88.4,
-  basicEps: 6.2,
-  dilutedEps: 5.85,
-  bookValue: 28.71,
-  sectorPe: 13.8,
-  historicalPe: 16.2,
-};
-
 const state = {
   banks: [],
   market: { status: "unconfigured", banks: {} },
   selected: "1120",
   basis: "basic",
-  mode: "demo",
+  manualOpen: true,
   manual: readSavedManual(),
   search: "",
 };
 
 function readSavedManual() {
-  try { return JSON.parse(localStorage.getItem("mizan-manual-v1") || "{}"); }
+  try { return JSON.parse(localStorage.getItem("mizan-current-inputs-v2") || "{}"); }
   catch { return {}; }
 }
 
 function saveManual() {
-  try { localStorage.setItem("mizan-manual-v1", JSON.stringify(state.manual)); }
+  try { localStorage.setItem("mizan-current-inputs-v2", JSON.stringify(state.manual)); }
   catch { /* Private browsing may block storage. The current page still works. */ }
 }
 
@@ -40,44 +31,28 @@ function num(value) {
 function formatted(value) { return Number.isFinite(value) ? sar.format(value) : "—"; }
 function formattedPct(value) { return Number.isFinite(value) ? `${value >= 0 ? "+" : ""}${pct.format(value)}%` : "—"; }
 function selectedBank() { return state.banks.find((bank) => bank.symbol === state.selected) || state.banks[0]; }
-function hasProviderData(symbol) {
-  const record = state.market.banks?.[symbol];
-  return record && (validPositive(record.price) || validPositive(record.basicEps));
-}
-
-function manualDefaults(bank) {
-  const latest = bank.annual.at(-1);
+function savedInputs(bank) {
   const saved = state.manual[bank.symbol] || {};
   return {
-    price: num(saved.price),
-    basicEps: num(saved.basicEps) ?? latest.basicEps,
-    dilutedEps: num(saved.dilutedEps) ?? latest.dilutedEps,
-    bookValue: num(saved.bookValue) ?? bank.workbookBookValue.value,
-    sectorPe: num(saved.sectorPe),
-    historicalPe: num(saved.historicalPe),
+    basicEps: num(saved.basicEps),
+    dilutedEps: num(saved.dilutedEps),
+    bookValue: num(saved.bookValue),
   };
 }
 
 function currentInputs(bank) {
-  if (state.mode === "demo" && bank.symbol === "1120") return sample;
-  if (state.mode === "manual") return manualDefaults(bank);
-  if (state.mode === "history" || !hasProviderData(bank.symbol)) {
-    const latest = bank.annual.at(-1);
-    return {
-      price: null, basicEps: latest.basicEps, dilutedEps: latest.dilutedEps,
-      bookValue: bank.workbookBookValue.value, sectorPe: null, historicalPe: null,
-    };
-  }
-  const record = state.market.banks[bank.symbol];
+  const record = state.market.banks?.[bank.symbol] || {};
+  const peers = Object.fromEntries(state.banks.map((peer) => [peer.symbol, {
+    price: num(state.market.banks?.[peer.symbol]?.price),
+    ...savedInputs(peer),
+  }]));
   return {
     price: num(record.price),
-    basicEps: num(record.basicEps),
-    dilutedEps: num(record.dilutedEps),
-    bookValue: num(record.bookValue),
-    sectorPe: peerMultiple(bank.symbol, state.market.banks, state.basis),
-    historicalPe: state.basis === "diluted"
-      ? num(record.historicalPe?.dilutedAverage)
-      : num(record.historicalPe?.basicAverage),
+    ...savedInputs(bank),
+    sectorPe: peerMultiple(bank.symbol, peers, state.basis),
+    historicalPe: historicalMultiple(bank.annual),
+    peerCount: Object.entries(peers).filter(([symbol, peer]) => symbol !== bank.symbol
+      && currentMultiple(peer.price, peer[state.basis === "diluted" ? "dilutedEps" : "basicEps"]) !== null).length,
   };
 }
 
@@ -99,7 +74,6 @@ function renderBankList() {
     button.append(name, code);
     button.addEventListener("click", () => {
       state.selected = bank.symbol;
-      if (state.mode !== "manual") state.mode = hasProviderData(bank.symbol) ? "provider" : bank.symbol === "1120" ? "demo" : "history";
       syncForm();
       render();
     });
@@ -117,13 +91,9 @@ function syncForm() {
   const bank = selectedBank();
   if (!bank) return;
   const saved = state.manual[bank.symbol] || {};
-  const latest = bank.annual.at(-1);
-  $("manualPrice").value = saved.price ?? "";
-  $("manualBasic").value = saved.basicEps ?? latest.basicEps;
-  $("manualDiluted").value = saved.dilutedEps ?? latest.dilutedEps;
-  $("manualBook").value = saved.bookValue ?? bank.workbookBookValue.value;
-  $("manualSector").value = saved.sectorPe ?? "";
-  $("manualHistorical").value = saved.historicalPe ?? "";
+  $("manualBasic").value = saved.basicEps ?? "";
+  $("manualDiluted").value = saved.dilutedEps ?? "";
+  $("manualBook").value = saved.bookValue ?? "";
 }
 
 function renderHistory(bank) {
@@ -157,31 +127,14 @@ function renderMethod(priceId, formulaId, price, formula) {
 function banner(bank, record) {
   const box = $("dataBanner");
   box.className = "data-banner";
-  if (state.mode === "demo") {
-    box.textContent = "مثال توضيحي لمصرف الراجحي: سعر السهم ومكرراته افتراضية، والأرباح والقيمة الدفترية من الملف. اختر «إدخال يدوي» للتجربة بقيمك.";
-    return;
-  }
-  if (state.mode === "manual") {
-    box.textContent = "وضع الإدخال اليدوي: مدخلات التقييم من اختيارك، وتاريخ أرباح السهم من ملف البنوك. القيم المخزنة هنا محلية على جهازك.";
-    return;
-  }
-  if (state.mode === "history") {
-    box.textContent = "تاريخ ربح السهم من ملف البنوك متاح. يلزم سعر السوق والمكررات والقيمة الدفترية المحدثة لإكمال السعر العادل؛ يمكنك تجربة إدخالها يدويًا.";
-    return;
-  }
-  if (!record) {
+  if (!validPositive(record?.price)) {
     box.classList.add("error");
-    box.textContent = "لم تصل بيانات سوق لهذا البنك. استخدم الإدخال اليدوي أو تحقق من إعداد مفتاح مزود البيانات.";
-    return;
-  }
-  if (validPositive(record.price) && state.market.accessTier === "free_limited") {
-    box.classList.add("error");
-    box.textContent = "وصل سعر السهم من سهمك، لكنه متأخر بحسب المزود. باقتك الحالية لا توفر ربح السهم الحالي والقيمة الدفترية والتاريخ السعري اللازم لحساب الطرق الأربع؛ يمكنك تجربة الإدخال اليدوي بقيم موثقة.";
+    box.textContent = "سعر هذا البنك غير متاح حاليًا من سهمك؛ لا يمكن حساب المكرر الحالي أو الفارق عن السعر حتى تصل لقطة السوق.";
     return;
   }
   box.classList.add("good");
-  const delayed = record.isDelayed === true ? "متأخرة بحسب المزود" : "بحسب حالة المزود";
-  box.textContent = `بيانات سهمك ${delayed}. تاريخ فترة الأساسيات غير محدد في الاستجابة؛ تحقق من آخر إفصاح قبل الاعتماد عليها.`;
+  const delayed = record.isDelayed === true ? "متأخر بحسب المزود" : "بحسب توقيت اللقطة";
+  box.textContent = `سعر السهم من سهمك (${delayed}). أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية من أحدث إفصاح لكل بنك؛ المكررات تُحسب تلقائيًا.`;
 }
 
 function render() {
@@ -198,26 +151,27 @@ function render() {
   $("marketPrice").textContent = formatted(input.price);
   $("gapValue").textContent = formattedPct(result.gapPercent);
   $("gapValue").style.color = result.gapPercent < 0 ? "#9a4236" : "";
-  $("providerStatus").textContent = state.mode === "provider" ? "بيانات سهمك" : state.mode === "demo" ? "مثال توضيحي" : state.mode === "manual" ? "إدخال يدوي" : "بيانات تاريخية";
-  $("modeLabel").textContent = state.mode === "provider" ? "بيانات المزود" : state.mode === "demo" ? "مثال" : state.mode === "manual" ? "مدخلاتك" : "الملف";
-  $("manualPanel").hidden = state.mode !== "manual";
-  $("manualButton").setAttribute("aria-expanded", String(state.mode === "manual"));
-  $("manualButton").textContent = state.mode === "manual" ? "إغلاق الإدخال" : "إدخال يدوي";
-  $("priceTitle").textContent = state.mode === "provider" ? "آخر سعر للسهم" : "سعر السهم المدخل";
-  $("priceNote").textContent = state.mode === "demo" ? "سعر افتراضي للتوضيح" : state.mode === "manual" ? "من مدخلاتك" : state.mode === "history" ? "السعر غير متاح" : record?.isDelayed ? "سعر متأخر بحسب المزود" : "حالة التأخير بحسب المزود";
-  const date = state.mode === "provider" && record?.quoteUpdatedAt ? new Date(record.quoteUpdatedAt) : null;
+  $("providerStatus").textContent = validPositive(input.price) ? "سعر من سهمك" : "السعر غير متاح";
+  $("modeLabel").textContent = "مدخلاتك";
+  $("manualPanel").hidden = !state.manualOpen;
+  $("manualButton").setAttribute("aria-expanded", String(state.manualOpen));
+  $("manualButton").textContent = state.manualOpen ? "إخفاء المدخلات" : "تعديل المدخلات";
+  $("priceTitle").textContent = "آخر سعر للسهم";
+  $("priceNote").textContent = !validPositive(input.price) ? "السعر غير متاح" : record?.isDelayed ? "سعر متأخر بحسب المزود" : "من لقطة سهمك";
+  const date = record?.quoteUpdatedAt ? new Date(record.quoteUpdatedAt) : null;
   $("quoteTime").textContent = date && !Number.isNaN(date.getTime())
     ? `آخر سعر: ${new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Riyadh" }).format(date)}`
-    : state.mode === "provider" ? "لم يحدد المزود وقت آخر سعر." : "هذه القيمة ليست سعر سوق مباشرًا.";
+    : "لم يحدد المزود وقت آخر سعر.";
   $("epsLabel").textContent = `ربح السهم ${state.basis === "diluted" ? "المخفف" : "الأساسي"}`;
   $("epsValue").textContent = formatted(result.eps);
-  $("epsDetail").textContent = state.mode === "provider"
-    ? validPositive(result.eps) ? "من مزود البيانات؛ راجع فترة التقرير" : "غير متاح من المزود لهذا الأساس"
-    : state.mode === "manual" ? "من الملف أو إدخالك" : "من ملف 2025";
+  $("epsDetail").textContent = validPositive(result.eps) ? "من إدخالك لهذا البنك" : "أدخل ربح السهم الحالي";
   $("bookValue").textContent = formatted(input.bookValue);
-  $("bookDetail").textContent = state.mode === "provider"
-    ? validPositive(input.bookValue) ? "من مزود البيانات" : "غير متاحة من المزود"
-    : "تاريخ القيمة في الملف غير محدد";
+  $("bookDetail").textContent = validPositive(input.bookValue) ? "من إدخالك لهذا البنك" : "أدخل القيمة الدفترية الحالية";
+  const pe = currentMultiple(input.price, result.eps);
+  $("currentPe").textContent = formatted(pe);
+  $("sectorPeReadout").textContent = formatted(input.sectorPe);
+  $("historicalPeReadout").textContent = formatted(input.historicalPe);
+  $("peerCount").textContent = `${input.peerCount} من ${Math.max(0, state.banks.length - 1)} بنوك نظيرة`;
   $("growthValue").textContent = result.growthPercent === null ? "—" : `${formatted(result.growthPercent)}%`;
   $("basicButton").classList.toggle("active", state.basis === "basic");
   $("dilutedButton").classList.toggle("active", state.basis === "diluted");
@@ -237,19 +191,18 @@ function render() {
     validPositive(input.bookValue) && validPositive(result.eps) ? `√(22.5 × ${formatted(result.eps)} × ${formatted(input.bookValue)})` : "القيمة الدفترية أو الربح غير متاح");
   renderMethod("historicalPrice", "historicalFormula", result.methods.historical,
     validPositive(input.historicalPe) && validPositive(result.eps) ? `${formatted(result.eps)} × ${formatted(input.historicalPe)}` : "متوسط المكرر التاريخي غير متاح");
-  $("sectorDetail").textContent = state.mode === "provider" ? "وسيط مكررات البنوك النظيرة المحسوب من السعر وربح السهم المختار، مع استبعاد هذا البنك." : "أدخل مكرر القطاع من مصدر موثق؛ القيمة التجريبية معروضة في المثال فقط.";
-  $("historicalDetail").textContent = state.mode === "provider"
-    ? `متوسط ست سنوات؛ السنوات المتاحة: ${record?.historicalPe?.observations?.length ?? 0} من 6. يلزم مراجعة أثر إجراءات رأس المال.`
-    : "أدخل متوسط المكرر التاريخي من مصدر موثق؛ القيمة التجريبية معروضة في المثال فقط.";
+  $("sectorDetail").textContent = `وسيط المكرر الحالي للبنوك النظيرة التي أُدخل ربح سهمها على الأساس المختار؛ ${input.peerCount} من ${Math.max(0, state.banks.length - 1)}.`;
+  const availableYears = bank.annual.filter((row) => validPositive(row.historicalPe)).length;
+  $("historicalDetail").textContent = `متوسط مكررات ${availableYears} من 6 سنوات في ملف البنوك؛ لا يُحسب إن نقصت سنة. نوع ربح السهم المستخدم في مكرر الملف غير محدد.`;
   const warnings = [...result.warnings];
-  if (state.mode === "provider" && record && !record.historicalPe?.complete) warnings.push("سلسلة الأسعار التاريخية لا تغطي السنوات الست المطلوبة.");
+  if (!validPositive(input.price)) warnings.push("سعر سهمك غير متاح حاليًا لهذا البنك.");
+  if (!validPositive(input.sectorPe)) warnings.push("لحساب مكرر القطاع، أدخل ربح السهم لبنك نظير واحد على الأقل.");
+  if (availableYears < 6) warnings.push(`المكرر التاريخي في ملف البنوك يغطي ${availableYears} سنوات فقط؛ لن نعرض متوسط ست سنوات ناقصًا.`);
   const warningPanel = $("warningPanel");
   warningPanel.hidden = warnings.length === 0;
   warningPanel.textContent = warnings.join(" • ");
-  $("dataSource").textContent = state.mode === "provider"
-    ? "سعر السهم: سهمك؛ تاريخ الأرباح: ملف البنوك المرفق؛ أساسيات السهم بحسب توافرها من المزود"
-    : "تاريخ الأرباح والقيمة الدفترية الأصلية: ملف البنوك المرفق";
-  $("sourceTimestamp").textContent = state.mode === "provider" && state.market.generatedAt ? `إنشاء لقطة البيانات: ${new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Riyadh" }).format(new Date(state.market.generatedAt))}` : "";
+  $("dataSource").textContent = "السعر: سهمك؛ تاريخ الأرباح والمكررات: ملف البنوك المرفق؛ الأرباح الحالية والقيمة الدفترية: مدخلاتك المحلية";
+  $("sourceTimestamp").textContent = state.market.generatedAt ? `إنشاء لقطة البيانات: ${new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Riyadh" }).format(new Date(state.market.generatedAt))}` : "";
   banner(bank, record);
   renderHistory(bank);
 }
@@ -259,15 +212,11 @@ function attachEvents() {
   $("basicButton").addEventListener("click", () => { state.basis = "basic"; render(); });
   $("dilutedButton").addEventListener("click", () => { state.basis = "diluted"; render(); });
   $("manualButton").addEventListener("click", () => {
-    state.mode = state.mode === "manual"
-      ? hasProviderData(state.selected) ? "provider" : state.selected === "1120" ? "demo" : "history"
-      : "manual";
-    syncForm();
+    state.manualOpen = !state.manualOpen;
     render();
   });
   const fields = {
-    manualPrice: "price", manualBasic: "basicEps", manualDiluted: "dilutedEps",
-    manualBook: "bookValue", manualSector: "sectorPe", manualHistorical: "historicalPe",
+    manualBasic: "basicEps", manualDiluted: "dilutedEps", manualBook: "bookValue",
   };
   for (const [id, field] of Object.entries(fields)) {
     $(id).addEventListener("input", (event) => {
@@ -289,7 +238,6 @@ async function load() {
     if (!banksResponse.ok) throw new Error("تعذر قراءة تاريخ البنوك.");
     state.banks = (await banksResponse.json()).banks;
     state.market = marketResponse.ok ? await marketResponse.json() : state.market;
-    state.mode = hasProviderData(state.selected) ? "provider" : "demo";
     syncForm();
     render();
   } catch (error) {

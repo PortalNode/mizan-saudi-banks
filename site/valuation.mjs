@@ -30,6 +30,16 @@ export function peerMultiple(symbol, marketBanks, basis = "basic") {
       ? peer.price / peer[field] : null));
 }
 
+export function historicalMultiple(annual) {
+  if (!Array.isArray(annual) || annual.length !== 6) return null;
+  const ratios = annual.map((row) => row.historicalPe);
+  return ratios.every(validPositive) ? average(ratios) : null;
+}
+
+export function currentMultiple(price, eps) {
+  return validPositive(price) && validPositive(eps) ? price / eps : null;
+}
+
 export function calculateValuation(bank, inputs, basis = "basic") {
   const eps = basis === "diluted" ? inputs?.dilutedEps : inputs?.basicEps;
   const growthPercent = annualGrowth(bank.annual, basis);

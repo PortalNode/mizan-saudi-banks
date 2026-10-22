@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { annualGrowth, calculateValuation, peerMultiple } from "../site/valuation.mjs";
+import { annualGrowth, calculateValuation, currentMultiple, historicalMultiple, peerMultiple } from "../site/valuation.mjs";
 
 const bank = {
   annual: [2.65, 3.69, 4.29, 4.16, 4.93, 6.20].map((basicEps, index) => ({
@@ -29,6 +29,13 @@ test("sector multiple uses peers, not the selected bank's own price multiple", (
     "1010": { price: 42, basicEps: 3 },
     "1060": { price: 99, basicEps: 0 },
   }), 13);
+});
+
+test("current multiple and workbook six-year multiple use their separate sources", () => {
+  assert.equal(currentMultiple(88.4, 6.2), 88.4 / 6.2);
+  assert.equal(currentMultiple(88.4, null), null);
+  assert.equal(historicalMultiple([11, 12, 13, 14, 15, 16].map((historicalPe) => ({ historicalPe }))), 13.5);
+  assert.equal(historicalMultiple([null, 12, 13, 14, 15, 16].map((historicalPe) => ({ historicalPe }))), null);
 });
 
 test("missing one method never produces a misleading four-method average", () => {

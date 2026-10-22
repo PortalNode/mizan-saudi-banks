@@ -147,6 +147,11 @@
     .manual-grid input { display:block; width:100%; margin-top:6px; border:1px solid #d5e2d8; border-radius:8px; padding:9px; text-align:left; direction:ltr; color:var(--ink); background:#fbfdfb; font:14px Arial,sans-serif; }
     .manual-grid input:focus { outline:2px solid #86bda4; }
     .manual-help { margin-top:13px; color:#8b9f98; font-size:10px; line-height:1.6; }
+    .computed-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:17px; }
+    .computed-item { padding:11px 13px; border:1px solid #dce9dd; border-radius:10px; background:#f4faf4; }
+    .computed-item span { display:block; color:#66807c; font-size:10px; }
+    .computed-item strong { display:block; margin-top:5px; color:#145749; font:800 19px Arial,sans-serif; direction:ltr; unicode-bidi:isolate; text-align:right; }
+    .computed-item small { color:#859b90; font-size:9px; }
     .warning-panel { padding:13px 16px; border:1px solid #ebd9ad; border-radius:12px; background:#fff8e8; color:#775f31; font-size:11px; line-height:1.7; }
     .source-line { display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:13px 16px; font-size:10px; color:var(--muted); }
     .source-line a { color:var(--green); }
@@ -219,6 +224,7 @@
       .control-label { font-size:10px; }
       .segmented button { font-size:10px; padding:6px 9px; }
       .manual-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .computed-grid { grid-template-columns:1fr; }
       .small-button { font-size:10px; }
     }
   </style>
@@ -262,20 +268,22 @@
       <div class="main">
         <div class="panel controls">
           <div class="control-group"><span class="control-label">أساس ربح السهم</span><div class="segmented" role="group" aria-label="أساس ربح السهم"><button id="basicButton" type="button" class="active" aria-pressed="true">الأساسي</button><button id="dilutedButton" type="button" aria-pressed="false">المخفف</button></div></div>
-          <div class="control-group"><span class="control-label" id="modeLabel">البيانات</span><button class="small-button" id="manualButton" type="button" aria-expanded="false">إدخال يدوي</button></div>
+          <div class="control-group"><span class="control-label" id="modeLabel">مدخلاتك</span><button class="small-button" id="manualButton" type="button" aria-expanded="true">إخفاء المدخلات</button></div>
         </div>
         <div class="data-banner" id="dataBanner" role="status">جارٍ قراءة البيانات...</div>
-        <section class="panel manual-panel" id="manualPanel" hidden aria-label="إدخال بيانات التقييم يدويًا">
-          <h3>جرّب التقييم بمدخلاتك</h3><p>هذه القيم محفوظة على جهازك فقط. أدخل مكرر القطاع ومتوسط المكرر التاريخي من مصدر موثق لتكتمل الطرق الأربع.</p>
+        <section class="panel manual-panel" id="manualPanel" aria-label="إدخال بيانات التقييم">
+          <h3>أدخل البيانات المالية الحالية</h3><p>أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية لهذا البنك من أحدث إفصاح. تُحفظ هذه القيم على جهازك فقط، ويجلب الموقع السعر من سهمك ويحسب المكررات تلقائيًا.</p>
           <div class="manual-grid">
-            <label>سعر السهم<input id="manualPrice" type="number" min="0" step="any" inputmode="decimal" placeholder="ر.س"></label>
-            <label>ربح السهم الأساسي<input id="manualBasic" type="number" step="any" inputmode="decimal" placeholder="ر.س"></label>
-            <label>ربح السهم المخفف<input id="manualDiluted" type="number" step="any" inputmode="decimal" placeholder="ر.س"></label>
+            <label>ربح السهم الأساسي<input id="manualBasic" type="number" min="0" step="any" inputmode="decimal" placeholder="ر.س"></label>
+            <label>ربح السهم المخفف<input id="manualDiluted" type="number" min="0" step="any" inputmode="decimal" placeholder="ر.س"></label>
             <label>القيمة الدفترية للسهم<input id="manualBook" type="number" min="0" step="any" inputmode="decimal" placeholder="ر.س"></label>
-            <label>مكرر القطاع<input id="manualSector" type="number" min="0" step="any" inputmode="decimal" placeholder="مرة"></label>
-            <label>متوسط المكرر التاريخي<input id="manualHistorical" type="number" min="0" step="any" inputmode="decimal" placeholder="مرة"></label>
           </div>
-          <div class="manual-help">ربح السهم الافتراضي والقيمة الدفترية مأخوذان من الملف المرفق إذا لم تُدخل بديلًا. تاريخ القيمة الدفترية غير مذكور في الملف.</div>
+          <div class="computed-grid">
+            <div class="computed-item"><span>المكرر الحالي لهذا البنك</span><strong id="currentPe">—</strong><small>السعر ÷ ربح السهم المختار</small></div>
+            <div class="computed-item"><span>مكرر القطاع المحسوب</span><strong id="sectorPeReadout">—</strong><small id="peerCount">0 بنوك نظيرة</small></div>
+            <div class="computed-item"><span>متوسط المكرر التاريخي من الملف</span><strong id="historicalPeReadout">—</strong><small>يشترط اكتمال السنوات الست</small></div>
+          </div>
+          <div class="manual-help">لحساب مكرر القطاع، أدخل ربح السهم على الأساس المختار للبنوك الأخرى أيضًا. مكررات الأعوام 2020–2025 مستخرجة من ملفك ولا تحتاج إلى إدخال.</div>
         </section>
         <section class="summary" aria-label="ملخص التقييم">
           <div class="summary-main">
@@ -304,7 +312,7 @@
           <article class="method growth"><div class="method-top"><span class="method-icon">↗</span><span class="method-name">متوسط النمو السنوي</span><span class="method-number">01</span></div><div class="method-line"><strong class="method-price" id="growthPrice">—</strong><span class="method-formula" id="growthFormula">—</span></div><div class="method-detail">تُستخدم نسبة النمو كعدد في المعادلة المرفقة؛ القفزات الكبيرة ترفع الناتج.</div></article>
           <article class="method"><div class="method-top"><span class="method-icon">≋</span><span class="method-name">مكرر القطاع</span><span class="method-number">02</span></div><div class="method-line"><strong class="method-price" id="sectorPrice">—</strong><span class="method-formula" id="sectorFormula">—</span></div><div class="method-detail" id="sectorDetail">وسيط مكررات البنوك النظيرة مع استبعاد البنك المحدد.</div></article>
           <article class="method"><div class="method-top"><span class="method-icon">√</span><span class="method-name">رقم جراهام</span><span class="method-number">03</span></div><div class="method-line"><strong class="method-price" id="grahamPrice">—</strong><span class="method-formula" id="grahamFormula">—</span></div><div class="method-detail">الجذر التربيعي لحاصل ضرب 22.5 وربح السهم والقيمة الدفترية.</div></article>
-          <article class="method"><div class="method-top"><span class="method-icon">◷</span><span class="method-name">متوسط المكرر التاريخي</span><span class="method-number">04</span></div><div class="method-line"><strong class="method-price" id="historicalPrice">—</strong><span class="method-formula" id="historicalFormula">—</span></div><div class="method-detail" id="historicalDetail">متوسط مكررات السنوات المالية الست من سعر نهاية السنة وربحها.</div></article>
+          <article class="method"><div class="method-top"><span class="method-icon">◷</span><span class="method-name">متوسط المكرر التاريخي</span><span class="method-number">04</span></div><div class="method-line"><strong class="method-price" id="historicalPrice">—</strong><span class="method-formula" id="historicalFormula">—</span></div><div class="method-detail" id="historicalDetail">متوسط مكررات السنوات المالية الست كما وردت في ملف البنوك.</div></article>
         </section>
         <div class="warning-panel" id="warningPanel" hidden></div>
 
@@ -317,6 +325,6 @@
     </div>
     <footer class="footer"><span>ميزان — تقييم البنوك السعودية</span><span>النموذج أداة مقارنة حسابية؛ تحقق من الإفصاحات وتواريخ البيانات قبل اتخاذ قرار استثماري.</span></footer>
   </main>
-  <script type="module" src="./app.mjs?v=2"></script>
+  <script type="module" src="./app.mjs?v=3"></script>
 </body>
 </html>
