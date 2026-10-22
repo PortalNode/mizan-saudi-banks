@@ -1,4 +1,4 @@
-import { calculateValuation, currentMultiple, historicalMultiple, METHOD_KEYS, peerMultiple, validPositive } from "./valuation.mjs?v=4";
+import { calculateValuation, currentMultiple, historicalMultiple, METHOD_KEYS, peerMultiple, validPositive } from "./valuation.mjs?v=5";
 
 const $ = (id) => document.getElementById(id);
 const sar = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -195,6 +195,8 @@ function render() {
   $("historicalPeReadout").textContent = formatted(input.historicalPe);
   $("peerCount").textContent = `${input.peerCount} من ${Math.max(0, state.banks.length - 1)} بنوك نظيرة`;
   $("growthValue").textContent = result.growthPercent === null ? "—" : `${formatted(result.growthPercent)}%`;
+  $("growthDetail").textContent = `${result.growthPeriods.usedPeriods} من ${result.growthPeriods.possiblePeriods} فترات نمو صالحة`;
+  $("growthMethodDetail").textContent = `متوسط ${result.growthPeriods.usedPeriods} من ${result.growthPeriods.possiblePeriods} فترات نمو سنوية متتالية بربح سهم موجب في السنتين؛ تُستخدم النسبة كعدد في المعادلة المرفقة.`;
   $("basicButton").classList.toggle("active", state.basis === "basic");
   $("dilutedButton").classList.toggle("active", state.basis === "diluted");
   $("basicButton").setAttribute("aria-pressed", String(state.basis === "basic"));
@@ -213,7 +215,7 @@ function render() {
       ? `بانتظار بيانات: ${missing.join("، ")}` : "اختر طريقة واحدة على الأقل";
   }
   renderMethod("growthPrice", "growthFormula", "growthGap", result.methods.growth, result.methodGaps.growth,
-    result.growthPercent === null || !validPositive(result.eps) ? "بيانات نمو غير صالحة" : `${formatted(result.eps)} × ${formatted(result.growthPercent)}`, included.growth);
+    result.growthPercent === null || !validPositive(result.eps) ? "بيانات نمو غير كافية" : !validPositive(result.growthPercent) ? "متوسط النمو غير موجب" : `${formatted(result.eps)} × ${formatted(result.growthPercent)}`, included.growth);
   renderMethod("sectorPrice", "sectorFormula", "sectorGap", result.methods.sector, result.methodGaps.sector,
     validPositive(input.sectorPe) && validPositive(result.eps) ? `${formatted(result.eps)} × ${formatted(input.sectorPe)}` : "مكرر القطاع غير متاح", included.sector);
   renderMethod("grahamPrice", "grahamFormula", "grahamGap", result.methods.graham, result.methodGaps.graham,

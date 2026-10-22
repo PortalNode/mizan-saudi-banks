@@ -310,13 +310,13 @@
         <section class="inputs" aria-label="مدخلات التقييم">
           <div class="input-card"><span class="input-label" id="epsLabel">ربح السهم الأساسي</span><span class="input-number"><b id="epsValue">—</b><small>ر.س</small></span><div class="input-detail" id="epsDetail">—</div></div>
           <div class="input-card"><span class="input-label">القيمة الدفترية للسهم</span><span class="input-number"><b id="bookValue">—</b><small>ر.س</small></span><div class="input-detail" id="bookDetail">—</div></div>
-          <div class="input-card"><span class="input-label">متوسط نمو ربح السهم</span><span class="input-number"><b id="growthValue">—</b></span><div class="input-detail">من الأعوام 2020–2025</div></div>
+          <div class="input-card"><span class="input-label">متوسط نمو ربح السهم</span><span class="input-number"><b id="growthValue">—</b></span><div class="input-detail" id="growthDetail">الفترات الصالحة من 2020–2025</div></div>
         </section>
 
         <div class="section-heading section-anchor" id="methods"><div><h2>تفاصيل الطرق الأربع</h2><p>ضع علامة أمام الطرق التي تريد احتسابها. لكل طريقة مختارة وزن متساوٍ في المتوسط.</p></div><span class="plain-tag" id="selectedCount">4 من 4 ضمن المتوسط</span></div>
 
         <section class="methods" aria-label="طرق التقييم">
-          <article class="method growth"><div class="method-top"><span class="method-icon">↗</span><span class="method-name">متوسط النمو السنوي</span><span class="method-number">01</span><label class="method-toggle"><input id="useGrowth" type="checkbox" checked>ضمن المتوسط</label></div><div class="method-line"><strong class="method-price" id="growthPrice">—</strong><span class="method-formula" id="growthFormula">—</span></div><div class="method-gap" id="growthGap">الفارق عن السعر الحالي: —</div><div class="method-detail">تُستخدم نسبة النمو كعدد في المعادلة المرفقة؛ القفزات الكبيرة ترفع الناتج.</div></article>
+          <article class="method growth"><div class="method-top"><span class="method-icon">↗</span><span class="method-name">متوسط النمو السنوي</span><span class="method-number">01</span><label class="method-toggle"><input id="useGrowth" type="checkbox" checked>ضمن المتوسط</label></div><div class="method-line"><strong class="method-price" id="growthPrice">—</strong><span class="method-formula" id="growthFormula">—</span></div><div class="method-gap" id="growthGap">الفارق عن السعر الحالي: —</div><div class="method-detail" id="growthMethodDetail">تُستخدم فترات النمو السنوية المتاحة بربح سهم موجب.</div></article>
           <article class="method"><div class="method-top"><span class="method-icon">≋</span><span class="method-name">مكرر القطاع</span><span class="method-number">02</span><label class="method-toggle"><input id="useSector" type="checkbox" checked>ضمن المتوسط</label></div><div class="method-line"><strong class="method-price" id="sectorPrice">—</strong><span class="method-formula" id="sectorFormula">—</span></div><div class="method-gap" id="sectorGap">الفارق عن السعر الحالي: —</div><div class="method-detail" id="sectorDetail">وسيط مكررات البنوك النظيرة مع استبعاد البنك المحدد.</div></article>
           <article class="method"><div class="method-top"><span class="method-icon">√</span><span class="method-name">رقم جراهام</span><span class="method-number">03</span><label class="method-toggle"><input id="useGraham" type="checkbox" checked>ضمن المتوسط</label></div><div class="method-line"><strong class="method-price" id="grahamPrice">—</strong><span class="method-formula" id="grahamFormula">—</span></div><div class="method-gap" id="grahamGap">الفارق عن السعر الحالي: —</div><div class="method-detail">الجذر التربيعي لحاصل ضرب 22.5 وربح السهم والقيمة الدفترية.</div></article>
           <article class="method"><div class="method-top"><span class="method-icon">◷</span><span class="method-name">متوسط المكرر التاريخي</span><span class="method-number">04</span><label class="method-toggle"><input id="useHistorical" type="checkbox" checked>ضمن المتوسط</label></div><div class="method-line"><strong class="method-price" id="historicalPrice">—</strong><span class="method-formula" id="historicalFormula">—</span></div><div class="method-gap" id="historicalGap">الفارق عن السعر الحالي: —</div><div class="method-detail" id="historicalDetail">متوسط مكررات السنوات المالية المتاحة كما وردت في ملف البنوك.</div></article>
@@ -332,6 +332,6 @@
     </div>
     <footer class="footer"><span>ميزان — تقييم البنوك السعودية</span><span>النموذج أداة مقارنة حسابية؛ تحقق من الإفصاحات وتواريخ البيانات قبل اتخاذ قرار استثماري.</span></footer>
   </main>
-  <script type="module" src="./app.mjs?v=4"></script>
+  <script type="module" src="./app.mjs?v=5"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { annualGrowth, calculateValuation, currentMultiple, historicalMultiple, peerMultiple, priceGapPercent } from "../site/valuation.mjs";
+import { annualGrowth, annualGrowthDetails, calculateValuation, currentMultiple, historicalMultiple, peerMultiple, priceGapPercent } from "../site/valuation.mjs";
 
 const bank = {
   annual: [2.65, 3.69, 4.29, 4.16, 4.93, 6.20].map((basicEps, index) => ({
@@ -77,7 +77,38 @@ test("an unavailable excluded method does not block the selected average", () =>
     { growth: false, sector: false, graham: false, historical: false }).fairPrice, null);
 });
 
-test("loss year invalidates growth rather than dividing through a negative EPS", () => {
-  const data = [{ basicEps: -2.02 }, { basicEps: 1.56 }, { basicEps: 2.35 }];
-  assert.equal(annualGrowth(data), null);
+test("growth uses positive adjacent years while skipping a loss transition", () => {
+  const data = [-2.02, 1.56, 2.35, 3.41, 3.93, 4.11]
+    .map((basicEps, index) => ({ year: 2020 + index, basicEps }));
+  const expected = [2.35 / 1.56, 3.41 / 2.35, 3.93 / 3.41, 4.11 / 3.93]
+    .map((ratio) => (ratio - 1) * 100).reduce((sum, rate) => sum + rate, 0) / 4;
+  const details = annualGrowthDetails(data);
+  assert.equal(details.usedPeriods, 4);
+  assert.equal(details.possiblePeriods, 5);
+  assert.ok(Math.abs(details.average - expected) < 1e-9);
+  assert.equal(annualGrowth(data), details.average);
+});
+
+test("growth does not turn a gap into a one-year increase", () => {
+  const data = [
+    { year: 2020, basicEps: 2 },
+    { year: 2021, basicEps: null },
+    { year: 2023, basicEps: 4 },
+    { year: 2024, basicEps: 5 },
+  ];
+  assert.equal(annualGrowthDetails(data).usedPeriods, 1);
+  assert.equal(annualGrowth(data), 25);
+  assert.equal(annualGrowth([{ basicEps: -2 }, { basicEps: 3 }]), null);
+});
+
+test("Saudi Awwal can use growth and historical methods from available periods", () => {
+  const banks = JSON.parse(fs.readFileSync(new URL("../site/data/banks.json", import.meta.url), "utf8")).banks;
+  const awwal = banks.find((item) => item.symbol === "1060");
+  const result = calculateValuation(awwal, {
+    price: 30.98, basicEps: 4.11, historicalPe: historicalMultiple(awwal.annual),
+  }, "basic", { sector: false, graham: false });
+  assert.equal(result.growthPeriods.usedPeriods, 4);
+  assert.deepEqual(result.includedMethods, ["growth", "historical"]);
+  assert.ok(result.methods.growth > 0);
+  assert.ok(result.fairPrice > 0);
 });

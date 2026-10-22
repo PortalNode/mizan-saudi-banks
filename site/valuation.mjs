@@ -14,12 +14,24 @@ export function median(values) {
   return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
 }
 
-export function annualGrowth(annual, basis = "basic") {
+export function annualGrowthDetails(annual, basis = "basic") {
   const field = basis === "diluted" ? "dilutedEps" : "basicEps";
-  if (!Array.isArray(annual) || annual.length < 2) return null;
-  const values = annual.map((year) => year[field]);
-  if (values.some((value) => !validPositive(value))) return null;
-  return average(values.slice(1).map((value, index) => (value / values[index] - 1) * 100));
+  if (!Array.isArray(annual) || annual.length < 2) {
+    return { average: null, usedPeriods: 0, possiblePeriods: 0 };
+  }
+  const rates = [];
+  for (let index = 1; index < annual.length; index++) {
+    const previous = annual[index - 1];
+    const current = annual[index];
+    if (!validPositive(previous?.[field]) || !validPositive(current?.[field])) continue;
+    if (Number.isInteger(previous.year) && Number.isInteger(current.year) && current.year !== previous.year + 1) continue;
+    rates.push((current[field] / previous[field] - 1) * 100);
+  }
+  return { average: average(rates), usedPeriods: rates.length, possiblePeriods: annual.length - 1 };
+}
+
+export function annualGrowth(annual, basis = "basic") {
+  return annualGrowthDetails(annual, basis).average;
 }
 
 export function peerMultiple(symbol, marketBanks, basis = "basic") {
@@ -48,7 +60,8 @@ export function priceGapPercent(value, price) {
 
 export function calculateValuation(bank, inputs, basis = "basic", selectedMethods = {}) {
   const eps = basis === "diluted" ? inputs?.dilutedEps : inputs?.basicEps;
-  const growthPercent = annualGrowth(bank.annual, basis);
+  const growth = annualGrowthDetails(bank.annual, basis);
+  const growthPercent = growth.average;
   const bookValue = inputs?.bookValue;
   const sectorPe = inputs?.sectorPe;
   const historicalPe = inputs?.historicalPe;
@@ -66,11 +79,17 @@ export function calculateValuation(bank, inputs, basis = "basic", selectedMethod
   const gapPercent = priceGapPercent(fairPrice, price);
   const methodGaps = Object.fromEntries(METHOD_KEYS.map((key) => [key, priceGapPercent(methods[key], price)]));
   const warnings = [...(bank.qualityFlags || [])];
-  if (includedMethods.includes("growth") && growthPercent === null) warnings.push("تعذر حساب نمو ربح السهم بسبب سنة خاسرة أو قيمة ناقصة؛ يمكنك استبعاد هذه الطريقة.");
+  if (includedMethods.includes("growth") && growthPercent === null) warnings.push("لا توجد فترات نمو سنوية صالحة بين سنتين بربح سهم موجب؛ يمكنك استبعاد هذه الطريقة.");
+  else if (includedMethods.includes("growth") && growth.usedPeriods < growth.possiblePeriods) {
+    warnings.push(`متوسط النمو محسوب من ${growth.usedPeriods} فترات صالحة من أصل ${growth.possiblePeriods}؛ استُبعدت فترات الخسارة أو القيم الناقصة.`);
+  }
+  if (includedMethods.includes("growth") && growthPercent !== null && !validPositive(growthPercent)) {
+    warnings.push("متوسط النمو غير موجب؛ هذه الطريقة لا تعطي سعرًا عادلًا موجبًا وفق المعادلة المرفقة.");
+  }
   if (includedMethods.includes("growth") && validPositive(growthPercent) && growthPercent > 50) {
     warnings.push("متوسط النمو مرتفع جدًا؛ قد يهيمن على المتوسط النهائي.");
   }
   if (!includedMethods.length) warnings.push("اختر طريقة واحدة على الأقل لحساب السعر العادل.");
   else if (fairPrice === null) warnings.push("السعر العادل يحتاج بيانات صالحة لكل طريقة اخترتها.");
-  return { eps, growthPercent, methods, methodGaps, includedMethods, fairPrice, gapPercent, warnings };
+  return { eps, growthPercent, growthPeriods: growth, methods, methodGaps, includedMethods, fairPrice, gapPercent, warnings };
 }
