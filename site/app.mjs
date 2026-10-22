@@ -1,9 +1,9 @@
-import { calculateValuation, currentMultiple, historicalMultiple, METHOD_KEYS, peerMultiple, validPositive } from "./valuation.mjs?v=5";
+import { calculateValuation, currentMultiple, historicalMultiple, METHOD_KEYS, sectorMultiple, validPositive } from "./valuation.mjs?v=6";
 
 const $ = (id) => document.getElementById(id);
 const sar = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pct = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-const methodNames = { growth: "متوسط النمو", sector: "مكرر القطاع", graham: "رقم جراهام", historical: "المكرر التاريخي" };
+const methodNames = { growth: "متوسط النمو", sector: "متوسط مكرر القطاع", graham: "رقم جراهام", historical: "المكرر التاريخي" };
 const methodControls = { growth: "useGrowth", sector: "useSector", graham: "useGraham", historical: "useHistorical" };
 const state = {
   banks: [],
@@ -67,10 +67,10 @@ function currentInputs(bank) {
   return {
     price: num(record.price),
     ...savedInputs(bank),
-    sectorPe: peerMultiple(bank.symbol, peers, state.basis),
+    sectorPe: sectorMultiple(peers, state.basis),
     historicalPe: historicalMultiple(bank.annual),
-    peerCount: Object.entries(peers).filter(([symbol, peer]) => symbol !== bank.symbol
-      && currentMultiple(peer.price, peer[state.basis === "diluted" ? "dilutedEps" : "basicEps"]) !== null).length,
+    sectorCount: Object.values(peers).filter((peer) => currentMultiple(
+      peer.price, peer[state.basis === "diluted" ? "dilutedEps" : "basicEps"]) !== null).length,
   };
 }
 
@@ -215,7 +215,7 @@ function render() {
   $("currentPe").textContent = formatted(pe);
   $("sectorPeReadout").textContent = formatted(input.sectorPe);
   $("historicalPeReadout").textContent = formatted(input.historicalPe);
-  $("peerCount").textContent = `${input.peerCount} من ${Math.max(0, state.banks.length - 1)} بنوك نظيرة`;
+  $("sectorCount").textContent = `${input.sectorCount} من ${state.banks.length} بنوك في المتوسط`;
   $("growthValue").textContent = result.growthPercent === null ? "—" : `${formatted(result.growthPercent)}%`;
   $("growthDetail").textContent = `${result.growthPeriods.usedPeriods} من ${result.growthPeriods.possiblePeriods} فترات نمو صالحة`;
   $("growthMethodDetail").textContent = `متوسط ${result.growthPeriods.usedPeriods} من ${result.growthPeriods.possiblePeriods} فترات نمو سنوية متتالية بربح سهم موجب في السنتين؛ تُستخدم النسبة كعدد في المعادلة المرفقة.`;
@@ -244,13 +244,13 @@ function render() {
     validPositive(input.bookValue) && validPositive(result.eps) ? `√(22.5 × ${formatted(result.eps)} × ${formatted(input.bookValue)})` : "القيمة الدفترية أو الربح غير متاح", included.graham);
   renderMethod("historicalPrice", "historicalFormula", "historicalGap", result.methods.historical, result.methodGaps.historical,
     validPositive(input.historicalPe) && validPositive(result.eps) ? `${formatted(result.eps)} × ${formatted(input.historicalPe)}` : "متوسط المكرر التاريخي غير متاح", included.historical);
-  $("sectorDetail").textContent = `وسيط المكرر الحالي للبنوك النظيرة التي أُدخل ربح سهمها على الأساس المختار؛ ${input.peerCount} من ${Math.max(0, state.banks.length - 1)}.`;
+  $("sectorDetail").textContent = `المتوسط الحسابي للمكرر الحالي للبنوك التي أُدخل ربح سهمها على الأساس المختار، بما فيها البنك الحالي؛ ${input.sectorCount} من ${state.banks.length}.`;
   const availableYears = bank.annual.filter((row) => validPositive(row.historicalPe)).length;
   $("historicalDetail").textContent = `متوسط مكررات ${availableYears} من 6 سنوات متاحة في ملف البنوك. نوع ربح السهم المستخدم في مكرر الملف غير محدد.`;
   $("historicalPeYears").textContent = `${availableYears} من 6 سنوات متاحة`;
   const warnings = [...result.warnings];
   if (!validPositive(input.price)) warnings.push("سعر ياهو فايننس غير متاح حاليًا لهذا البنك.");
-  if (included.sector && !validPositive(input.sectorPe)) warnings.push("لحساب مكرر القطاع، أدخل ربح السهم لبنك نظير واحد على الأقل، أو استبعد الطريقة.");
+  if (included.sector && !validPositive(input.sectorPe)) warnings.push("لحساب مكرر القطاع، أدخل ربح السهم لبنك واحد على الأقل، أو استبعد الطريقة.");
   if (included.historical && availableYears < 6 && availableYears > 0) warnings.push(`المكرر التاريخي محسوب من ${availableYears} سنوات متاحة من أصل 6.`);
   const warningPanel = $("warningPanel");
   warningPanel.hidden = warnings.length === 0;

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { annualGrowth, annualGrowthDetails, calculateValuation, currentMultiple, historicalMultiple, peerMultiple, priceGapPercent } from "../site/valuation.mjs";
+import { annualGrowth, annualGrowthDetails, calculateValuation, currentMultiple, historicalMultiple, sectorMultiple, priceGapPercent } from "../site/valuation.mjs";
 
 const bank = {
   annual: [2.65, 3.69, 4.29, 4.16, 4.93, 6.20].map((basicEps, index) => ({
@@ -23,13 +23,23 @@ test("four exact methods are averaged before display rounding", () => {
   assert.ok(Math.abs(result.fairPrice - 92.3124324047999) < 1e-9);
 });
 
-test("sector multiple uses peers, not the selected bank's own price multiple", () => {
-  assert.equal(peerMultiple("1120", {
+test("sector multiple averages all valid banks including the selected bank", () => {
+  const banks = {
     "1120": { price: 100, basicEps: 2 },
     "1180": { price: 24, basicEps: 2 },
     "1010": { price: 42, basicEps: 3 },
     "1060": { price: 99, basicEps: 0 },
-  }), 13);
+  };
+  assert.equal(sectorMultiple(banks), (50 + 12 + 14) / 3);
+  assert.equal(sectorMultiple(banks, "diluted"), null);
+  assert.equal(sectorMultiple({ ...banks, "1120": { ...banks["1120"], dilutedEps: 4 } }, "diluted"), 25);
+});
+
+test("sector multiple divides the sum of all ten bank multiples by ten", () => {
+  const banks = Object.fromEntries(Array.from({ length: 10 }, (_, index) => [
+    String(index), { price: index === 0 ? 18 : 8, basicEps: 1 },
+  ]));
+  assert.equal(sectorMultiple(banks), 9);
 });
 
 test("current multiple and workbook multiple use their separate sources", () => {

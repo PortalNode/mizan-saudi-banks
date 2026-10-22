@@ -7,13 +7,6 @@ export function average(values) {
   return values.reduce((total, value) => total + value, 0) / values.length;
 }
 
-export function median(values) {
-  const sorted = values.filter(validPositive).sort((a, b) => a - b);
-  if (!sorted.length) return null;
-  const middle = Math.floor(sorted.length / 2);
-  return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
-}
-
 export function annualGrowthDetails(annual, basis = "basic") {
   const field = basis === "diluted" ? "dilutedEps" : "basicEps";
   if (!Array.isArray(annual) || annual.length < 2) {
@@ -34,12 +27,13 @@ export function annualGrowth(annual, basis = "basic") {
   return annualGrowthDetails(annual, basis).average;
 }
 
-export function peerMultiple(symbol, marketBanks, basis = "basic") {
+export function sectorMultiple(marketBanks, basis = "basic") {
   const field = basis === "diluted" ? "dilutedEps" : "basicEps";
-  return median(Object.entries(marketBanks || {})
-    .filter(([peerSymbol]) => peerSymbol !== symbol)
-    .map(([, peer]) => validPositive(peer?.price) && validPositive(peer?.[field])
-      ? peer.price / peer[field] : null));
+  const multiples = Object.values(marketBanks || {})
+    .map((bank) => validPositive(bank?.price) && validPositive(bank?.[field])
+      ? bank.price / bank[field] : null)
+    .filter(validPositive);
+  return average(multiples);
 }
 
 export function historicalMultiple(annual) {
