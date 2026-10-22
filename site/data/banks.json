@@ -1,0 +1,747 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "fileName": "البنوك.xlsx",
+    "sha256": "925d5aeea7e489c91c209e3d71d788bdb40c3c9a88cde39570113f03c0af82f1",
+    "period": "FY 2020–2025",
+    "bookValueDateKnown": false
+  },
+  "banks": [
+    {
+      "symbol": "1120",
+      "name": "مصرف الراجحي",
+      "sourceSheet": "مصرف الراجحي",
+      "annual": [
+        {
+          "year": 2020,
+          "basicEps": 2.65,
+          "dilutedEps": 2.65,
+          "netIncomeMillionSar": 10595.0,
+          "cells": {
+            "basicEps": "K2",
+            "dilutedEps": "L2"
+          }
+        },
+        {
+          "year": 2021,
+          "basicEps": 3.69,
+          "dilutedEps": 3.69,
+          "netIncomeMillionSar": 14746.0,
+          "cells": {
+            "basicEps": "K3",
+            "dilutedEps": "L3"
+          }
+        },
+        {
+          "year": 2022,
+          "basicEps": 4.29,
+          "dilutedEps": 4.24,
+          "netIncomeMillionSar": 17150.0,
+          "cells": {
+            "basicEps": "K4",
+            "dilutedEps": "L4"
+          }
+        },
+        {
+          "year": 2023,
+          "basicEps": 4.16,
+          "dilutedEps": 3.95,
+          "netIncomeMillionSar": 16621.0,
+          "cells": {
+            "basicEps": "K5",
+            "dilutedEps": "L5"
+          }
+        },
+        {
+          "year": 2024,
+          "basicEps": 4.93,
+          "dilutedEps": 4.67,
+          "netIncomeMillionSar": 19731.0,
+          "cells": {
+            "basicEps": "K6",
+            "dilutedEps": "L6"
+          }
+        },
+        {
+          "year": 2025,
+          "basicEps": 6.2,
+          "dilutedEps": 5.85,
+          "netIncomeMillionSar": 24792.0,
+          "cells": {
+            "basicEps": "K7",
+            "dilutedEps": "L7"
+          }
+        }
+      ],
+      "workbookBookValue": {
+        "value": 28.71,
+        "asOf": null,
+        "cell": "B16"
+      },
+      "qualityFlags": []
+    },
+    {
+      "symbol": "1180",
+      "name": "البنك الأهلي السعودي",
+      "sourceSheet": "الأهلي",
+      "annual": [
+        {
+          "year": 2020,
+          "basicEps": 2.85,
+          "dilutedEps": 2.85,
+          "netIncomeMillionSar": 11560.0,
+          "cells": {
+            "basicEps": "K2",
+            "dilutedEps": "L2"
+          }
+        },
+        {
+          "year": 2021,
+          "basicEps": 2.33,
+          "dilutedEps": 2.3,
+          "netIncomeMillionSar": 12684.0,
+          "cells": {
+            "basicEps": "K3",
+            "dilutedEps": "L3"
+          }
+        },
+        {
+          "year": 2022,
+          "basicEps": 3.1,
+          "dilutedEps": 3.2,
+          "netIncomeMillionSar": 18728.0,
+          "cells": {
+            "basicEps": "K4",
+            "dilutedEps": "L4"
+          }
+        },
+        {
+          "year": 2023,
+          "basicEps": 3.33,
+          "dilutedEps": 3.23,
+          "netIncomeMillionSar": 20108.0,
+          "cells": {
+            "basicEps": "K5",
+            "dilutedEps": "L5"
+          }
+        },
+        {
+          "year": 2024,
+          "basicEps": 3.53,
+          "dilutedEps": 3.44,
+          "netIncomeMillionSar": 21093.0,
+          "cells": {
+            "basicEps": "K6",
+            "dilutedEps": "L6"
+          }
+        },
+        {
+          "year": 2025,
+          "basicEps": 4.17,
+          "dilutedEps": 4.04,
+          "netIncomeMillionSar": 25013.0,
+          "cells": {
+            "basicEps": "K7",
+            "dilutedEps": "L7"
+          }
+        }
+      ],
+      "workbookBookValue": {
+        "value": 30.94,
+        "asOf": null,
+        "cell": "B16"
+      },
+      "qualityFlags": [
+        "ربح السهم المخفف أكبر من الأساسي في الأهلي، الصف 4؛ يلزم التحقق من إفصاح البنك"
+      ]
+    },
+    {
+      "symbol": "1010",
+      "name": "بنك الرياض",
+      "sourceSheet": "بنك الرياض",
+      "annual": [
+        {
+          "year": 2020,
+          "basicEps": 1.57,
+          "dilutedEps": 1.57,
+          "netIncomeMillionSar": 4715.0,
+          "cells": {
+            "basicEps": "K2",
+            "dilutedEps": "L2"
+          }
+        },
+        {
+          "year": 2021,
+          "basicEps": 2.01,
+          "dilutedEps": 2.01,
+          "netIncomeMillionSar": 6025.0,
+          "cells": {
+            "basicEps": "K3",
+            "dilutedEps": "L3"
+          }
+        },
+        {
+          "year": 2022,
+          "basicEps": 2.34,
+          "dilutedEps": 2.32,
+          "netIncomeMillionSar": 7019.0,
+          "cells": {
+            "basicEps": "K4",
+            "dilutedEps": "L4"
+          }
+        },
+        {
+          "year": 2023,
+          "basicEps": 2.68,
+          "dilutedEps": 2.58,
+          "netIncomeMillionSar": 8046.0,
+          "cells": {
+            "basicEps": "K5",
+            "dilutedEps": "L5"
+          }
+        },
+        {
+          "year": 2024,
+          "basicEps": 3.11,
+          "dilutedEps": 3.01,
+          "netIncomeMillionSar": 9322.0,
+          "cells": {
+            "basicEps": "K6",
+            "dilutedEps": "L6"
+          }
+        },
+        {
+          "year": 2025,
+          "basicEps": 3.47,
+          "dilutedEps": 3.29,
+          "netIncomeMillionSar": 10410.0,
+          "cells": {
+            "basicEps": "K7",
+            "dilutedEps": "L7"
+          }
+        }
+      ],
+      "workbookBookValue": {
+        "value": 21.37,
+        "asOf": null,
+        "cell": "B16"
+      },
+      "qualityFlags": []
+    },
+    {
+      "symbol": "1060",
+      "name": "البنك السعودي الأول",
+      "sourceSheet": "الأول",
+      "annual": [
+        {
+          "year": 2020,
+          "basicEps": -2.02,
+          "dilutedEps": -2.02,
+          "netIncomeMillionSar": -4155.0,
+          "cells": {
+            "basicEps": "K2",
+            "dilutedEps": "L2"
+          }
+        },
+        {
+          "year": 2021,
+          "basicEps": 1.56,
+          "dilutedEps": 1.56,
+          "netIncomeMillionSar": 3204.0,
+          "cells": {
+            "basicEps": "K3",
+            "dilutedEps": "L3"
+          }
+        },
+        {
+          "year": 2022,
+          "basicEps": 2.35,
+          "dilutedEps": 2.35,
+          "netIncomeMillionSar": 4838.0,
+          "cells": {
+            "basicEps": "K4",
+            "dilutedEps": "L4"
+          }
+        },
+        {
+          "year": 2023,
+          "basicEps": 3.41,
+          "dilutedEps": 3.41,
+          "netIncomeMillionSar": 7003.0,
+          "cells": {
+            "basicEps": "K5",
+            "dilutedEps": "L5"
+          }
+        },
+        {
+          "year": 2024,
+          "basicEps": 3.93,
+          "dilutedEps": 3.78,
+          "netIncomeMillionSar": 8070.0,
+          "cells": {
+            "basicEps": "K6",
+            "dilutedEps": "L6"
+          }
+        },
+        {
+          "year": 2025,
+          "basicEps": 4.11,
+          "dilutedEps": 3.81,
+          "netIncomeMillionSar": 8452.0,
+          "cells": {
+            "basicEps": "K7",
+            "dilutedEps": "L7"
+          }
+        }
+      ],
+      "workbookBookValue": {
+        "value": 32.58,
+        "asOf": null,
+        "cell": "B16"
+      },
+      "qualityFlags": []
+    },
+    {
+      "symbol": "1150",
+      "name": "مصرف الإنماء",
+      "sourceSheet": "مصرف الانماء",
+      "annual": [
+        {
+          "year": 2020,
+          "basicEps": 0.79,
+          "dilutedEps": 0.79,
+          "netIncomeMillionSar": 1965.0,
+          "cells": {
+            "basicEps": "K2",
+            "dilutedEps": "L2"
+          }
+        },
+        {
+          "year": 2021,
+          "basicEps": 1.08,
+          "dilutedEps": 1.08,
+          "netIncomeMillionSar": 2709.0,
+          "cells": {
+            "basicEps": "K3",
+            "dilutedEps": "L3"
+          }
+        },
+        {
+          "year": 2022,
+          "basicEps": 1.44,
+          "dilutedEps": 1.38,
+          "netIncomeMillionSar": 3599.0,
+          "cells": {
+            "basicEps": "K4",
+            "dilutedEps": "L4"
+          }
+        },
+        {
+          "year": 2023,
+          "basicEps": 1.94,
+          "dilutedEps": 1.87,
+          "netIncomeMillionSar": 4839.0,
+          "cells": {
+            "basicEps": "K5",
+            "dilutedEps": "L5"
+          }
+        },
+        {
+          "year": 2024,
+          "basicEps": 2.33,
+          "dilutedEps": 2.22,
+          "netIncomeMillionSar": 5831.0,
+          "cells": {
+            "basicEps": "K6",
+            "dilutedEps": "L6"
+          }
+        },
+        {
+          "year": 2025,
+          "basicEps": 2.56,
+          "dilutedEps": 2.37,
+          "netIncomeMillionSar": 6397.0,
+          "cells": {
+            "basicEps": "K7",
+            "dilutedEps": "L7"
+          }
+        }
+      ],
+      "workbookBookValue": {
+        "value": 14.3,
+        "asOf": null,
+        "cell": "B16"
+      },
+      "qualityFlags": []
+    },
+    {
+      "symbol": "1050",
+      "name": "البنك السعودي الفرنسي",
+      "sourceSheet": "بي سي إف",
+      "annual": [
+        {
+          "year": 2020,
+          "basicEps": 0.62,
+          "dilutedEps": 0.6,
+          "netIncomeMillionSar": 1546.0,
+          "cells": {
+            "basicEps": "K2",
+            "dilutedEps": "L2"
+          }
+        },
+        {
+          "year": 2021,
+          "basicEps": 1.38,
+          "dilutedEps": 1.3,
+          "netIncomeMillionSar": 3449.0,
+          "cells": {
+            "basicEps": "K3",
+            "dilutedEps": "L3"
+          }
+        },
+        {
+          "year": 2022,
+          "basicEps": 1.43,
+          "dilutedEps": 1.35,
+          "netIncomeMillionSar": 3575.0,
+          "cells": {
+            "basicEps": "K4",
+            "dilutedEps": "L4"
+          }
+        },
+        {
+          "year": 2023,
+          "basicEps": 1.69,
+          "dilutedEps": 1.61,
+          "netIncomeMillionSar": 4222.0,
+          "cells": {
+            "basicEps": "K5",
+            "dilutedEps": "L5"
+          }
+        },
+        {
+          "year": 2024,
+          "basicEps": 1.82,
+          "dilutedEps": 1.72,
+          "netIncomeMillionSar": 4544.0,
+          "cells": {
+            "basicEps": "K6",
+            "dilutedEps": "L6"
+          }
+        },
+        {
+          "year": 2025,
+          "basicEps": 2.14,
+          "dilutedEps": 1.97,
+          "netIncomeMillionSar": 5353.0,
+          "cells": {
+            "basicEps": "K7",
+            "dilutedEps": "L7"
+          }
+        }
+      ],
+      "workbookBookValue": {
+        "value": 17.09,
+        "asOf": null,
+        "cell": "B16"
+      },
+      "qualityFlags": []
+    },
+    {
+      "symbol": "1080",
+      "name": "البنك العربي الوطني",
+      "sourceSheet": "العربي",
+      "annual": [
+        {
+          "year": 2020,
+          "basicEps": 1.04,
+          "dilutedEps": 1.04,
+          "netIncomeMillionSar": 2068.0,
+          "cells": {
+            "basicEps": "K2",
+            "dilutedEps": "L2"
+          }
+        },
+        {
+          "year": 2021,
+          "basicEps": 1.09,
+          "dilutedEps": 1.09,
+          "netIncomeMillionSar": 2171.0,
+          "cells": {
+            "basicEps": "K3",
+            "dilutedEps": "L3"
+          }
+        },
+        {
+          "year": 2022,
+          "basicEps": 1.54,
+          "dilutedEps": 1.54,
+          "netIncomeMillionSar": 3067.0,
+          "cells": {
+            "basicEps": "K4",
+            "dilutedEps": "L4"
+          }
+        },
+        {
+          "year": 2023,
+          "basicEps": 2.04,
+          "dilutedEps": 2.04,
+          "netIncomeMillionSar": 4075.0,
+          "cells": {
+            "basicEps": "K5",
+            "dilutedEps": "L5"
+          }
+        },
+        {
+          "year": 2024,
+          "basicEps": 2.48,
+          "dilutedEps": 2.48,
+          "netIncomeMillionSar": 4967.0,
+          "cells": {
+            "basicEps": "K6",
+            "dilutedEps": "L6"
+          }
+        },
+        {
+          "year": 2025,
+          "basicEps": 2.56,
+          "dilutedEps": 2.49,
+          "netIncomeMillionSar": 5116.0,
+          "cells": {
+            "basicEps": "K7",
+            "dilutedEps": "L7"
+          }
+        }
+      ],
+      "workbookBookValue": {
+        "value": 20.86,
+        "asOf": null,
+        "cell": "B16"
+      },
+      "qualityFlags": []
+    },
+    {
+      "symbol": "1140",
+      "name": "بنك البلاد",
+      "sourceSheet": "البلاد",
+      "annual": [
+        {
+          "year": 2020,
+          "basicEps": 0.9,
+          "dilutedEps": 0.9,
+          "netIncomeMillionSar": 1348.0,
+          "cells": {
+            "basicEps": "K2",
+            "dilutedEps": "L2"
+          }
+        },
+        {
+          "year": 2021,
+          "basicEps": 1.12,
+          "dilutedEps": 1.13,
+          "netIncomeMillionSar": 1686.0,
+          "cells": {
+            "basicEps": "K3",
+            "dilutedEps": "L3"
+          }
+        },
+        {
+          "year": 2022,
+          "basicEps": 1.39,
+          "dilutedEps": 1.39,
+          "netIncomeMillionSar": 2081.0,
+          "cells": {
+            "basicEps": "K4",
+            "dilutedEps": "L4"
+          }
+        },
+        {
+          "year": 2023,
+          "basicEps": 1.58,
+          "dilutedEps": 1.59,
+          "netIncomeMillionSar": 2368.0,
+          "cells": {
+            "basicEps": "K5",
+            "dilutedEps": "L5"
+          }
+        },
+        {
+          "year": 2024,
+          "basicEps": 1.87,
+          "dilutedEps": 1.88,
+          "netIncomeMillionSar": 2806.0,
+          "cells": {
+            "basicEps": "K6",
+            "dilutedEps": "L6"
+          }
+        },
+        {
+          "year": 2025,
+          "basicEps": 2.03,
+          "dilutedEps": 1.99,
+          "netIncomeMillionSar": 3049.0,
+          "cells": {
+            "basicEps": "K7",
+            "dilutedEps": "L7"
+          }
+        }
+      ],
+      "workbookBookValue": {
+        "value": 12.61,
+        "asOf": null,
+        "cell": "B16"
+      },
+      "qualityFlags": [
+        "ربح السهم المخفف أكبر من الأساسي في البلاد، الصف 3؛ يلزم التحقق من إفصاح البنك",
+        "ربح السهم المخفف أكبر من الأساسي في البلاد، الصف 5؛ يلزم التحقق من إفصاح البنك",
+        "ربح السهم المخفف أكبر من الأساسي في البلاد، الصف 6؛ يلزم التحقق من إفصاح البنك"
+      ]
+    },
+    {
+      "symbol": "1020",
+      "name": "بنك الجزيرة",
+      "sourceSheet": "بنك الجزيرة",
+      "annual": [
+        {
+          "year": 2020,
+          "basicEps": 0.03,
+          "dilutedEps": 0.03,
+          "netIncomeMillionSar": 33.0,
+          "cells": {
+            "basicEps": "K2",
+            "dilutedEps": "L2"
+          }
+        },
+        {
+          "year": 2021,
+          "basicEps": 0.79,
+          "dilutedEps": 0.78,
+          "netIncomeMillionSar": 1006.0,
+          "cells": {
+            "basicEps": "K3",
+            "dilutedEps": "L3"
+          }
+        },
+        {
+          "year": 2022,
+          "basicEps": 0.87,
+          "dilutedEps": 0.8,
+          "netIncomeMillionSar": 1109.0,
+          "cells": {
+            "basicEps": "K4",
+            "dilutedEps": "L4"
+          }
+        },
+        {
+          "year": 2023,
+          "basicEps": 0.8,
+          "dilutedEps": 0.69,
+          "netIncomeMillionSar": 1019.0,
+          "cells": {
+            "basicEps": "K5",
+            "dilutedEps": "L5"
+          }
+        },
+        {
+          "year": 2024,
+          "basicEps": 0.96,
+          "dilutedEps": 0.81,
+          "netIncomeMillionSar": 1230.0,
+          "cells": {
+            "basicEps": "K6",
+            "dilutedEps": "L6"
+          }
+        },
+        {
+          "year": 2025,
+          "basicEps": 1.18,
+          "dilutedEps": 1.0,
+          "netIncomeMillionSar": 1505.0,
+          "cells": {
+            "basicEps": "K7",
+            "dilutedEps": "L7"
+          }
+        }
+      ],
+      "workbookBookValue": {
+        "value": 11.73,
+        "asOf": null,
+        "cell": "B16"
+      },
+      "qualityFlags": []
+    },
+    {
+      "symbol": "1030",
+      "name": "البنك السعودي للاستثمار",
+      "sourceSheet": "الاستثمار",
+      "annual": [
+        {
+          "year": 2020,
+          "basicEps": 0.78,
+          "dilutedEps": 0.77,
+          "netIncomeMillionSar": 979.0,
+          "cells": {
+            "basicEps": "K2",
+            "dilutedEps": "L2"
+          }
+        },
+        {
+          "year": 2021,
+          "basicEps": 0.85,
+          "dilutedEps": 0.85,
+          "netIncomeMillionSar": 1061.0,
+          "cells": {
+            "basicEps": "K3",
+            "dilutedEps": "L3"
+          }
+        },
+        {
+          "year": 2022,
+          "basicEps": 1.21,
+          "dilutedEps": 1.09,
+          "netIncomeMillionSar": 1507.0,
+          "cells": {
+            "basicEps": "K4",
+            "dilutedEps": "L4"
+          }
+        },
+        {
+          "year": 2023,
+          "basicEps": 1.41,
+          "dilutedEps": 1.28,
+          "netIncomeMillionSar": 1761.0,
+          "cells": {
+            "basicEps": "K5",
+            "dilutedEps": "L5"
+          }
+        },
+        {
+          "year": 2024,
+          "basicEps": 1.57,
+          "dilutedEps": 1.43,
+          "netIncomeMillionSar": 1956.0,
+          "cells": {
+            "basicEps": "K6",
+            "dilutedEps": "L6"
+          }
+        },
+        {
+          "year": 2025,
+          "basicEps": 1.95,
+          "dilutedEps": 1.52,
+          "netIncomeMillionSar": 1896.0,
+          "cells": {
+            "basicEps": "K7",
+            "dilutedEps": "L7"
+          }
+        }
+      ],
+      "workbookBookValue": {
+        "value": 13.7,
+        "asOf": null,
+        "cell": "B16"
+      },
+      "qualityFlags": []
+    }
+  ]
+}
