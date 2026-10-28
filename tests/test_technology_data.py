@@ -13,7 +13,7 @@ class TechnologyDataTests(unittest.TestCase):
         payload = json.loads((ROOT / "site/data/technology.json").read_text(encoding="utf-8"))
         stocks = {stock["symbol"]: stock for stock in payload["stocks"]}
         self.assertEqual(set(stocks), {"7200", "7202", "7203", "7204"})
-        self.assertEqual(len(load_stocks()), 14)
+        self.assertEqual(len(load_stocks()), 18)
         self.assertEqual(stocks["7202"]["annual"][-1], {
             "year": 2024, "reportedEps": 13.4, "historicalPe": 20.2,
         })

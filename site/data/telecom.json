@@ -1,0 +1,644 @@
+{
+  "schemaVersion": 1,
+  "collectionDate": "2026-10-28",
+  "timezone": "Asia/Riyadh",
+  "sector": "telecom",
+  "currency": "SAR",
+  "units": "SAR per share, except P/E in times",
+  "status": "Published research inputs with explicit unavailable fields and editable current estimates",
+  "projectCompatibility": "Loaded by the telecom page. Current TTM EPS estimates and book values are initial inputs; local browser edits override them.",
+  "source": {
+    "name": "Issuer filings, exchange announcements and Argaam public tables",
+    "section": "Annual per-share data and annual valuation multiples",
+    "epsLabel": "Reported, basic or diluted EPS as explicitly identified per company",
+    "peLabel": "Annual period-end P/E from Argaam annual table",
+    "notes": [
+      "Do not insert quarter or year-to-date EPS as annual EPS when calculating current P/E.",
+      "Do not mix recurring EPS with statutory basic or diluted EPS.",
+      "Null means unverified, conflicting or unavailable; it never means zero.",
+      "No current market price or current sector P/E is hardcoded."
+    ]
+  },
+  "sources": {
+    "project": "https://portalnode.github.io/mizan-saudi-banks/index.html",
+    "stc_h1_2026": "https://www.stc.com/content/dam/groupsites/en/pdf/financial-statementsQ2-2026En.pdf",
+    "stc_fy2025": "https://www.stc.com/content/dam/groupsites/en/pdf/stc_Annual-2025-en.pdf",
+    "stc_fy2023": "https://www.stc.com/content/dam/groupsites/ar/pdf/STC-2023-English-YE-FS-Final-Draft-AC-Copy-Final-Shared-with-report.pdf",
+    "stc_fy2022": "https://www.stc.com/content/dam/groupsites/en/pdf/stc_Annual-2022-en.pdf",
+    "stc_fy2021": "https://www.stc.com/content/dam/corporatesite/en/generic/pdf/investor/stc-Annual-en-2021.pdf",
+    "stc_argaam": "https://www.argaam.com/sa-ar/financial-reports/company-report/30/2025/1",
+    "mobily_argaam": "https://www.argaam.com/sa-ar/financial-reports/company-report/31/2025/1",
+    "mobily_9m_2026": "https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-news/issuer-announcements/issuer-announcements-details/?anCat=1&anId=98611&cs=7020&locale=en",
+    "mobily_9m_mirror": "https://financialfilings.com/filings/etihad-etisalat-co/earnings-release/2026/74261453/",
+    "mobily_fy2025": "https://www.saudiexchange.sa/Resources/fsPdf/481_0_2026-03-31_15-21-04_Ar.pdf",
+    "zain_argaam": "https://www.argaam.com/sa-ar/financial-reports/company-report/1058/2025/1",
+    "zain_9m_2026": "https://www.argaam.com/ar/article/articledetail/id/1947788",
+    "go_argaam_current": "https://www.argaam.com/ar/financial-reports/company-report/1404/2026/70?preview=true",
+    "go_q1_2027": "https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-news/issuer-announcements/issuer-announcements-details/%26/?anCat=1&anId=97252&cs=7040&locale=ar",
+    "go_fy2026": "https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-news/issuer-announcements/issuer-announcements-details/?anCat=1&anId=95544&cs=7040&locale=ar",
+    "go_fy2024": "https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-news/issuer-announcements/issuer-announcements-details?anCat=1&anId=80723&locale=ar",
+    "go_fy2025_argaam": "https://www.argaam.com/ar/financial-reports/company-report/1404/2024/1?preview=true",
+    "go_fy2025_pdf": "https://www.saudiexchange.sa/Resources/fsPdf/17813_483_2025-09-02_14-49-36_ar.pdf",
+    "go_fy2021": "https://go.com.sa/اعلان-شركة-إتحاد-عذيب-للإتصالات-عن-النتائج-المالية-السنوية-المنتهية-في-31-03-2021م",
+    "go_fy2022_mirror": "https://www.mubasher.info/news/3966398/اعلان-شركة-إتحاد-عذيب-للإتصالات-GOجو-عن-النتائج-المالية-السنوية-المنتهية-في-31-03-2022م",
+    "go_fy2024_board_report": "https://www.go.com.sa/Resources/2/ANNUAL_REPORTS-BODAnnualReport20232024ArabicFinal.pdf"
+  },
+  "stocks": [
+    {
+      "symbol": "7010",
+      "name": "اس تي سي",
+      "sector": "telecom",
+      "fiscalYearEnd": "12-31",
+      "historicalEpsBasis": "basic_and_diluted",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "basicEps": 2.2,
+          "dilutedEps": 2.2,
+          "historicalPe": 19.28,
+          "sourceIds": [
+            "stc_fy2021",
+            "stc_argaam"
+          ],
+          "note": "2020 EPS divided by 2.5 to reflect the 2022 bonus issue; rounded original EPS."
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "basicEps": 2.27,
+          "dilutedEps": 2.26,
+          "historicalPe": 19.87,
+          "sourceIds": [
+            "stc_fy2022",
+            "stc_argaam"
+          ],
+          "note": null
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "basicEps": 2.44,
+          "dilutedEps": 2.43,
+          "historicalPe": 15.04,
+          "sourceIds": [
+            "stc_fy2023",
+            "stc_argaam"
+          ],
+          "note": null
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "basicEps": 2.67,
+          "dilutedEps": 2.66,
+          "historicalPe": 15.15,
+          "sourceIds": [
+            "stc_fy2023",
+            "stc_argaam"
+          ],
+          "note": null
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "basicEps": 4.95,
+          "dilutedEps": 4.94,
+          "historicalPe": null,
+          "sourceIds": [
+            "stc_fy2025",
+            "stc_argaam"
+          ],
+          "note": null
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "basicEps": 2.97,
+          "dilutedEps": 2.97,
+          "historicalPe": 14.49,
+          "sourceIds": [
+            "stc_fy2025",
+            "stc_argaam"
+          ],
+          "note": null
+        }
+      ],
+      "current": {
+        "periodLabel": "النصف الأول 2026",
+        "periodStart": "2026-01-01",
+        "periodEnd": "2026-06-30",
+        "reportedPeriodBasicEps": 1.47,
+        "reportedPeriodDilutedEps": 1.46,
+        "bookValue": 17.0,
+        "bookValueBasis": "Argaam published book value per share for the latest reported period; not statutory EPS denominator",
+        "sourceIds": [
+          "stc_h1_2026",
+          "stc_fy2025",
+          "stc_argaam"
+        ],
+        "ttmBasicEpsApprox": 2.94,
+        "ttmDilutedEpsApprox": 2.94,
+        "ttmCalculation": {
+          "basic": 2.94,
+          "basicFormula": "2.97 - 1.50 + 1.47",
+          "diluted": 2.94,
+          "dilutedFormula": "2.97 - 1.49 + 1.46",
+          "ttmStart": "2025-07-01",
+          "ttmEnd": "2026-06-30"
+        },
+        "providerRecurringTtmEps": 2.82,
+        "ttmStatus": "Approximation from separately reported EPS periods, not a reported TTM EPS or a forecast. Rounded inputs and changing weighted share counts can affect precision."
+      },
+      "qualityFlags": [
+        "القوائم الأصلية تبين أساسي 4.95 ومخفف 4.94 لعام 2024، بينما جدول بيانات السهم السنوي لدى أرقام يعرض 4.83؛ عُلّق مكرر 2024 في الحقل المستخدم للحساب مع حفظ القيمة الأصلية 8.27 في بيانات المزود.",
+        "أرباح 2024 تشمل أرباح عمليات غير مستمرة؛ السلسلة المحاسبية ليست سلسلة أرباح متكررة.",
+        "المكررات السنوية من مزود ثانوي ولا يتغير أساسها عند تبديل الأساسي والمخفف في المشروع."
+      ]
+    },
+    {
+      "symbol": "7020",
+      "name": "موبايلي",
+      "sector": "telecom",
+      "fiscalYearEnd": "12-31",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": 1.02,
+          "historicalPe": 28.17,
+          "sourceIds": [
+            "mobily_argaam"
+          ]
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": 1.39,
+          "historicalPe": 22.38,
+          "sourceIds": [
+            "mobily_argaam"
+          ]
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 2.15,
+          "historicalPe": 16.15,
+          "sourceIds": [
+            "mobily_argaam"
+          ]
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 2.9,
+          "historicalPe": 16.92,
+          "sourceIds": [
+            "mobily_argaam"
+          ]
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 4.03,
+          "historicalPe": 13.23,
+          "sourceIds": [
+            "mobily_argaam"
+          ]
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 4.5,
+          "historicalPe": 14.63,
+          "sourceIds": [
+            "mobily_argaam"
+          ]
+        }
+      ],
+      "current": {
+        "periodLabel": "التسعة أشهر الأولى 2026",
+        "periodStart": "2026-01-01",
+        "periodEnd": "2026-09-30",
+        "reportedPeriodBasicEps": 3.53,
+        "reportedPeriodDilutedEps": null,
+        "bookValue": 26.93,
+        "bookValueBasis": "Argaam published book value per share for the latest reported period; not statutory EPS denominator",
+        "sourceIds": [
+          "mobily_9m_2026",
+          "mobily_9m_mirror",
+          "mobily_fy2025",
+          "mobily_argaam"
+        ],
+        "ttmBasicEpsApprox": 4.77,
+        "ttmDilutedEpsApprox": null,
+        "ttmCalculation": {
+          "basic": 4.77,
+          "basicFormula": "4.51 - 3.27 + 3.53",
+          "ttmStart": "2025-10-01",
+          "ttmEnd": "2026-09-30"
+        },
+        "providerRecurringTtmEps": 4.75,
+        "ttmStatus": "Approximation from separately reported EPS periods, not a reported TTM EPS or a forecast. Rounded inputs and changing weighted share counts can affect precision."
+      },
+      "qualityFlags": [
+        "السلسلة التاريخية من أرقام غير مصنفة هنا كأساسي أو مخفف؛ تبقى قيمة مبلغ عنها وفق نمط ملف التقنية بالمشروع.",
+        "ربح السهم المخفف للفترة الحالية لم يثبت من القوائم الأصلية في هذا الجمع؛ يبقى فارغاً.",
+        "ربح السهم الأساسي لعام 2025 في التقرير السنوي هو 4.51 والمخفف 4.50؛ بيانات أرقام التاريخية تستخدم 4.50. لا يعامل الأساسي المحسوب لآخر 12 شهراً 4.77 باعتباره الربح المتكرر المنشور 4.75."
+      ],
+      "officialAnnualSupplement": [
+        {
+          "year": 2025,
+          "basicEps": 4.51,
+          "dilutedEps": 4.5,
+          "sourceId": "mobily_fy2025"
+        },
+        {
+          "year": 2024,
+          "basicEps": 4.03,
+          "dilutedEps": 4.03,
+          "sourceId": "mobily_fy2025"
+        }
+      ]
+    },
+    {
+      "symbol": "7030",
+      "name": "زين السعودية",
+      "sector": "telecom",
+      "fiscalYearEnd": "12-31",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": 0.29,
+          "historicalPe": 47.02,
+          "sourceIds": [
+            "zain_argaam"
+          ]
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": 0.24,
+          "historicalPe": 50.49,
+          "sourceIds": [
+            "zain_argaam"
+          ]
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 0.61,
+          "historicalPe": 16.45,
+          "sourceIds": [
+            "zain_argaam"
+          ]
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 1.41,
+          "historicalPe": 9.99,
+          "sourceIds": [
+            "zain_argaam"
+          ]
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 0.66,
+          "historicalPe": 15.46,
+          "sourceIds": [
+            "zain_argaam"
+          ]
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 0.67,
+          "historicalPe": 15.53,
+          "sourceIds": [
+            "zain_argaam"
+          ]
+        }
+      ],
+      "current": {
+        "periodLabel": "التسعة أشهر الأولى 2026",
+        "periodStart": "2026-01-01",
+        "periodEnd": "2026-09-30",
+        "reportedPeriodBasicEps": 0.6,
+        "reportedPeriodDilutedEps": null,
+        "bookValue": 12.2,
+        "bookValueBasis": "Argaam published book value per share for the latest reported period; not statutory EPS denominator",
+        "sourceIds": [
+          "zain_9m_2026",
+          "zain_argaam"
+        ],
+        "ttmBasicEpsApprox": 0.86,
+        "ttmDilutedEpsApprox": null,
+        "ttmCalculation": {
+          "basic": 0.86,
+          "basicFormula": "0.67 - 0.41 + 0.60",
+          "ttmStart": "2025-10-01",
+          "ttmEnd": "2026-09-30"
+        },
+        "providerRecurringTtmEps": 0.66,
+        "ttmStatus": "Approximation from separately reported EPS periods, not a reported TTM EPS or a forecast. Rounded inputs and changing weighted share counts can affect precision."
+      },
+      "qualityFlags": [
+        "السلسلة التاريخية من أرقام غير مصنفة هنا كأساسي أو مخفف؛ تبقى قيمة مبلغ عنها وفق نمط ملف التقنية بالمشروع.",
+        "ربح السهم المخفف للفترة الحالية لم يثبت من القوائم الأصلية في هذا الجمع؛ يبقى فارغاً.",
+        "نتائج سبتمبر 2026 أُعلنت يوم الجمع؛ مصدر ربح الفترة وحقوق الملكية نقل إعلان تداول لدى أرقام، ولم تتم مراجعة ملف القوائم الأصلي للربع الثالث. الدخل غير المتكرر مؤثر؛ المتكرر لآخر 12 شهراً 0.66 يختلف عن الأساسي التقريبي 0.86."
+      ]
+    },
+    {
+      "symbol": "7040",
+      "name": "قو للاتصالات",
+      "sector": "telecom",
+      "fiscalYearEnd": "03-31",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-03-31",
+          "reportedEps": null,
+          "historicalPe": null,
+          "asPublishedEps": -3.13,
+          "sourceIds": [
+            "go_fy2021"
+          ],
+          "status": "Excluded from automatic growth pending reconciliation of capital changes and source differences"
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-03-31",
+          "reportedEps": null,
+          "historicalPe": null,
+          "asPublishedEps": -1.67,
+          "sourceIds": [
+            "go_fy2021"
+          ],
+          "status": "Excluded from automatic growth pending reconciliation of capital changes and source differences"
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-03-31",
+          "reportedEps": null,
+          "historicalPe": null,
+          "asPublishedEps": -1.84,
+          "sourceIds": [
+            "go_fy2022_mirror"
+          ],
+          "status": "Excluded from automatic growth pending reconciliation of capital changes and source differences"
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-03-31",
+          "reportedEps": null,
+          "historicalPe": null,
+          "asPublishedEps": 1.43,
+          "sourceIds": [
+            "go_fy2024"
+          ],
+          "status": "Excluded from automatic growth pending reconciliation of capital changes and source differences"
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-03-31",
+          "reportedEps": null,
+          "historicalPe": null,
+          "asPublishedEps": 6.43,
+          "sourceIds": [
+            "go_fy2024"
+          ],
+          "status": "Excluded from automatic growth pending reconciliation of capital changes and source differences"
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-03-31",
+          "reportedEps": null,
+          "historicalPe": null,
+          "asPublishedEps": 6.46,
+          "sourceIds": [
+            "go_fy2025_argaam"
+          ],
+          "status": "Excluded from automatic growth pending reconciliation of capital changes and source differences"
+        },
+        {
+          "year": 2026,
+          "periodEnd": "2026-03-31",
+          "reportedEps": null,
+          "historicalPe": null,
+          "asPublishedEps": 7.62,
+          "sourceIds": [
+            "go_fy2026"
+          ],
+          "status": "Excluded from automatic growth pending reconciliation of capital changes and source differences"
+        }
+      ],
+      "current": {
+        "periodLabel": "الثلاثة أشهر المنتهية في يونيو 2026",
+        "periodStart": "2026-04-01",
+        "periodEnd": "2026-06-30",
+        "reportedPeriodBasicEps": 2.0,
+        "reportedPeriodDilutedEps": null,
+        "bookValue": 31.83,
+        "bookValueBasis": "Argaam published book value per share for the latest reported period; not statutory EPS denominator",
+        "sourceIds": [
+          "go_q1_2027",
+          "go_fy2026",
+          "go_argaam_current"
+        ],
+        "ttmBasicEpsApprox": 7.81,
+        "ttmDilutedEpsApprox": null,
+        "ttmCalculation": {
+          "basic": 7.81,
+          "basicFormula": "7.62 - 1.81 + 2.00",
+          "ttmStart": "2025-07-01",
+          "ttmEnd": "2026-06-30"
+        },
+        "providerRecurringTtmEps": 7.81,
+        "ttmStatus": "Approximation from separately reported EPS periods, not a reported TTM EPS or a forecast. Rounded inputs and changing weighted share counts can affect precision."
+      },
+      "qualityFlags": [
+        "السنة المالية تنتهي في مارس؛ هذا ربع أبريل إلى يونيو، وليس ربح التسعة أشهر المنتهية في سبتمبر.",
+        "الأرقام التاريخية كما نشرت محفوظة للمراجعة، وحقل النمو الآلي معلق حتى توحيد أثر تخفيضات رأس المال وحقوق الأولوية.",
+        "إعلان سنة 2025 يعرض 6.46 بينما فهرسة القوائم السنوية تعرض أساسياً ومخفضاً 6.42؛ لم يُحسم التعارض ولم تستبدل القيم صامتاً.",
+        "لم تثبت سلسلة مكررات تاريخية متاحة لقو؛ الحقول فارغة وليست صفراً.",
+        "المخفف الحالي لم يُتحقق منه؛ لا يساوى بالأساسي افتراضياً."
+      ],
+      "unavailableMethods": [
+        "growth",
+        "historical"
+      ],
+      "historyReferenceOnly": true
+    }
+  ],
+  "providerHistoricalData": {
+    "7010": {
+      "annual": [
+        {
+          "year": 2020,
+          "providerEps": 2.2,
+          "providerRecurringEps": 2.07,
+          "providerPe": 19.28,
+          "providerRecurringPe": 20.49,
+          "providerBookValue": 12.79
+        },
+        {
+          "year": 2021,
+          "providerEps": 2.26,
+          "providerRecurringEps": 2.21,
+          "providerPe": 19.87,
+          "providerRecurringPe": 20.35,
+          "providerBookValue": 13.85
+        },
+        {
+          "year": 2022,
+          "providerEps": 2.43,
+          "providerRecurringEps": 2.41,
+          "providerPe": 15.04,
+          "providerRecurringPe": 15.21,
+          "providerBookValue": 14.7
+        },
+        {
+          "year": 2023,
+          "providerEps": 2.66,
+          "providerRecurringEps": 2.23,
+          "providerPe": 15.15,
+          "providerRecurringPe": 18.07,
+          "providerBookValue": 15.8
+        },
+        {
+          "year": 2024,
+          "providerEps": 4.83,
+          "providerRecurringEps": 2.22,
+          "providerPe": 8.27,
+          "providerRecurringPe": 17.99,
+          "providerBookValue": 17.88
+        },
+        {
+          "year": 2025,
+          "providerEps": 2.97,
+          "providerRecurringEps": 2.86,
+          "providerPe": 14.49,
+          "providerRecurringPe": 15.01,
+          "providerBookValue": 16.68
+        }
+      ],
+      "sourceId": "stc_argaam",
+      "basis": "Provider series; not assumed to be statutory basic or diluted EPS. Annual P/E is the provider annual table, not its quarterly Q4 table."
+    },
+    "7020": {
+      "annual": [
+        {
+          "year": 2020,
+          "providerEps": 1.02,
+          "providerRecurringEps": 1.02,
+          "providerPe": 28.17,
+          "providerRecurringPe": 28.17,
+          "providerBookValue": 18.76
+        },
+        {
+          "year": 2021,
+          "providerEps": 1.39,
+          "providerRecurringEps": 1.39,
+          "providerPe": 22.38,
+          "providerRecurringPe": 22.38,
+          "providerBookValue": 19.74
+        },
+        {
+          "year": 2022,
+          "providerEps": 2.15,
+          "providerRecurringEps": 2.15,
+          "providerPe": 16.15,
+          "providerRecurringPe": 16.15,
+          "providerBookValue": 21.24
+        },
+        {
+          "year": 2023,
+          "providerEps": 2.9,
+          "providerRecurringEps": 2.98,
+          "providerPe": 16.92,
+          "providerRecurringPe": 16.47,
+          "providerBookValue": 22.89
+        },
+        {
+          "year": 2024,
+          "providerEps": 4.03,
+          "providerRecurringEps": 3.67,
+          "providerPe": 13.23,
+          "providerRecurringPe": 14.57,
+          "providerBookValue": 24.51
+        },
+        {
+          "year": 2025,
+          "providerEps": 4.5,
+          "providerRecurringEps": 4.44,
+          "providerPe": 14.63,
+          "providerRecurringPe": 14.85,
+          "providerBookValue": 26.4
+        }
+      ],
+      "sourceId": "mobily_argaam",
+      "basis": "Provider series; not assumed to be statutory basic or diluted EPS. Annual P/E is the provider annual table, not its quarterly Q4 table."
+    },
+    "7030": {
+      "annual": [
+        {
+          "year": 2020,
+          "providerEps": 0.29,
+          "providerRecurringEps": 0.14,
+          "providerPe": 47.02,
+          "providerRecurringPe": 98.82,
+          "providerBookValue": 9.71
+        },
+        {
+          "year": 2021,
+          "providerEps": 0.24,
+          "providerRecurringEps": 0.24,
+          "providerPe": 50.49,
+          "providerRecurringPe": 50.49,
+          "providerBookValue": 10.06
+        },
+        {
+          "year": 2022,
+          "providerEps": 0.61,
+          "providerRecurringEps": 0.56,
+          "providerPe": 16.45,
+          "providerRecurringPe": 17.81,
+          "providerBookValue": 10.91
+        },
+        {
+          "year": 2023,
+          "providerEps": 1.41,
+          "providerRecurringEps": 0.14,
+          "providerPe": 9.99,
+          "providerRecurringPe": 98.15,
+          "providerBookValue": 11.78
+        },
+        {
+          "year": 2024,
+          "providerEps": 0.66,
+          "providerRecurringEps": 0.33,
+          "providerPe": 15.46,
+          "providerRecurringPe": 30.94,
+          "providerBookValue": 11.91
+        },
+        {
+          "year": 2025,
+          "providerEps": 0.67,
+          "providerRecurringEps": 0.67,
+          "providerPe": 15.53,
+          "providerRecurringPe": 15.53,
+          "providerBookValue": 12.1
+        }
+      ],
+      "sourceId": "zain_argaam",
+      "basis": "Provider series; not assumed to be statutory basic or diluted EPS. Annual P/E is the provider annual table, not its quarterly Q4 table."
+    }
+  }
+}

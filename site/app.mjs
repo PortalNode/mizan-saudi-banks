@@ -8,14 +8,16 @@ const methodControls = { growth: "useGrowth", sector: "useSector", graham: "useG
 const sectorLabels = {
   banking: { title: "البنوك السعودية", subtitle: "القطاع البنكي", item: "بنوك", file: "ملف البنوك المرفق" },
   technology: { title: "قطاع التقنية", subtitle: "قطاع التقنية", item: "شركات", file: "ملف قطاع التطبيقات المرفق" },
+  telecom: { title: "قطاع الاتصالات", subtitle: "قطاع الاتصالات", item: "شركات", file: "حزمة بيانات الاتصالات" },
 };
 const state = {
   banks: [],
-  sectors: { banking: [], technology: [] },
+  sectors: { banking: [], technology: [], telecom: [] },
   sector: initialSector(),
   market: { status: "unconfigured", banks: {} },
   selected: "1120",
-  selectedBySector: { banking: "1120", technology: "7202" },
+  selectedBySector: { banking: "1120", technology: "7202", telecom: "7010" },
+  telecomSources: {},
   basis: "basic",
   manualOpen: true,
   manual: readSavedManual(),
@@ -24,7 +26,8 @@ const state = {
 };
 
 function initialSector() {
-  return document.body.dataset.sector === "technology" ? "technology" : "banking";
+  const sector = document.body.dataset.sector;
+  return sector in sectorLabels ? sector : "banking";
 }
 
 function activateSector(sector) {
@@ -61,7 +64,8 @@ function saveSelections() {
 
 function selectedMethods(bank) {
   const saved = state.selections[bank.symbol] || {};
-  return Object.fromEntries(METHOD_KEYS.map((key) => [key, saved[key] !== false]));
+  return Object.fromEntries(METHOD_KEYS.map((key) => [key,
+    bank.unavailableMethods?.includes(key) ? false : saved[key] !== false]));
 }
 
 function num(value) {
@@ -74,10 +78,15 @@ function formattedPct(value) { return Number.isFinite(value) ? `${value >= 0 ? "
 function selectedBank() { return state.banks.find((bank) => bank.symbol === state.selected) || state.banks[0]; }
 function savedInputs(bank) {
   const saved = state.manual[bank.symbol] || {};
+  const defaults = bank.sector === "telecom" ? {
+    basicEps: bank.current?.ttmBasicEpsApprox,
+    dilutedEps: bank.current?.ttmDilutedEpsApprox,
+    bookValue: bank.current?.bookValue,
+  } : {};
   return {
-    basicEps: num(saved.basicEps),
-    dilutedEps: num(saved.dilutedEps),
-    bookValue: num(saved.bookValue),
+    basicEps: num(saved.basicEps !== undefined ? saved.basicEps : defaults.basicEps),
+    dilutedEps: num(saved.dilutedEps !== undefined ? saved.dilutedEps : defaults.dilutedEps),
+    bookValue: num(saved.bookValue !== undefined ? saved.bookValue : defaults.bookValue),
   };
 }
 
@@ -153,21 +162,24 @@ function renderBankList() {
 function syncForm() {
   const bank = selectedBank();
   if (!bank) return;
-  const saved = state.manual[bank.symbol] || {};
-  $("manualBasic").value = saved.basicEps ?? "";
-  $("manualDiluted").value = saved.dilutedEps ?? "";
-  $("manualBook").value = saved.bookValue ?? "";
+  const inputs = savedInputs(bank);
+  $("manualBasic").value = inputs.basicEps ?? "";
+  $("manualDiluted").value = inputs.dilutedEps ?? "";
+  $("manualBook").value = inputs.bookValue ?? "";
 }
 
 function renderHistory(bank) {
   const field = state.basis === "diluted" ? "dilutedEps" : "basicEps";
   const reported = bank.historicalEpsBasis === "unspecified";
+  const referenceOnly = bank.historyReferenceOnly === true;
   const start = bank.annual[0].year;
   const end = bank.annual.at(-1).year;
-  $("historyCaption").textContent = reported
+  $("historyCaption").textContent = referenceOnly
+    ? `ربحية السهم للأعوام المالية المنتهية في مارس ${start}–${end} كما نُشرت؛ معروضة للمرجع فقط ولا تدخل حساب النمو.`
+    : reported
     ? `ربحية السهم للأعوام ${start}–${end} كما وردت في الملف؛ لم يحدد الملف هل هي أساسية أم مخففة.`
     : `ربح السهم ${state.basis === "diluted" ? "المخفف" : "الأساسي"} للأعوام ${start}–${end} من الملف المرفق.`;
-  const valueFor = (row) => reported ? row.reportedEps : row[field];
+  const valueFor = (row) => referenceOnly ? row.asPublishedEps : reported ? row.reportedEps : row[field];
   const max = Math.max(...bank.annual.map((row) => Math.max(valueFor(row) || 0, 0)), 1);
   const bars = $("historyBars");
   bars.replaceChildren();
@@ -199,23 +211,27 @@ function renderMethod(priceId, formulaId, gapId, price, gap, formula, included) 
 function banner(bank, record) {
   const box = $("dataBanner");
   box.className = "data-banner";
+  const telecomNote = bank.sector === "telecom"
+    ? ` الربح الأساسي الابتدائي تقدير لآخر 12 شهرًا حتى ${bank.current.periodEnd}، محسوب من أرباح فترات مقربة؛ وليس ربحًا سنويًا معلنًا أو توقعًا. القيمة الدفترية الابتدائية من أرقام. يمكن تعديل القيم، وتُحفظ تعديلاتك محليًا.` : "";
   if (!validPositive(record?.price)) {
     box.classList.add("error");
-    box.textContent = "سعر هذه الشركة غير متاح حاليًا من ياهو فايننس؛ لا يمكن حساب المكرر الحالي أو الفارق عن السعر حتى تصل لقطة السوق.";
+    box.textContent = `سعر هذه الشركة غير متاح حاليًا من ياهو فايننس؛ لا يمكن حساب المكرر الحالي أو الفارق عن السعر حتى تصل لقطة السوق.${telecomNote}`;
     return;
   }
   box.classList.add("good");
   const delayed = record.isDelayed === true ? "متأخر بحسب المزود" : "بحسب توقيت اللقطة";
   const historyNote = bank.historicalEpsBasis === "unspecified"
     ? ` بيانات هذا الملف التاريخية حتى ${bank.annual.at(-1).year} وربحية السهم فيه غير محددة النوع.` : "";
-  box.textContent = `سعر السهم من ياهو فايننس (${delayed}). أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية من أحدث إفصاح؛ المكررات تُحسب تلقائيًا.${historyNote}`;
+  box.textContent = bank.sector === "telecom"
+    ? `سعر السهم من ياهو فايننس (${delayed}).${telecomNote}${historyNote}`
+    : `سعر السهم من ياهو فايننس (${delayed}). أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية من أحدث إفصاح؛ المكررات تُحسب تلقائيًا.${historyNote}`;
 }
 
 function render() {
   const bank = selectedBank();
   if (!bank) return;
   const sector = sectorLabels[state.sector];
-  for (const [key, id] of [["banking", "sectorBanking"], ["technology", "sectorTechnology"]]) {
+  for (const [key, id] of [["banking", "sectorBanking"], ["technology", "sectorTechnology"], ["telecom", "sectorTelecom"]]) {
     const active = state.sector === key;
     $(id).classList.toggle("active", active);
     $(id).setAttribute("aria-pressed", String(active));
@@ -224,8 +240,12 @@ function render() {
   $("bankSearch").placeholder = state.sector === "banking" ? "ابحث باسم البنك أو الرمز..." : "ابحث باسم الشركة أو الرمز...";
   $("bankSearch").setAttribute("aria-label", $("bankSearch").placeholder);
   $("sectorSubtitle").textContent = sector.subtitle;
-  $("manualDescription").textContent = `أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية لهذه الشركة من أحدث إفصاح. تُحفظ هذه القيم على جهازك فقط، ويجلب الموقع السعر من ياهو فايننس ويحسب المكررات تلقائيًا.`;
-  $("manualHelp").textContent = `لحساب متوسط مكرر القطاع، أدخل ربح السهم على الأساس المختار لجميع ${sector.item === "بنوك" ? "البنوك" : "الشركات"} في هذا القطاع. المكررات التاريخية مستخرجة من ${sector.file} ولا تحتاج إلى إدخال.`;
+  $("manualDescription").textContent = state.sector === "telecom"
+    ? `القيم الابتدائية: ربح آخر 12 شهرًا التقريبي والقيمة الدفترية المنشورة. ربح الفترة الأخيرة وحده ليس ربح سنة. يمكن تعديل القيم؛ تبقى تعديلاتك على جهازك فقط.`
+    : `أدخل ربح السهم الأساسي والمخفف والقيمة الدفترية لهذه الشركة من أحدث إفصاح. تُحفظ هذه القيم على جهازك فقط، ويجلب الموقع السعر من ياهو فايننس ويحسب المكررات تلقائيًا.`;
+  $("manualHelp").textContent = state.sector === "telecom"
+    ? `يُحسب مكرر القطاع من السعر الحالي وربح آخر 12 شهرًا التقريبي للشركات ذات البيانات المتاحة، دون رقم ثابت. المخفف غير المتحقق منه يظل فارغًا. تاريخ قو المالي ينتهي في مارس؛ النمو والمكرر التاريخي لها مستبعدان.`
+    : `لحساب متوسط مكرر القطاع، أدخل ربح السهم على الأساس المختار لجميع ${sector.item === "بنوك" ? "البنوك" : "الشركات"} في هذا القطاع. المكررات التاريخية مستخرجة من ${sector.file} ولا تحتاج إلى إدخال.`;
   const record = state.market.banks?.[bank.symbol];
   const input = currentInputs(bank);
   const included = selectedMethods(bank);
@@ -251,9 +271,14 @@ function render() {
     : "لم يحدد المزود وقت آخر سعر.";
   $("epsLabel").textContent = `ربح السهم ${state.basis === "diluted" ? "المخفف" : "الأساسي"}`;
   $("epsValue").textContent = formatted(result.eps);
-  $("epsDetail").textContent = validPositive(result.eps) ? "من إدخالك لهذه الشركة" : "أدخل ربح السهم الحالي";
+  const epsEdited = state.manual[bank.symbol]?.[state.basis === "diluted" ? "dilutedEps" : "basicEps"] !== undefined;
+  $("epsDetail").textContent = validPositive(result.eps)
+    ? state.sector === "telecom" ? epsEdited ? "قيمة عدّلتها محليًا؛ راجع فترة الإفصاح" : `تقدير آخر 12 شهرًا حتى ${bank.current.periodEnd}` : "من إدخالك لهذه الشركة"
+    : state.sector === "telecom" ? "لم يُتحقق من هذه الربحية؛ يمكن إدخالها بعد التحقق" : "أدخل ربح السهم الحالي";
   $("bookValue").textContent = formatted(input.bookValue);
-  $("bookDetail").textContent = validPositive(input.bookValue) ? "من إدخالك لهذه الشركة" : "أدخل القيمة الدفترية الحالية";
+  $("bookDetail").textContent = validPositive(input.bookValue)
+    ? state.sector === "telecom" ? state.manual[bank.symbol]?.bookValue !== undefined ? "قيمة عدّلتها محليًا" : "القيمة المنشورة لدى أرقام؛ قابلة للتعديل" : "من إدخالك لهذه الشركة"
+    : "أدخل القيمة الدفترية الحالية";
   const pe = currentMultiple(input.price, result.eps);
   $("currentPe").textContent = formatted(pe);
   $("sectorPeReadout").textContent = formatted(input.sectorPe);
@@ -261,12 +286,17 @@ function render() {
   $("sectorCount").textContent = `${input.sectorCount} من ${state.banks.length} ${sector.item} في المتوسط`;
   $("growthValue").textContent = result.growthPercent === null ? "—" : `${formatted(result.growthPercent)}%`;
   $("growthDetail").textContent = `${result.growthPeriods.usedPeriods} من ${result.growthPeriods.possiblePeriods} فترات نمو صالحة`;
-  $("growthMethodDetail").textContent = `متوسط ${result.growthPeriods.usedPeriods} من ${result.growthPeriods.possiblePeriods} فترات نمو سنوية متتالية بربح سهم موجب في السنتين؛ تُستخدم النسبة كعدد في المعادلة المرفقة.${bank.historicalEpsBasis === "unspecified" ? " نوع ربحية السهم التاريخية غير محدد في الملف." : ""}`;
+  $("growthMethodDetail").textContent = bank.unavailableMethods?.includes("growth")
+    ? "مستبعد لقو: لم توحّد سلسلة الأرباح السنوية بعد تغير رأس المال والسنة المالية."
+    : `متوسط ${result.growthPeriods.usedPeriods} من ${result.growthPeriods.possiblePeriods} فترات نمو سنوية متتالية بربح سهم موجب في السنتين؛ تُستخدم النسبة كعدد في المعادلة المرفقة.${bank.historicalEpsBasis === "unspecified" ? " نوع ربحية السهم التاريخية غير محدد في الملف." : ""}`;
   $("basicButton").classList.toggle("active", state.basis === "basic");
   $("dilutedButton").classList.toggle("active", state.basis === "diluted");
   $("basicButton").setAttribute("aria-pressed", String(state.basis === "basic"));
   $("dilutedButton").setAttribute("aria-pressed", String(state.basis === "diluted"));
-  for (const key of METHOD_KEYS) $(methodControls[key]).checked = included[key];
+  for (const key of METHOD_KEYS) {
+    $(methodControls[key]).checked = included[key];
+    $(methodControls[key]).disabled = bank.unavailableMethods?.includes(key) === true;
+  }
   $("selectedCount").textContent = `${result.includedMethods.length} من 4 ضمن المتوسط`;
   $("summaryCaption").textContent = result.includedMethods.length === 1
     ? "تقدير الطريقة المختارة، محسوب قبل تقريب العرض."
@@ -287,9 +317,13 @@ function render() {
     validPositive(input.bookValue) && validPositive(result.eps) ? `√(22.5 × ${formatted(result.eps)} × ${formatted(input.bookValue)})` : "القيمة الدفترية أو الربح غير متاح", included.graham);
   renderMethod("historicalPrice", "historicalFormula", "historicalGap", result.methods.historical, result.methodGaps.historical,
     validPositive(input.historicalPe) && validPositive(result.eps) ? `${formatted(result.eps)} × ${formatted(input.historicalPe)}` : "متوسط المكرر التاريخي غير متاح", included.historical);
-  $("sectorDetail").textContent = `المتوسط الحسابي للمكرر الحالي لشركات هذا القطاع التي أُدخل ربح سهمها على الأساس المختار، بما فيها الشركة الحالية؛ ${input.sectorCount} من ${state.banks.length}.`;
+  $("sectorDetail").textContent = state.sector === "telecom"
+    ? `المتوسط الحسابي لمكررات الشركات التي يتوفر لها سعر وربح آخر 12 شهرًا على الأساس المختار، بما فيها الشركة الحالية؛ ${input.sectorCount} من ${state.banks.length}.`
+    : `المتوسط الحسابي للمكرر الحالي لشركات هذا القطاع التي أُدخل ربح سهمها على الأساس المختار، بما فيها الشركة الحالية؛ ${input.sectorCount} من ${state.banks.length}.`;
   const availableYears = bank.annual.filter((row) => validPositive(row.historicalPe)).length;
-  $("historicalDetail").textContent = `متوسط مكررات ${availableYears} من ${bank.annual.length} سنوات في ${sector.file}. نوع ربح السهم المستخدم في مكرر الملف غير محدد.`;
+  $("historicalDetail").textContent = bank.unavailableMethods?.includes("historical")
+    ? "غير متاح لقو: تغيّر رأس المال والسنة المالية في مارس؛ القيم المنشورة معروضة للمرجع فقط."
+    : `متوسط مكررات ${availableYears} من ${bank.annual.length} سنوات في ${sector.file}. نوع ربح السهم المستخدم في مكرر الملف غير محدد.`;
   $("historicalPeYears").textContent = `${availableYears} من ${bank.annual.length} سنوات متاحة`;
   const warnings = [...result.warnings];
   if (!validPositive(input.price)) warnings.push("سعر ياهو فايننس غير متاح حاليًا لهذه الشركة.");
@@ -298,7 +332,15 @@ function render() {
   const warningPanel = $("warningPanel");
   warningPanel.hidden = warnings.length === 0;
   warningPanel.textContent = warnings.join(" • ");
-  $("dataSource").textContent = `السعر: ياهو فايننس؛ تاريخ الأرباح والمكررات: ${sector.file}؛ الأرباح الحالية والقيمة الدفترية: مدخلاتك المحلية`;
+  $("dataSource").textContent = state.sector === "telecom"
+    ? `السعر: ياهو فايننس؛ الأرباح: الإفصاحات وحساب آخر 12 شهرًا؛ القيمة الدفترية والمكررات السنوية: أرقام؛ جمع البيانات: 2026-10-28. تختلف فترات الشركات.`
+    : `السعر: ياهو فايننس؛ تاريخ الأرباح والمكررات: ${sector.file}؛ الأرباح الحالية والقيمة الدفترية: مدخلاتك المحلية`;
+  const financialSourceLink = $("financialSourceLink");
+  if (financialSourceLink) {
+    const source = state.telecomSources[bank.current.sourceIds[0]];
+    financialSourceLink.href = source || "#sources";
+    financialSourceLink.textContent = "إفصاح الربح لهذه الشركة";
+  }
   $("marketSourceLink").href = `https://finance.yahoo.com/quote/${bank.symbol}.SR/`;
   $("sourceTimestamp").textContent = state.market.generatedAt ? `إنشاء لقطة البيانات: ${new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Riyadh" }).format(new Date(state.market.generatedAt))}` : "";
   banner(bank, record);
@@ -308,6 +350,7 @@ function render() {
 function attachEvents() {
   $("sectorBanking").addEventListener("click", () => { window.location.href = "./index.html"; });
   $("sectorTechnology").addEventListener("click", () => { window.location.href = "./technology.html"; });
+  $("sectorTelecom").addEventListener("click", () => { window.location.href = "./telecom.html"; });
   $("bankSearch").addEventListener("input", (event) => { state.search = event.target.value; renderBankList(); });
   $("basicButton").addEventListener("click", () => { state.basis = "basic"; render(); });
   $("dilutedButton").addEventListener("click", () => { state.basis = "diluted"; render(); });
@@ -339,14 +382,18 @@ function attachEvents() {
 async function load() {
   attachEvents();
   try {
-    const [banksResponse, technologyResponse, marketResponse] = await Promise.all([
+    const [banksResponse, technologyResponse, telecomResponse, marketResponse] = await Promise.all([
       fetch("./data/banks.json", { cache: "no-store" }),
       fetch("./data/technology.json", { cache: "no-store" }),
+      fetch("./data/telecom.json", { cache: "no-store" }),
       fetch("./data/market.json", { cache: "no-store" }),
     ]);
-    if (!banksResponse.ok || !technologyResponse.ok) throw new Error("تعذر قراءة البيانات التاريخية للقطاعات.");
+    if (!banksResponse.ok || !technologyResponse.ok || !telecomResponse.ok) throw new Error("تعذر قراءة البيانات التاريخية للقطاعات.");
     state.sectors.banking = (await banksResponse.json()).banks;
     state.sectors.technology = (await technologyResponse.json()).stocks;
+    const telecomData = await telecomResponse.json();
+    state.sectors.telecom = telecomData.stocks;
+    state.telecomSources = telecomData.sources;
     state.market = marketResponse.ok ? await marketResponse.json() : state.market;
     activateSector(state.sector);
   } catch (error) {
