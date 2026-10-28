@@ -141,3 +141,14 @@ test("Saudi Awwal can use growth and historical methods from available periods",
   assert.ok(result.methods.growth > 0);
   assert.ok(result.fairPrice > 0);
 });
+
+test("healthcare data excludes growth where share bases changed", () => {
+  const stocks = JSON.parse(fs.readFileSync(new URL("../site/data/healthcare.json", import.meta.url), "utf8")).stocks;
+  const dallah = stocks.find((stock) => stock.symbol === "4004");
+  const result = calculateValuation(dallah, {
+    price: 100, basicEps: 3.63, bookValue: 33.88, historicalPe: 35,
+  }, "basic", { growth: false, sector: false });
+  assert.equal(result.growthPercent, null);
+  assert.equal(result.methods.growth, null);
+  assert.ok(result.methods.graham > 0);
+});

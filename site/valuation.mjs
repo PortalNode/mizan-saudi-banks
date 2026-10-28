@@ -56,7 +56,7 @@ export function priceGapPercent(value, price) {
 export function calculateValuation(bank, inputs, basis = "basic", selectedMethods = {}) {
   const eps = basis === "diluted" ? inputs?.dilutedEps : inputs?.basicEps;
   const growth = annualGrowthDetails(bank.annual, basis);
-  const growthPercent = growth.average;
+  const growthPercent = bank.unavailableMethods?.includes("growth") ? null : growth.average;
   const bookValue = inputs?.bookValue;
   const sectorPe = inputs?.sectorPe;
   const historicalPe = inputs?.historicalPe;

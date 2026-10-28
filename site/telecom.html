@@ -193,8 +193,8 @@
       .notice { margin-top:14px; line-height:1.5; align-items:start; padding:10px 12px; }
       .notice-dot { margin-top:5px; }
       .intro { padding:28px 0 23px; }
-      .sector-switch { width:100%; margin-bottom:16px; }
-      .sector-switch button { flex:1; padding:10px 8px; font-size:11px; }
+      .sector-switch { width:100%; margin-bottom:16px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .sector-switch button { flex:1; padding:10px 8px; font-size:11px; white-space:normal; }
       h1 { font-size:29px; }
       .intro p { font-size:12px; }
       .workspace { display:block; }
@@ -272,6 +272,7 @@
       <button id="sectorBanking" type="button" aria-pressed="false">البنوك السعودية</button>
       <button id="sectorTechnology" type="button" aria-pressed="false">قطاع التقنية</button>
       <button id="sectorTelecom" type="button" class="active" aria-pressed="true">قطاع الاتصالات</button>
+      <button id="sectorHealthcare" type="button" aria-pressed="false">قطاع الرعاية الصحية</button>
     </nav>
 
     <div class="workspace">
@@ -347,6 +348,6 @@
     </div>
     <footer class="footer"><span>ميزان — تقييم الأسهم السعودية</span><span>النموذج أداة مقارنة حسابية؛ تحقق من الإفصاحات وتواريخ البيانات قبل اتخاذ قرار استثماري.</span></footer>
   </main>
-  <script type="module" src="./app.mjs?v=11"></script>
+  <script type="module" src="./app.mjs?v=12"></script>
 </body>
 </html>

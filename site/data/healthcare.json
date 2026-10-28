@@ -1,0 +1,1571 @@
+{
+  "schemaVersion": 1,
+  "collectionDate": "2026-10-28",
+  "timezone": "Asia/Riyadh",
+  "sector": "healthcare",
+  "currency": "SAR",
+  "units": "EPS and book value in SAR per share; P/E and P/B in times",
+  "status": "Published research reference; only verified official current basic/diluted EPS is used as an initial valuation input",
+  "source": {
+    "name": "Argaam annual and interim tables; Fakeeh issuer financial statements",
+    "section": "بيانات السهم / مضاعفات التقييم",
+    "epsLabel": "Provider reported EPS unless a primary-source basis is explicitly specified",
+    "peLabel": "Annual period-end P/E from the annual table",
+    "notes": [
+      "عام 2020–2025 هو سنة نهاية الفترة؛ جميع الشركات هنا سنتها تنتهي في ديسمبر.",
+      "لا تُستخدم أرباح نصف سنة أو تسعة أشهر بوصفها أرباح سنة كاملة عند حساب المكرر.",
+      "حقول الربح المتكرر منفصلة عن الربح الأساسي والمخفف، ولا تستبدل بها تلقائياً.",
+      "القيم «أكبر من 100» محفوظة وصفياً؛ لم تستبدل بالعدد 100 أو بمتوسط تقديري.",
+      "لا تثبت أسعار سوق حالية ولا متوسط مكرر قطاعي في الحزمة."
+    ]
+  },
+  "sources": {
+    "fakeeh_fy2021": "https://cdn.prod.website-files.com/62f3e6d489b8b9be90c5b53e/66b32979109a043616adc24f_DSFH%20-%20Consolidation%202021%20-%20English.pdf",
+    "fakeeh_fy2023": "https://cdn.prod.website-files.com/62f3e6d489b8b9be90c5b53e/668656dd43d64b6634954720_DSFH%20Consolidated%20FY%202023%20English%20%281%29.pdf",
+    "fakeeh_fy2025": "https://cdn.prod.website-files.com/62f3e6d489b8b9be90c5b53e/69b08b2eeb30e6cbcefa7a6c_DSFH%20-%20Conso%20-%202025%20-%20V7.7.pdf",
+    "fakeeh_h1_2026": "https://cdn.prod.website-files.com/62f3e6d489b8b9be90c5b53e/6a8bfa5cca5a4e9c5f248981_DSFH%20Q2%2026%20-%20FS%20%28EN%29.pdf",
+    "fakeeh_reports": "https://en.fakeeh.care/ipo/reports-presentations",
+    "argaam_annual_4009": "https://www.argaam.com/sa-ar/financial-reports/company-report/4475/2025/1",
+    "argaam_interim_4009": "https://www.argaam.com/sa-ar/financial-reports/company-report/4475/2026/71",
+    "argaam_annual_4007": "https://www.argaam.com/sa-ar/financial-reports/company-report/3438/2025/1",
+    "argaam_interim_4007": "https://www.argaam.com/sa-ar/financial-reports/company-report/3438/2026/71",
+    "argaam_annual_4013": "https://www.argaam.com/sa-ar/financial-reports/company-report/4433/2025/1",
+    "argaam_interim_4013": "https://www.argaam.com/sa-ar/financial-reports/company-report/4433/2026/72",
+    "argaam_annual_4017": "https://www.argaam.com/ar/financial-reports/company-report/4286/2025/1?preview=true",
+    "argaam_interim_4017": "https://www.argaam.com/sa-ar/financial-reports/company-report/4286/2026/71",
+    "argaam_annual_4019": "https://www.argaam.com/sa-ar/financial-reports/company-report/17867/2025/1",
+    "argaam_interim_4019": "https://www.argaam.com/sa-ar/financial-reports/company-report/17867/2026/71",
+    "argaam_annual_4018": "https://www.argaam.com/sa-ar/financial-reports/company-report/16511/2025/1",
+    "argaam_interim_4018": "https://www.argaam.com/sa-ar/financial-reports/company-report/16511/2026/71",
+    "argaam_annual_4005": "https://www.argaam.com/sa-ar/financial-reports/company-report/2298/2025/1",
+    "argaam_interim_4005": "https://www.argaam.com/sa-ar/financial-reports/company-report/2298/2026/71",
+    "argaam_annual_4002": "https://www.argaam.com/sa-ar/financial-reports/company-report/1524/2025/1",
+    "argaam_interim_4002": "https://www.argaam.com/sa-ar/financial-reports/company-report/1524/2026/71",
+    "argaam_annual_4004": "https://www.argaam.com/sa-ar/financial-reports/company-report/1181/2025/1",
+    "argaam_interim_4004": "https://www.argaam.com/sa-ar/financial-reports/company-report/1181/2026/71"
+  },
+  "stocks": [
+    {
+      "symbol": "4009",
+      "name": "السعودي الألماني الصحية",
+      "sector": "healthcare",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": 0.89,
+          "recurringEps": 0.89,
+          "bookValue": 13.38,
+          "providerSharesMillions": 92.04,
+          "historicalPe": 39.34,
+          "historicalRecurringPe": 39.34,
+          "historicalPeRaw": "39.34",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4009"
+          ],
+          "historicalRecurringPeRaw": "39.34",
+          "priceBookMultiple": 2.62
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": 0.19,
+          "recurringEps": 0.04,
+          "bookValue": 13.66,
+          "providerSharesMillions": 92.04,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": "أكبر من 100",
+          "historicalPeStatus": "censored_above_100",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4009"
+          ],
+          "historicalRecurringPeRaw": "أكبر من 100",
+          "priceBookMultiple": 2.32
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 0.82,
+          "recurringEps": 0.82,
+          "bookValue": 14.44,
+          "providerSharesMillions": 92.04,
+          "historicalPe": 31.16,
+          "historicalRecurringPe": 31.16,
+          "historicalPeRaw": "31.16",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4009"
+          ],
+          "historicalRecurringPeRaw": "31.16",
+          "priceBookMultiple": 1.76
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 0.19,
+          "recurringEps": 1.84,
+          "bookValue": 14.34,
+          "providerSharesMillions": 92.04,
+          "historicalPe": null,
+          "historicalRecurringPe": 47.95,
+          "historicalPeRaw": "أكبر من 100",
+          "historicalPeStatus": "censored_above_100",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4009"
+          ],
+          "historicalRecurringPeRaw": "47.95",
+          "priceBookMultiple": 6.16
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 3.06,
+          "recurringEps": 2.36,
+          "bookValue": 17.67,
+          "providerSharesMillions": 92.04,
+          "historicalPe": 22.42,
+          "historicalRecurringPe": 29.11,
+          "historicalPeRaw": "22.42",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4009"
+          ],
+          "historicalRecurringPeRaw": "29.11",
+          "priceBookMultiple": 3.89
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 3.28,
+          "recurringEps": 2.05,
+          "bookValue": 16.02,
+          "providerSharesMillions": 92.04,
+          "historicalPe": 9.93,
+          "historicalRecurringPe": 15.9,
+          "historicalPeRaw": "9.93",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4009"
+          ],
+          "historicalRecurringPeRaw": "15.90",
+          "priceBookMultiple": 2.03
+        }
+      ],
+      "current": {
+        "periodEnd": "2026-06-30",
+        "periodMonths": 6,
+        "reportedPeriodEpsFromProvider": 0.74,
+        "priorYearSamePeriodEpsFromProvider": 2.02,
+        "recurringPeriodEpsFromProvider": 0.74,
+        "reportedBasicEps": null,
+        "reportedDilutedEps": null,
+        "bookValue": 16.76,
+        "bookValueType": "provider_published_latest_period",
+        "providerRecurringTtmEps": 1.59,
+        "netIncomeMillionsFromProvider": 67.82,
+        "sourceIds": [
+          "argaam_interim_4009",
+          "argaam_annual_4009"
+        ],
+        "latestStatus": "Latest interim period found in inspected sources, as of collection date",
+        "calculatedTtmEpsFromProvider": 2.0,
+        "calculatedTtmEpsFormula": "3.28 - 2.02 + 0.74",
+        "calculationStatus": "unreconciled_source_difference_do_not_auto_import",
+        "ttmBasicEpsApprox": null,
+        "ttmDilutedEpsApprox": null
+      },
+      "sourceIds": [
+        "argaam_annual_4009",
+        "argaam_interim_4009"
+      ],
+      "annualHistoryAccess": "visible_public_session",
+      "qualityFlags": [
+        "ربحية السهم في جداول أرقام لا تُصنف هنا تلقائياً كأساسي أو مخفف؛ الربح المتكرر محفوظ منفصلاً.",
+        "القيمة الدفترية المنشورة لا تفترض نفس مقام المتوسط المرجح لربحية السهم.",
+        "مكرر عامي 2021 و2023 معروض «أكبر من 100». لا يمكن احتساب متوسط كامل ودقيق من القيم الرقمية الأربع فقط، ولا يجوز استبدال الوصف بالعدد 100.",
+        "القيمة الدفترية في جدول أرقام لعام 2025 هي 16.02، بينما حقوق المساهمين المذكورة في نص التقرير 1872.36 مليون ريال ÷ 92.04 مليون سهم تساوي نحو 20.34. لم يُحسم سبب الفرق.",
+        "الربح المحسوب من ملخصات أرقام لآخر 12 شهراً يقارب 2.00، بينما المؤشر المتكرر الحالي 1.59، ويظهر مكرر الربح العادي والمتكرر متساويين في لقطة المؤشرات؛ يلزم التوفيق قبل إدخال الربح الحالي آلياً."
+      ],
+      "defaultExcludedMethods": [
+        "sector",
+        "growth"
+      ],
+      "unavailableMethods": [
+        "historical"
+      ],
+      "unavailableReasons": {
+        "historical": "مكرر سنتين معروض «أكبر من 100»؛ لا يمكن حساب متوسط تاريخي دقيق من السنوات الرقمية الأربع."
+      },
+      "annualSourceId": "argaam_annual_4009"
+    },
+    {
+      "symbol": "4007",
+      "name": "الحمادي",
+      "sector": "healthcare",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": 0.82,
+          "recurringEps": 0.85,
+          "bookValue": 10.62,
+          "providerSharesMillions": 160.0,
+          "historicalPe": 26.52,
+          "historicalRecurringPe": 25.54,
+          "historicalPeRaw": "26.52",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4007"
+          ],
+          "historicalRecurringPeRaw": "25.54",
+          "priceBookMultiple": 2.04
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": 0.56,
+          "recurringEps": 0.87,
+          "bookValue": 10.37,
+          "providerSharesMillions": 160.0,
+          "historicalPe": 53.7,
+          "historicalRecurringPe": 34.82,
+          "historicalPeRaw": "53.70",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4007"
+          ],
+          "historicalRecurringPeRaw": "34.82",
+          "priceBookMultiple": 2.92
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 1.61,
+          "recurringEps": 1.61,
+          "bookValue": 10.69,
+          "providerSharesMillions": 160.0,
+          "historicalPe": 24.93,
+          "historicalRecurringPe": 24.93,
+          "historicalPeRaw": "24.93",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4007"
+          ],
+          "historicalRecurringPeRaw": "24.93",
+          "priceBookMultiple": 3.75
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 1.9,
+          "recurringEps": 1.86,
+          "bookValue": 11.53,
+          "providerSharesMillions": 160.0,
+          "historicalPe": 31.33,
+          "historicalRecurringPe": 32.01,
+          "historicalPeRaw": "31.33",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4007"
+          ],
+          "historicalRecurringPeRaw": "32.01",
+          "priceBookMultiple": 5.15
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 2.12,
+          "recurringEps": 1.77,
+          "bookValue": 12.26,
+          "providerSharesMillions": 160.0,
+          "historicalPe": 18.13,
+          "historicalRecurringPe": 21.67,
+          "historicalPeRaw": "18.13",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4007"
+          ],
+          "historicalRecurringPeRaw": "21.67",
+          "priceBookMultiple": 3.13
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 1.51,
+          "recurringEps": 1.54,
+          "bookValue": 12.53,
+          "providerSharesMillions": 160.0,
+          "historicalPe": 18.51,
+          "historicalRecurringPe": 18.19,
+          "historicalPeRaw": "18.51",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4007"
+          ],
+          "historicalRecurringPeRaw": "18.19",
+          "priceBookMultiple": 2.23
+        }
+      ],
+      "current": {
+        "periodEnd": "2026-06-30",
+        "periodMonths": 6,
+        "reportedPeriodEpsFromProvider": 0.8,
+        "priorYearSamePeriodEpsFromProvider": 0.85,
+        "recurringPeriodEpsFromProvider": 0.76,
+        "reportedBasicEps": null,
+        "reportedDilutedEps": null,
+        "bookValue": 12.92,
+        "bookValueType": "provider_published_latest_period",
+        "providerRecurringTtmEps": 1.45,
+        "netIncomeMillionsFromProvider": 128.13,
+        "sourceIds": [
+          "argaam_interim_4007",
+          "argaam_annual_4007"
+        ],
+        "latestStatus": "Latest interim period found in inspected sources, as of collection date",
+        "calculatedTtmEpsFromProvider": 1.46,
+        "calculatedTtmEpsFormula": "1.51 - 0.85 + 0.80",
+        "calculationStatus": "not_statutory_basic_or_diluted",
+        "ttmBasicEpsApprox": null,
+        "ttmDilutedEpsApprox": null
+      },
+      "sourceIds": [
+        "argaam_annual_4007",
+        "argaam_interim_4007"
+      ],
+      "annualHistoryAccess": "visible_public_session",
+      "qualityFlags": [
+        "ربحية السهم في جداول أرقام لا تُصنف هنا تلقائياً كأساسي أو مخفف؛ الربح المتكرر محفوظ منفصلاً.",
+        "القيمة الدفترية المنشورة لا تفترض نفس مقام المتوسط المرجح لربحية السهم.",
+        "الربح المتكرر لعام 2025 أعلى من الربح المحاسبي بسبب تسويات البنود الاستثنائية لدى المزود؛ لا يُستبدل أحدهما بالآخر."
+      ],
+      "defaultExcludedMethods": [
+        "sector"
+      ],
+      "annualSourceId": "argaam_annual_4007"
+    },
+    {
+      "symbol": "4013",
+      "name": "سليمان الحبيب",
+      "sector": "healthcare",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": 3.02,
+          "recurringEps": 3.02,
+          "bookValue": 14.03,
+          "providerSharesMillions": 350.0,
+          "historicalPe": 36.14,
+          "historicalRecurringPe": 36.14,
+          "historicalPeRaw": "36.14",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4013"
+          ],
+          "historicalRecurringPeRaw": "36.14",
+          "priceBookMultiple": 7.77
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": 3.93,
+          "recurringEps": 3.93,
+          "bookValue": 15.25,
+          "providerSharesMillions": 350.0,
+          "historicalPe": 41.04,
+          "historicalRecurringPe": 41.04,
+          "historicalPeRaw": "41.04",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4013"
+          ],
+          "historicalRecurringPeRaw": "41.04",
+          "priceBookMultiple": 10.58
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 4.72,
+          "recurringEps": 4.72,
+          "bookValue": 16.8,
+          "providerSharesMillions": 350.0,
+          "historicalPe": 46.77,
+          "historicalRecurringPe": 46.77,
+          "historicalPeRaw": "46.77",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4013"
+          ],
+          "historicalRecurringPeRaw": "46.77",
+          "priceBookMultiple": 13.13
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 5.85,
+          "recurringEps": 5.68,
+          "bookValue": 18.53,
+          "providerSharesMillions": 350.0,
+          "historicalPe": 48.58,
+          "historicalRecurringPe": 49.99,
+          "historicalPeRaw": "48.58",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4013"
+          ],
+          "historicalRecurringPeRaw": "49.99",
+          "priceBookMultiple": 15.33
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 6.62,
+          "recurringEps": 6.36,
+          "bookValue": 20.5,
+          "providerSharesMillions": 350.0,
+          "historicalPe": 42.39,
+          "historicalRecurringPe": 44.07,
+          "historicalPeRaw": "42.39",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4013"
+          ],
+          "historicalRecurringPeRaw": "44.07",
+          "priceBookMultiple": 13.68
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 6.86,
+          "recurringEps": 6.7,
+          "bookValue": 22.58,
+          "providerSharesMillions": 350.0,
+          "historicalPe": 37.46,
+          "historicalRecurringPe": 38.38,
+          "historicalPeRaw": "37.46",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4013"
+          ],
+          "historicalRecurringPeRaw": "38.38",
+          "priceBookMultiple": 11.38
+        }
+      ],
+      "current": {
+        "periodEnd": "2026-09-30",
+        "periodMonths": 9,
+        "reportedPeriodEpsFromProvider": 5.28,
+        "priorYearSamePeriodEpsFromProvider": 5.0,
+        "recurringPeriodEpsFromProvider": 5.28,
+        "reportedBasicEps": null,
+        "reportedDilutedEps": null,
+        "bookValue": 24.22,
+        "bookValueType": "provider_published_latest_period",
+        "providerRecurringTtmEps": 6.97,
+        "netIncomeMillionsFromProvider": 1847.55,
+        "sourceIds": [
+          "argaam_interim_4013",
+          "argaam_annual_4013"
+        ],
+        "latestStatus": "Latest interim period found in inspected sources, as of collection date",
+        "calculatedTtmEpsFromProvider": 7.14,
+        "calculatedTtmEpsFormula": "6.86 - 5.00 + 5.28",
+        "calculationStatus": "not_statutory_basic_or_diluted",
+        "ttmBasicEpsApprox": null,
+        "ttmDilutedEpsApprox": null
+      },
+      "sourceIds": [
+        "argaam_annual_4013",
+        "argaam_interim_4013"
+      ],
+      "annualHistoryAccess": "visible_public_session",
+      "qualityFlags": [
+        "ربحية السهم في جداول أرقام لا تُصنف هنا تلقائياً كأساسي أو مخفف؛ الربح المتكرر محفوظ منفصلاً.",
+        "القيمة الدفترية المنشورة لا تفترض نفس مقام المتوسط المرجح لربحية السهم.",
+        "آخر فترة وجدت عند الجمع هي التسعة أشهر المنتهية في سبتمبر 2026؛ بقية الشركات في الحزمة تنتهي أحدث فتراتها المفحوصة في يونيو 2026."
+      ],
+      "defaultExcludedMethods": [
+        "sector"
+      ],
+      "annualSourceId": "argaam_annual_4013"
+    },
+    {
+      "symbol": "4017",
+      "name": "فقيه الطبية",
+      "sector": "healthcare",
+      "historicalEpsBasis": "basic_and_diluted",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": null,
+          "recurringEps": null,
+          "bookValue": 6.54,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": null,
+          "historicalPeStatus": "pre_listing_not_applicable",
+          "epsValueType": "unavailable_as_reported",
+          "bookValueType": "calculated_from_parent_equity",
+          "sourceIds": [
+            "fakeeh_fy2021"
+          ],
+          "bookValueCalculation": {
+            "parentEquitySar": 1307280704,
+            "shareDenominator": 200000000,
+            "normalization": "2023 split and bonus basis of 200 million shares for pre-IPO years"
+          },
+          "basicEps": null,
+          "dilutedEps": null,
+          "calculatedComparableEps": 1.02,
+          "comparableEpsCalculation": {
+            "parentProfitSar": 203178143,
+            "normalizedShares": 200000000,
+            "note": "Calculated reference, not reported statutory EPS; not loaded into reportedEps automatically"
+          }
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": null,
+          "recurringEps": null,
+          "bookValue": 8.07,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": null,
+          "historicalPeStatus": "pre_listing_not_applicable",
+          "epsValueType": "unavailable_as_reported",
+          "bookValueType": "calculated_from_parent_equity",
+          "sourceIds": [
+            "fakeeh_fy2021"
+          ],
+          "bookValueCalculation": {
+            "parentEquitySar": 1613231728,
+            "shareDenominator": 200000000,
+            "normalization": "2023 split and bonus basis of 200 million shares for pre-IPO years"
+          },
+          "basicEps": null,
+          "dilutedEps": null,
+          "calculatedComparableEps": 1.67,
+          "comparableEpsCalculation": {
+            "parentProfitSar": 334281868,
+            "normalizedShares": 200000000,
+            "note": "Calculated reference, not reported statutory EPS; not loaded into reportedEps automatically"
+          }
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 1.63,
+          "recurringEps": null,
+          "bookValue": 9.49,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": null,
+          "historicalPeStatus": "pre_listing_not_applicable",
+          "epsValueType": "official_basic_and_diluted",
+          "bookValueType": "calculated_from_parent_equity",
+          "sourceIds": [
+            "fakeeh_fy2023"
+          ],
+          "bookValueCalculation": {
+            "parentEquitySar": 1897638538,
+            "shareDenominator": 200000000,
+            "normalization": "2023 split and bonus basis of 200 million shares for pre-IPO years"
+          },
+          "basicEps": 1.63,
+          "dilutedEps": 1.63
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 1.4,
+          "recurringEps": null,
+          "bookValue": 5.1,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": null,
+          "historicalPeStatus": "pre_listing_not_applicable",
+          "epsValueType": "official_basic_and_diluted",
+          "bookValueType": "calculated_from_parent_equity",
+          "sourceIds": [
+            "fakeeh_fy2023"
+          ],
+          "bookValueCalculation": {
+            "parentEquitySar": 1020255030,
+            "shareDenominator": 200000000,
+            "normalization": "year-end issued shares, not weighted EPS shares"
+          },
+          "basicEps": 1.4,
+          "dilutedEps": 1.4
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 1.32,
+          "recurringEps": null,
+          "bookValue": 12.7,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": null,
+          "historicalPeStatus": "unverified_access_restricted",
+          "epsValueType": "official_basic_and_diluted",
+          "bookValueType": "calculated_from_parent_equity",
+          "sourceIds": [
+            "fakeeh_fy2025"
+          ],
+          "bookValueCalculation": {
+            "parentEquitySar": 2945346000,
+            "shareDenominator": 232000000,
+            "normalization": "year-end issued shares, not weighted EPS shares"
+          },
+          "basicEps": 1.32,
+          "dilutedEps": 1.32
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 1.26,
+          "recurringEps": null,
+          "bookValue": 13.67,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": null,
+          "historicalPeStatus": "unverified_access_restricted",
+          "epsValueType": "official_basic_and_diluted",
+          "bookValueType": "calculated_from_parent_equity",
+          "sourceIds": [
+            "fakeeh_fy2025"
+          ],
+          "bookValueCalculation": {
+            "parentEquitySar": 3172033000,
+            "shareDenominator": 232000000,
+            "normalization": "year-end issued shares, not weighted EPS shares"
+          },
+          "basicEps": 1.26,
+          "dilutedEps": 1.26
+        }
+      ],
+      "current": {
+        "periodEnd": "2026-06-30",
+        "periodMonths": 6,
+        "reportedPeriodEpsFromProvider": 0.42,
+        "priorYearSamePeriodEpsFromProvider": 0.67,
+        "recurringPeriodEpsFromProvider": 0.42,
+        "reportedBasicEps": 0.42,
+        "reportedDilutedEps": 0.42,
+        "bookValue": 13.77,
+        "bookValueType": "provider_published_latest_period",
+        "providerRecurringTtmEps": 1.0,
+        "netIncomeMillionsFromProvider": 96.34,
+        "sourceIds": [
+          "fakeeh_h1_2026",
+          "fakeeh_fy2025",
+          "argaam_annual_4017"
+        ],
+        "latestStatus": "Latest interim period found in inspected sources, as of collection date",
+        "calculatedTtmEpsFromProvider": null,
+        "calculatedTtmEpsFormula": null,
+        "calculationStatus": "approximation_of_official_basic_and_diluted_period_eps",
+        "ttmBasicEpsApprox": 1.01,
+        "ttmDilutedEpsApprox": 1.01,
+        "officialTtmEpsFormula": "1.26 - 0.67 + 0.42"
+      },
+      "sourceIds": [
+        "argaam_annual_4017",
+        "argaam_interim_4017",
+        "fakeeh_fy2021",
+        "fakeeh_fy2023",
+        "fakeeh_fy2025",
+        "fakeeh_h1_2026",
+        "fakeeh_reports"
+      ],
+      "annualHistoryAccess": "restricted",
+      "qualityFlags": [
+        "جدول التاريخ في صفحة أرقام التي فُتحت محجوب بالاشتراك؛ لم تُستخرج منه مكررات أو قيم تاريخية.",
+        "ربحية 2022–2025 الأساسية والمخففة من القوائم الأصلية. القيم المحسوبة المقارنة لعامي 2020 و2021 محفوظة في حقل مستقل دون إدخالها بوصفها أرباحاً معلنة.",
+        "القيم الدفترية التاريخية محسوبة من حقوق مساهمي الشركة الأم ومقام الأسهم الموضح لكل سنة؛ لا تنسب إلى جدول أرقام.",
+        "المكرر السوقي قبل الإدراج غير منطبق؛ مكررا 2024 و2025 لم يُثبتا في هذه الحزمة.",
+        "ربح أرقام لعام 2025 من ملخص الخبر 1.25 يختلف عن الأساسي والمخفف الرسمي 1.26 بسبب مقام الأسهم؛ استُخدمت القيمة الرسمية في السجل التاريخي."
+      ],
+      "providerAnnualSummaryReference": {
+        "2024": {
+          "eps": 1.24
+        },
+        "2025": {
+          "eps": 1.25
+        },
+        "sourceId": "argaam_annual_4017"
+      },
+      "defaultExcludedMethods": [
+        "sector",
+        "growth"
+      ],
+      "unavailableMethods": [
+        "historical"
+      ],
+      "unavailableReasons": {
+        "historical": "مكررات ما بعد الإدراج لم تُتحقق؛ لا يُحسب المكرر التاريخي."
+      },
+      "annualSourceId": "fakeeh_fy2025"
+    },
+    {
+      "symbol": "4019",
+      "name": "اس ام سي للرعاية الصحية",
+      "sector": "healthcare",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": null,
+          "recurringEps": null,
+          "bookValue": null,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": null,
+          "historicalPeStatus": "unavailable",
+          "epsValueType": "unavailable",
+          "bookValueType": "unavailable",
+          "sourceIds": [
+            "argaam_annual_4019"
+          ]
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": 0.22,
+          "recurringEps": 0.22,
+          "bookValue": 2.74,
+          "providerSharesMillions": 250.0,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": "-",
+          "historicalPeStatus": "unavailable",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4019"
+          ],
+          "historicalRecurringPeRaw": "-",
+          "priceBookMultiple": null
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 0.41,
+          "recurringEps": 0.41,
+          "bookValue": 2.93,
+          "providerSharesMillions": 250.0,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": "-",
+          "historicalPeStatus": "unavailable",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4019"
+          ],
+          "historicalRecurringPeRaw": "-",
+          "priceBookMultiple": null
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 0.67,
+          "recurringEps": 0.67,
+          "bookValue": 3.38,
+          "providerSharesMillions": 250.0,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": "-",
+          "historicalPeStatus": "unavailable",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4019"
+          ],
+          "historicalRecurringPeRaw": "-",
+          "priceBookMultiple": null
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 0.74,
+          "recurringEps": 0.74,
+          "bookValue": 3.31,
+          "providerSharesMillions": 250.0,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": "-",
+          "historicalPeStatus": "unavailable",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4019"
+          ],
+          "historicalRecurringPeRaw": "-",
+          "priceBookMultiple": null
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 1.06,
+          "recurringEps": 0.82,
+          "bookValue": 4.75,
+          "providerSharesMillions": 250.0,
+          "historicalPe": 16.94,
+          "historicalRecurringPe": 21.94,
+          "historicalPeRaw": "16.94",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4019"
+          ],
+          "historicalRecurringPeRaw": "21.94",
+          "priceBookMultiple": 3.8
+        }
+      ],
+      "current": {
+        "periodEnd": "2026-06-30",
+        "periodMonths": 6,
+        "reportedPeriodEpsFromProvider": 0.31,
+        "priorYearSamePeriodEpsFromProvider": 0.26,
+        "recurringPeriodEpsFromProvider": 0.31,
+        "reportedBasicEps": null,
+        "reportedDilutedEps": null,
+        "bookValue": 3.93,
+        "bookValueType": "provider_published_latest_period",
+        "providerRecurringTtmEps": 0.87,
+        "netIncomeMillionsFromProvider": 77.73,
+        "sourceIds": [
+          "argaam_interim_4019",
+          "argaam_annual_4019"
+        ],
+        "latestStatus": "Latest interim period found in inspected sources, as of collection date",
+        "calculatedTtmEpsFromProvider": 1.11,
+        "calculatedTtmEpsFormula": "1.06 - 0.26 + 0.31",
+        "calculationStatus": "not_statutory_basic_or_diluted",
+        "ttmBasicEpsApprox": null,
+        "ttmDilutedEpsApprox": null
+      },
+      "sourceIds": [
+        "argaam_annual_4019",
+        "argaam_interim_4019"
+      ],
+      "annualHistoryAccess": "visible_public_session",
+      "qualityFlags": [
+        "ربحية السهم في جداول أرقام لا تُصنف هنا تلقائياً كأساسي أو مخفف؛ الربح المتكرر محفوظ منفصلاً.",
+        "القيمة الدفترية المنشورة لا تفترض نفس مقام المتوسط المرجح لربحية السهم.",
+        "لا تتوافر سنة 2020 في جدول بيانات السهم الذي فُتح.",
+        "المكررات التاريخية قبل سنة الإدراج 2025 غير متاحة؛ متوسط المكرر المتاح يقتصر على 2025.",
+        "جزء من ربح 2025 ناتج عن بند غير متكرر، لذلك يختلف ربح السهم 1.06 عن المتكرر 0.82."
+      ],
+      "defaultExcludedMethods": [
+        "sector",
+        "historical"
+      ],
+      "annualSourceId": "argaam_annual_4019"
+    },
+    {
+      "symbol": "4018",
+      "name": "الموسى",
+      "sector": "healthcare",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": 2.99,
+          "recurringEps": 2.99,
+          "bookValue": 16.86,
+          "providerSharesMillions": 35.0,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": "-",
+          "historicalPeStatus": "unavailable",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4018"
+          ],
+          "historicalRecurringPeRaw": "-",
+          "priceBookMultiple": null
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": 1.78,
+          "recurringEps": 1.78,
+          "bookValue": 17.09,
+          "providerSharesMillions": 35.0,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": "-",
+          "historicalPeStatus": "unavailable",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4018"
+          ],
+          "historicalRecurringPeRaw": "-",
+          "priceBookMultiple": null
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 1.46,
+          "recurringEps": 1.46,
+          "bookValue": 18.52,
+          "providerSharesMillions": 35.0,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": "-",
+          "historicalPeStatus": "unavailable",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4018"
+          ],
+          "historicalRecurringPeRaw": "-",
+          "priceBookMultiple": null
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 1.48,
+          "recurringEps": 2.8,
+          "bookValue": 17.42,
+          "providerSharesMillions": 35.0,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": "-",
+          "historicalPeStatus": "unavailable",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4018"
+          ],
+          "historicalRecurringPeRaw": "-",
+          "priceBookMultiple": null
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 1.41,
+          "recurringEps": 2.7,
+          "bookValue": 17.89,
+          "providerSharesMillions": 35.0,
+          "historicalPe": null,
+          "historicalRecurringPe": null,
+          "historicalPeRaw": "-",
+          "historicalPeStatus": "unavailable",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4018"
+          ],
+          "historicalRecurringPeRaw": "-",
+          "priceBookMultiple": null
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 5.34,
+          "recurringEps": 4.46,
+          "bookValue": 43.43,
+          "providerSharesMillions": 44.3,
+          "historicalPe": 32.85,
+          "historicalRecurringPe": 39.31,
+          "historicalPeRaw": "32.85",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4018"
+          ],
+          "historicalRecurringPeRaw": "39.31",
+          "priceBookMultiple": 4.04
+        }
+      ],
+      "current": {
+        "periodEnd": "2026-06-30",
+        "periodMonths": 6,
+        "reportedPeriodEpsFromProvider": 1.4,
+        "priorYearSamePeriodEpsFromProvider": 3.05,
+        "recurringPeriodEpsFromProvider": 1.9,
+        "reportedBasicEps": null,
+        "reportedDilutedEps": null,
+        "bookValue": 44.28,
+        "bookValueType": "provider_published_latest_period",
+        "providerRecurringTtmEps": 4.1,
+        "netIncomeMillionsFromProvider": 62.05,
+        "sourceIds": [
+          "argaam_interim_4018",
+          "argaam_annual_4018"
+        ],
+        "latestStatus": "Latest interim period found in inspected sources, as of collection date",
+        "calculatedTtmEpsFromProvider": 3.69,
+        "calculatedTtmEpsFormula": "5.34 - 3.05 + 1.40",
+        "calculationStatus": "not_statutory_basic_or_diluted",
+        "ttmBasicEpsApprox": null,
+        "ttmDilutedEpsApprox": null
+      },
+      "sourceIds": [
+        "argaam_annual_4018",
+        "argaam_interim_4018"
+      ],
+      "annualHistoryAccess": "visible_public_session",
+      "qualityFlags": [
+        "ربحية السهم في جداول أرقام لا تُصنف هنا تلقائياً كأساسي أو مخفف؛ الربح المتكرر محفوظ منفصلاً.",
+        "القيمة الدفترية المنشورة لا تفترض نفس مقام المتوسط المرجح لربحية السهم.",
+        "تقرير 2025 إعلان تصحيحي؛ تغيرت الأرباح وحقوق الملكية بسبب إعادة قياس مشتقات مالية.",
+        "جدول أرقام يعرض ربح سهم 5.34 لعام 2025، بينما النص المنقول عن الإفصاح يذكر 5.36؛ لم يدمج الأساسان.",
+        "عدد الأسهم في جدول المزود انتقل من 35.00 مليوناً حتى 2024 إلى 44.30 مليوناً في 2025؛ يجب مراجعة المقارنة قبل اعتماد نمو ربح السهم.",
+        "لا توجد مكررات سوقية في الجدول للأعوام 2020–2024؛ لا تُنشأ قيم قبل الإدراج."
+      ],
+      "defaultExcludedMethods": [
+        "sector",
+        "historical"
+      ],
+      "unavailableMethods": [
+        "growth"
+      ],
+      "unavailableReasons": {
+        "growth": "تغير عدد الأسهم بين 2024 و2025؛ لا يعتمد نمو السلسلة قبل توحيد الأساس."
+      },
+      "annualSourceId": "argaam_annual_4018"
+    },
+    {
+      "symbol": "4005",
+      "name": "رعاية",
+      "sector": "healthcare",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": 2.17,
+          "recurringEps": 2.17,
+          "bookValue": 23.12,
+          "providerSharesMillions": 44.85,
+          "historicalPe": 24.62,
+          "historicalRecurringPe": 24.62,
+          "historicalPeRaw": "24.62",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4005"
+          ],
+          "historicalRecurringPeRaw": "24.62",
+          "priceBookMultiple": 2.31
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": 3.04,
+          "recurringEps": 3.04,
+          "bookValue": 25.07,
+          "providerSharesMillions": 44.85,
+          "historicalPe": 20.59,
+          "historicalRecurringPe": 20.59,
+          "historicalPeRaw": "20.59",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4005"
+          ],
+          "historicalRecurringPeRaw": "20.59",
+          "priceBookMultiple": 2.5
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 3.79,
+          "recurringEps": 3.79,
+          "bookValue": 28.17,
+          "providerSharesMillions": 44.85,
+          "historicalPe": 19.49,
+          "historicalRecurringPe": 19.49,
+          "historicalPeRaw": "19.49",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4005"
+          ],
+          "historicalRecurringPeRaw": "19.49",
+          "priceBookMultiple": 2.62
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 5.37,
+          "recurringEps": 5.37,
+          "bookValue": 32.41,
+          "providerSharesMillions": 44.85,
+          "historicalPe": 32.47,
+          "historicalRecurringPe": 32.47,
+          "historicalPeRaw": "32.47",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4005"
+          ],
+          "historicalRecurringPeRaw": "32.47",
+          "priceBookMultiple": 5.38
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 6.57,
+          "recurringEps": 4.98,
+          "bookValue": 36.26,
+          "providerSharesMillions": 44.85,
+          "historicalPe": 25.32,
+          "historicalRecurringPe": 33.41,
+          "historicalPeRaw": "25.32",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4005"
+          ],
+          "historicalRecurringPeRaw": "33.41",
+          "priceBookMultiple": 4.61
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 7.1,
+          "recurringEps": 7.1,
+          "bookValue": 41.23,
+          "providerSharesMillions": 44.85,
+          "historicalPe": 20.02,
+          "historicalRecurringPe": 20.02,
+          "historicalPeRaw": "20.02",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4005"
+          ],
+          "historicalRecurringPeRaw": "20.02",
+          "priceBookMultiple": 3.46
+        }
+      ],
+      "current": {
+        "periodEnd": "2026-06-30",
+        "periodMonths": 6,
+        "reportedPeriodEpsFromProvider": 3.26,
+        "priorYearSamePeriodEpsFromProvider": 3.69,
+        "recurringPeriodEpsFromProvider": 3.26,
+        "reportedBasicEps": null,
+        "reportedDilutedEps": null,
+        "bookValue": 41.54,
+        "bookValueType": "provider_published_latest_period",
+        "providerRecurringTtmEps": 6.68,
+        "netIncomeMillionsFromProvider": 146.43,
+        "sourceIds": [
+          "argaam_interim_4005",
+          "argaam_annual_4005"
+        ],
+        "latestStatus": "Latest interim period found in inspected sources, as of collection date",
+        "calculatedTtmEpsFromProvider": 6.67,
+        "calculatedTtmEpsFormula": "7.10 - 3.69 + 3.26",
+        "calculationStatus": "not_statutory_basic_or_diluted",
+        "ttmBasicEpsApprox": null,
+        "ttmDilutedEpsApprox": null,
+        "issuerPeriodEpsAsQuotedByArgaam": 3.28,
+        "issuerPriorPeriodEpsAsQuotedByArgaam": 3.7
+      },
+      "sourceIds": [
+        "argaam_annual_4005",
+        "argaam_interim_4005"
+      ],
+      "annualHistoryAccess": "visible_public_session",
+      "qualityFlags": [
+        "ربحية السهم في جداول أرقام لا تُصنف هنا تلقائياً كأساسي أو مخفف؛ الربح المتكرر محفوظ منفصلاً.",
+        "القيمة الدفترية المنشورة لا تفترض نفس مقام المتوسط المرجح لربحية السهم.",
+        "النص المنقول عن الإفصاح لعام 2025 يذكر 7.13 مقابل 7.10 في جدول المزود، وللنصف الأول 2026 يذكر 3.28 مقابل 3.26؛ يرتبط الأساس المعلن بمتوسط الأسهم بعد استبعاد الخزينة."
+      ],
+      "defaultExcludedMethods": [
+        "sector"
+      ],
+      "annualSourceId": "argaam_annual_4005"
+    },
+    {
+      "symbol": "4002",
+      "name": "المواساة",
+      "sector": "healthcare",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": 2.64,
+          "recurringEps": 2.64,
+          "bookValue": 11.4,
+          "providerSharesMillions": 200.0,
+          "historicalPe": 26.13,
+          "historicalRecurringPe": 26.13,
+          "historicalPeRaw": "26.13",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4002"
+          ],
+          "historicalRecurringPeRaw": "26.13",
+          "priceBookMultiple": 6.05
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": 2.89,
+          "recurringEps": 2.89,
+          "bookValue": 13.02,
+          "providerSharesMillions": 200.0,
+          "historicalPe": 30.06,
+          "historicalRecurringPe": 30.06,
+          "historicalPeRaw": "30.06",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4002"
+          ],
+          "historicalRecurringPeRaw": "30.06",
+          "priceBookMultiple": 6.67
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 3.0,
+          "recurringEps": 3.0,
+          "bookValue": 14.61,
+          "providerSharesMillions": 200.0,
+          "historicalPe": 34.87,
+          "historicalRecurringPe": 34.87,
+          "historicalPeRaw": "34.87",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4002"
+          ],
+          "historicalRecurringPeRaw": "34.87",
+          "priceBookMultiple": 7.15
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 3.29,
+          "recurringEps": 3.29,
+          "bookValue": 16.39,
+          "providerSharesMillions": 200.0,
+          "historicalPe": 34.0,
+          "historicalRecurringPe": 34.0,
+          "historicalPeRaw": "34.00",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4002"
+          ],
+          "historicalRecurringPeRaw": "34.00",
+          "priceBookMultiple": 6.82
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 3.23,
+          "recurringEps": 3.23,
+          "bookValue": 17.84,
+          "providerSharesMillions": 200.0,
+          "historicalPe": 26.36,
+          "historicalRecurringPe": 26.36,
+          "historicalPeRaw": "26.36",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4002"
+          ],
+          "historicalRecurringPeRaw": "26.36",
+          "priceBookMultiple": 4.77
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 4.11,
+          "recurringEps": 4.11,
+          "bookValue": 18.89,
+          "providerSharesMillions": 200.0,
+          "historicalPe": 16.22,
+          "historicalRecurringPe": 16.22,
+          "historicalPeRaw": "16.22",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4002"
+          ],
+          "historicalRecurringPeRaw": "16.22",
+          "priceBookMultiple": 3.53
+        }
+      ],
+      "current": {
+        "periodEnd": "2026-06-30",
+        "periodMonths": 6,
+        "reportedPeriodEpsFromProvider": 2.06,
+        "priorYearSamePeriodEpsFromProvider": 1.92,
+        "recurringPeriodEpsFromProvider": 1.92,
+        "reportedBasicEps": null,
+        "reportedDilutedEps": null,
+        "bookValue": 19.83,
+        "bookValueType": "provider_published_latest_period",
+        "providerRecurringTtmEps": 4.11,
+        "netIncomeMillionsFromProvider": 412.38,
+        "sourceIds": [
+          "argaam_interim_4002",
+          "argaam_annual_4002"
+        ],
+        "latestStatus": "Latest interim period found in inspected sources, as of collection date",
+        "calculatedTtmEpsFromProvider": 4.25,
+        "calculatedTtmEpsFormula": "4.11 - 1.92 + 2.06",
+        "calculationStatus": "not_statutory_basic_or_diluted",
+        "ttmBasicEpsApprox": null,
+        "ttmDilutedEpsApprox": null
+      },
+      "sourceIds": [
+        "argaam_annual_4002",
+        "argaam_interim_4002"
+      ],
+      "annualHistoryAccess": "visible_public_session",
+      "qualityFlags": [
+        "ربحية السهم في جداول أرقام لا تُصنف هنا تلقائياً كأساسي أو مخفف؛ الربح المتكرر محفوظ منفصلاً.",
+        "القيمة الدفترية المنشورة لا تفترض نفس مقام المتوسط المرجح لربحية السهم.",
+        "ربح النصف الأول 2026 في ملخص أرقام 2.06، والمتكرر للفترة 1.92؛ الحقلان منفصلان."
+      ],
+      "defaultExcludedMethods": [
+        "sector"
+      ],
+      "annualSourceId": "argaam_annual_4002"
+    },
+    {
+      "symbol": "4004",
+      "name": "دله الصحية",
+      "sector": "healthcare",
+      "historicalEpsBasis": "unspecified",
+      "annual": [
+        {
+          "year": 2020,
+          "periodEnd": "2020-12-31",
+          "reportedEps": 0.9,
+          "recurringEps": 0.75,
+          "bookValue": 16.62,
+          "providerSharesMillions": 108.0,
+          "historicalPe": 50.45,
+          "historicalRecurringPe": 60.67,
+          "historicalPeRaw": "50.45",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4004"
+          ],
+          "historicalRecurringPeRaw": "60.67",
+          "priceBookMultiple": 2.73
+        },
+        {
+          "year": 2021,
+          "periodEnd": "2021-12-31",
+          "reportedEps": 2.39,
+          "recurringEps": 2.3,
+          "bookValue": 17.29,
+          "providerSharesMillions": 108.0,
+          "historicalPe": 29.49,
+          "historicalRecurringPe": 30.72,
+          "historicalPeRaw": "29.49",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4004"
+          ],
+          "historicalRecurringPeRaw": "30.72",
+          "priceBookMultiple": 4.09
+        },
+        {
+          "year": 2022,
+          "periodEnd": "2022-12-31",
+          "reportedEps": 2.54,
+          "recurringEps": 2.54,
+          "bookValue": 18.42,
+          "providerSharesMillions": 108.0,
+          "historicalPe": 54.76,
+          "historicalRecurringPe": 54.76,
+          "historicalPeRaw": "54.76",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4004"
+          ],
+          "historicalRecurringPeRaw": "54.76",
+          "priceBookMultiple": 7.55
+        },
+        {
+          "year": 2023,
+          "periodEnd": "2023-12-31",
+          "reportedEps": 3.07,
+          "recurringEps": 3.07,
+          "bookValue": 27.33,
+          "providerSharesMillions": 117.22,
+          "historicalPe": 48.45,
+          "historicalRecurringPe": 48.45,
+          "historicalPeRaw": "48.45",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4004"
+          ],
+          "historicalRecurringPeRaw": "48.45",
+          "priceBookMultiple": 5.45
+        },
+        {
+          "year": 2024,
+          "periodEnd": "2024-12-31",
+          "reportedEps": 4.02,
+          "recurringEps": 4.02,
+          "bookValue": 29.59,
+          "providerSharesMillions": 117.22,
+          "historicalPe": 26.11,
+          "historicalRecurringPe": 26.11,
+          "historicalPeRaw": "26.11",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4004"
+          ],
+          "historicalRecurringPeRaw": "26.11",
+          "priceBookMultiple": 4.39
+        },
+        {
+          "year": 2025,
+          "periodEnd": "2025-12-31",
+          "reportedEps": 4.42,
+          "recurringEps": 3.75,
+          "bookValue": 33.49,
+          "providerSharesMillions": 121.89,
+          "historicalPe": 19.65,
+          "historicalRecurringPe": 23.15,
+          "historicalPeRaw": "19.65",
+          "historicalPeStatus": "numeric",
+          "epsValueType": "provider_reported_basis_unspecified",
+          "bookValueType": "provider_published",
+          "sourceIds": [
+            "argaam_annual_4004"
+          ],
+          "historicalRecurringPeRaw": "23.15",
+          "priceBookMultiple": 3.12
+        }
+      ],
+      "current": {
+        "periodEnd": "2026-06-30",
+        "periodMonths": 6,
+        "reportedPeriodEpsFromProvider": 1.51,
+        "priorYearSamePeriodEpsFromProvider": 2.3,
+        "recurringPeriodEpsFromProvider": 1.64,
+        "reportedBasicEps": null,
+        "reportedDilutedEps": null,
+        "bookValue": 33.88,
+        "bookValueType": "provider_published_latest_period",
+        "providerRecurringTtmEps": 3.62,
+        "netIncomeMillionsFromProvider": 184.53,
+        "sourceIds": [
+          "argaam_interim_4004",
+          "argaam_annual_4004"
+        ],
+        "latestStatus": "Latest interim period found in inspected sources, as of collection date",
+        "calculatedTtmEpsFromProvider": 3.63,
+        "calculatedTtmEpsFormula": "4.42 - 2.30 + 1.51",
+        "calculationStatus": "not_statutory_basic_or_diluted",
+        "ttmBasicEpsApprox": null,
+        "ttmDilutedEpsApprox": null,
+        "issuerPeriodEpsAsQuotedByArgaam": 1.827,
+        "issuerPriorPeriodEpsAsQuotedByArgaam": 2.815
+      },
+      "sourceIds": [
+        "argaam_annual_4004",
+        "argaam_interim_4004"
+      ],
+      "annualHistoryAccess": "visible_public_session",
+      "qualityFlags": [
+        "ربحية السهم في جداول أرقام لا تُصنف هنا تلقائياً كأساسي أو مخفف؛ الربح المتكرر محفوظ منفصلاً.",
+        "القيمة الدفترية المنشورة لا تفترض نفس مقام المتوسط المرجح لربحية السهم.",
+        "ورد في نص تقرير 2025 ربح سهم 5.32 مقابل 4.42 في جدول المزود؛ وورد للنصف الأول 2026 مبلغ 1.827 مقابل 1.51. تُحفظ القيم منفصلة مع ضرورة توحيد أثر الأسهم والمتوسط المرجح قبل حساب أساسي آخر 12 شهراً.",
+        "عدد الأسهم المرجعي في جداول المزود يتغير عبر السنوات؛ لا يُعتمد نمو غير مراجع بين قواعد أسهم مختلفة."
+      ],
+      "defaultExcludedMethods": [
+        "sector"
+      ],
+      "unavailableMethods": [
+        "growth"
+      ],
+      "unavailableReasons": {
+        "growth": "تغير أساس الأسهم بين الفترات؛ لا يعتمد نمو السلسلة قبل التوحيد."
+      },
+      "annualSourceId": "argaam_annual_4004"
+    }
+  ]
+}

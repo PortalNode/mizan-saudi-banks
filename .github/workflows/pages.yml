@@ -1,4 +1,4 @@
-name: Publish bank valuation site
+name: Publish Mizan valuation site
 
 on:
   push:
